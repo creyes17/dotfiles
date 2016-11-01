@@ -22,7 +22,8 @@ setopt HIST_BEEP
 
 ### Paths and Other Important Variables
 
-export ANDROID_HOME="$HOME/Library/Android/sdk";
+export GOPATH="$HOME/golang";
+export ANDROID_HOME="$HOME/Library/Android/sdk"; #TODO: This is for Mac, but need this to also work for Ubuntu
 export PATH="/Applications/LilyPond.app/Contents/Resources/bin:$ANDROID_HOME/platform-tools:$ANDROID_HOME/tools:$PATH";
 
 ### Aliases
