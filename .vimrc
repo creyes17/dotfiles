@@ -1,3 +1,7 @@
+:execute pathogen#infect()
+
+filetype plugin indent on
+
 syntax on
 
 set hlsearch
@@ -18,5 +22,3 @@ set history=20
 au BufRead,BufNewFile jquery.*.js set ft=javascript syntax=jquery
 
 :nnoremap U :redo<CR>
-
-:execute pathogen#infect()
