@@ -1,0 +1,11 @@
+let g:netrw_dirhistmax  =10
+let g:netrw_dirhist_cnt =9
+let g:netrw_dirhist_1='/home/the8ball/Documents/term8/6.815/Pset2'
+let g:netrw_dirhist_2='/home/the8ball/Documents/term8/21M.269/notes'
+let g:netrw_dirhist_3='/usr/lib/python2.7/dist-packages/music21/romanText'
+let g:netrw_dirhist_4='/usr/lib/python2.7/dist-packages/music21/corpus'
+let g:netrw_dirhist_5='/usr/lib/python2.7/dist-packages/music21'
+let g:netrw_dirhist_6='/home/the8ball/Documents/term8/6.815/Pset2'
+let g:netrw_dirhist_7='/home/the8ball/Documents/term8/6.815/pset6'
+let g:netrw_dirhist_8='/home/the8ball/jessica'
+let g:netrw_dirhist_9='/home/the8ball/.gconf'
