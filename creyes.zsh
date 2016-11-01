@@ -31,10 +31,11 @@ function () {
 
 	local zshcustom="$HOME/.oh-my-zsh/custom";
 
+	alias .bp=". $zshcustom/creyes.zsh";
+	alias .brc=". $zshcustom/creyes.zsh";
 	alias f="fg";
 	alias j="jobs";
-	alias vimbrc="vim $zshcustom/creyes.zsh";
 	alias vimbp="vim $zshcustom/creyes.zsh";
-	alias .brc=". $zshcustom/creyes.zsh";
-	alias .bp=". $zshcustom/creyes.zsh";
+	alias vimbrc="vim $zshcustom/creyes.zsh";
+	alias vimvrc="vim $HOME/.vimrc";
 }
