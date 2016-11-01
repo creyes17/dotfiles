@@ -1,3 +1,12 @@
+syntax on
+
+set hlsearch
+set ruler
+
+set backspace=indent,eol,start
+
+set history=20
+
 :set autoindent
 :set smartindent
 :set ts=4
