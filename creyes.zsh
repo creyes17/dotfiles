@@ -23,11 +23,12 @@ function () {
 
 	### Paths and Other Important Variables
 
+	export PERLPATH="/usr/local/Cellar/perl/5.24.0_1";
 	export ANDROID_HOME="$HOME/Library/Android/sdk"; #TODO: This is for Mac, but need this to also work for Ubuntu
 	export GOPATH="$HOME/golang";
 	export VIMHOME="$HOME/.vim";
 
-	export PATH="/Applications/LilyPond.app/Contents/Resources/bin:$ANDROID_HOME/platform-tools:$ANDROID_HOME/tools:$GOPATH/bin:$VIMHOME/bin:$PATH";
+	export PATH="/Applications/LilyPond.app/Contents/Resources/bin:$ANDROID_HOME/platform-tools:$ANDROID_HOME/tools:$GOPATH/bin:$VIMHOME/bin:$PERLPATH/bin:$PATH";
 
 	### Aliases
 
