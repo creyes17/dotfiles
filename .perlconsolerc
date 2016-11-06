@@ -1,1 +1,6 @@
-# Configuration for perl console presumably
+# Configuration for perl console. Run before the repl loop starts.
+
+# Valid options for output are: scalar, dumper, yaml, dump, dds
+:set output = dumper
+
+use Data::Dumper;
