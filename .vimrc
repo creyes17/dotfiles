@@ -42,3 +42,9 @@ let g:syntastic_mode_map = {
 	\ "mode": "active",
 	\ "active_filetypes": [],
 	\ "passive_filetypes": [] }
+
+" YouCompleteMe settings
+"	Let the "Enter" key also select an option from the menu
+let g:ycm_key_list_select_completion = ['<TAB>', '<Down>', '<Enter>']
+"	Don't automatically insert/select anything automatically
+set completeopt+=noinsert
