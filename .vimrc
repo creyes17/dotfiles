@@ -26,6 +26,8 @@ nnoremap U :redo<CR>
 vnoremap > > gv
 vnoremap < < gv
 
+set pastetoggle=<C-p>
+
 " Syntastic settings
 set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}

@@ -36,7 +36,12 @@ function () {
 
 	alias .bp=". $zshcustom/creyes.zsh";
 	alias .brc=". $zshcustom/creyes.zsh";
+	alias cdcs="cd $HOME/xamarin";
+	alias cdgo="cd $GOPATH/src/github.com/creyes17";
+	alias cdjs="cd $HOME/node";
+	alias cdperl="cd $HOME/perl";
 	alias f="fg";
+	alias gobuildandtest="go build; go install; go test";
 	alias j="jobs";
 	alias vimbp="vim $zshcustom/creyes.zsh";
 	alias vimbrc="vim $zshcustom/creyes.zsh";
