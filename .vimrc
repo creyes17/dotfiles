@@ -48,3 +48,4 @@ let g:syntastic_mode_map = {
 let g:ycm_key_list_select_completion = ['<TAB>', '<Down>', '<Enter>']
 "	Don't automatically insert/select anything automatically
 set completeopt+=noinsert
+set completeopt+=noselect
