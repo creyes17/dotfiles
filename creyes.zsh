@@ -30,6 +30,37 @@ function () {
 
 	export PATH="/Applications/LilyPond.app/Contents/Resources/bin:$ANDROID_HOME/platform-tools:$ANDROID_HOME/tools:$GOPATH/bin:$VIMHOME/bin:$PERLPATH/bin:$PATH";
 
+	### Useful Functions
+	
+	# Recursive Grep
+	# Recursively looks through the current (or specified) directory for the given search term
+	function rgrep {
+		if [[ $# -eq 0 ]]; then
+			echo "Usage: rgrep [options] [search query]";
+			echo "Valid options:";
+			echo "    -d    Directory. Specify a directory other than the current directory in which to look";
+		fi
+
+		local backupoptind=$OPTIND;
+
+		local dir=".";
+
+		while getopts ":d:" opt; do
+			case $opt in
+				d)
+					local dir=$OPTARG;
+					;;
+			esac
+		done
+
+		# Move past the last option we examined
+		shift $(expr $OPTIND - 1);
+
+		grep -r "$@" $dir;
+
+		export OPTIND=$backupoptind;
+	}
+
 	### Aliases
 
 	local zshcustom="$HOME/.oh-my-zsh/custom";
@@ -46,4 +77,5 @@ function () {
 	alias vimbp="vim $zshcustom/creyes.zsh";
 	alias vimbrc="vim $zshcustom/creyes.zsh";
 	alias vimvrc="vim $HOME/.vimrc";
+	alias whatismyip="dig +short myip.opendns.com @resolver1.opendns.com";
 }
