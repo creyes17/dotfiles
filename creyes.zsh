@@ -28,7 +28,7 @@ function () {
 	export GOPATH="$HOME/golang";
 	export VIMHOME="$HOME/.vim";
 
-	export PATH="/Applications/LilyPond.app/Contents/Resources/bin:$ANDROID_HOME/platform-tools:$ANDROID_HOME/tools:$GOPATH/bin:$VIMHOME/bin:$PERLPATH/bin:$PATH";
+	export PATH="$HOME/bin:/Applications/LilyPond.app/Contents/Resources/bin:$ANDROID_HOME/platform-tools:$ANDROID_HOME/tools:$GOPATH/bin:$VIMHOME/bin:$PERLPATH/bin:$PATH";
 
 	### Useful Functions
 	
