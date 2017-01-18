@@ -56,7 +56,7 @@ function () {
 		# Move past the last option we examined
 		shift $(expr $OPTIND - 1);
 
-		grep -r "$@" $dir;
+		grep -r "$*" $dir;
 
 		export OPTIND=$backupoptind;
 	}
