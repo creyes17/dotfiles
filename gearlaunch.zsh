@@ -1,4 +1,4 @@
-# Make some further updates to my PATH for work
+### Environment Variables ###
 
 export GLHOME="$HOME/github/GearLaunch/hub";
 export GLPORT=7432;
@@ -7,6 +7,10 @@ export GLPORTSECURE=7433;
 export GLUSERNAME="chris_reyes";
 export GLHOST="mole.gearint.com";
 
+# Used in sbt, for example in vendor-timberline
+export SPRING_PROFILES_ACTIVE="development";
+
+# Make some further updates to my PATH for work
 export PATH="$PATH:$HOME/bin/google-cloud-sdk/bin:$GLHOME/node_modules/.bin:$HOME/Library/Google/appengine-java-sdk/bin";
 
 # Useful functions

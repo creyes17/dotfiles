@@ -45,10 +45,15 @@ function () {
 
 		local dir=".";
 
-		while getopts ":d:" opt; do
+		local extra_opts="";
+
+		while getopts "id:" opt; do
 			case $opt in
 				d)
 					local dir=$OPTARG;
+					;;
+				i)
+					local extra_opts="$extra_opts -i";
 					;;
 			esac
 		done
@@ -56,7 +61,7 @@ function () {
 		# Move past the last option we examined
 		shift $(expr $OPTIND - 1);
 
-		grep -r "$*" $dir;
+		eval grep -r "$extra_opts" "$*" $dir;
 
 		export OPTIND=$backupoptind;
 	}
