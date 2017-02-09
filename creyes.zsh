@@ -66,6 +66,122 @@ function () {
 		export OPTIND=$backupoptind;
 	}
 
+	# View a small window of a file
+	# Probably needs a better name
+	function window {
+		local usage=$( cat <<USAGE
+Usage: window [options] filename
+Valid options:
+	You must specify exactly two of the following options
+	-s	The line at which to start displaying from the file
+	-e	The line at which to stop displaying from the file
+	-n	The number of lines to display
+USAGE
+);
+
+		if [[ $# -eq 0 ]]; then
+			echo $usage;
+			return 1
+		fi
+
+		local backupoptind=$OPTIND;
+
+		local start='';
+
+		local stop='';
+
+		local lines='';
+
+		local argCount=0;
+
+		while getopts "s:e:n:h" opt; do
+			case $opt in
+				s)
+					if [ ! -z $start ]; then
+						echo "Cannot specify the same option multiple times: -s";
+						echo $usage;
+						return 3
+					fi
+					local start=$OPTARG;
+					local argCount=$(expr $argCount + 1);
+					;;
+				e)
+					if [ ! -z $stop ]; then
+						echo "Cannot specify the same option multiple times: -e";
+						echo $usage;
+						return 4
+					fi
+					local stop=$OPTARG;
+					local argCount=$(expr $argCount + 1);
+					;;
+				n)
+					if [ ! -z $lines ]; then
+						echo "Cannot specify the same option multiple times: -n";
+						echo $usage;
+						return 5
+					fi
+					local lines=$OPTARG;
+					local argCount=$(expr $argCount + 1);
+					;;
+				h)
+					echo $usage;
+					return 0;
+					;;
+			esac
+		done
+
+		if [ "$argCount" -ne 2 ]; then
+			echo "Exactly two unique options of -s, -e, and -n are required";
+			echo $usage;
+			return 2;
+		fi
+
+		# Move past the last option we examined
+		shift $(expr $OPTIND - 1);
+
+		local file=$1;
+
+		# Tail is number of lines
+		# Head is stop line
+
+		# Test cases
+		#+-----------+-------+------+-------++------+------+
+		#| File Size | Start | Stop | Count || HEAD | TAIL |
+		#+-----------+-------+------+-------++------+------+
+		#|    10     |   1   |  10  |       ||  10  |  10  |
+		#+-----------+-------+------+-------++------+------+
+		#|    20     |   1   |  10  |       ||  10  |  10  |
+		#+-----------+-------+------+-------++------+------+
+		#|    20     |   11  |  20  |       ||  20  |  10  |
+		#+-----------+-------+------+-------++------+------+
+		#|    20     |   1   |      |  10   ||  10  |  10  |
+		#+-----------+-------+------+-------++------+------+
+		#|    20     |   11  |      |  10   ||  20  |  10  |
+		#+-----------+-------+------+-------++------+------+
+		#|    20     |       |  10  |  10   ||  10  |  10  |
+		#+-----------+-------+------+-------++------+------+
+		#|    20     |       |  20  |  10   ||  20  |  10  |
+		#+-----------+-------+------+-------++------+------+
+		
+		local tailarg=$lines;
+
+		if [ -z $lines ]; then
+			local tailarg=$(expr $stop - $start + 1)
+		fi
+
+		local headarg=$stop;
+
+		if [ -z $stop ]; then
+			local headarg=$(expr $start + $lines);
+		fi
+
+		head -n $headarg $file | tail -n $tailarg;
+
+		export OPTIND=$backupoptind;
+
+		return 0
+	}
+
 	### Aliases
 
 	local zshcustom="$HOME/.oh-my-zsh/custom";
