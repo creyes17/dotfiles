@@ -69,3 +69,4 @@ alias mole="ssh ${GLUSERNAME}@${GLHOST}";
 alias pg-start="pg_ctl -D /usr/local/var/postgres -l /usr/local/var/postgres/server.log start";
 alias pg-stop="pg_ctl -D /usr/local/var/postgres stop";
 alias vimgl="vim $HOME/.oh-my-zsh/custom/gearlaunch.zsh";
+alias glpostgres="psql -ab -d 'hub' -h 'paly2.gearint.com' -L ~/logs/psql-output.txt -p 5432 -U 'hub-prod'";
