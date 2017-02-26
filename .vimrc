@@ -50,3 +50,9 @@ let g:ycm_key_list_select_completion = ['<TAB>', '<Down>', '<Enter>']
 "	Don't automatically insert/select anything automatically
 set completeopt+=noinsert
 set completeopt+=noselect
+
+"Clojure options
+au VimEnter * RainbowParenthesesToggle
+au Syntax * RainbowParenthesesLoadRound
+au Syntax * RainbowParenthesesLoadSquare
+au Syntax * RainbowParenthesesLoadBraces
