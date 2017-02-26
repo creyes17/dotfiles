@@ -31,6 +31,7 @@ nnoremap U :redo<CR>
 vnoremap > > gv
 vnoremap < < gv
 
+nnoremap <Leader>p :set paste!<CR>
 nnoremap <Leader>sv :so $HOME/.vimrc<CR>
 
 " Syntastic settings
