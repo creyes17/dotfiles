@@ -31,9 +31,6 @@ nnoremap U :redo<CR>
 vnoremap > > gv
 vnoremap < < gv
 
-" This conflicts with omnicomplete...
-set pastetoggle=<Leader>p
-
 nnoremap <Leader>sv :so $HOME/.vimrc<CR>
 
 " Syntastic settings
