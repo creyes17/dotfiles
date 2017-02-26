@@ -24,13 +24,17 @@ set nu
 set scrolloff=5
 au BufRead,BufNewFile jquery.*.js set ft=javascript syntax=jquery
 
+let mapleader = "-"
+
 nnoremap U :redo<CR>
 
 vnoremap > > gv
 vnoremap < < gv
 
 " This conflicts with omnicomplete...
-"set pastetoggle=<C-p>
+set pastetoggle=<Leader>p
+
+nnoremap <Leader>sv :so $HOME/.vimrc<CR>
 
 " Syntastic settings
 set statusline+=%#warningmsg#
@@ -49,10 +53,10 @@ let g:syntastic_mode_map = {
 
 " YouCompleteMe settings
 "	Let the "Enter" key also select an option from the menu
-let g:ycm_key_list_select_completion = ['<TAB>', '<Down>', '<Enter>']
+"let g:ycm_key_list_select_completion = ['<TAB>', '<Down>', '<Enter>']
 "	Don't automatically insert/select anything automatically
-set completeopt+=noinsert
-set completeopt+=noselect
+"set completeopt+=noinsert
+"set completeopt+=noselect
 
 "Clojure options
 au VimEnter * RainbowParenthesesToggle
