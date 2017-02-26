@@ -7,6 +7,9 @@ syntax on
 set hlsearch
 set ruler
 
+" Turn off line wrapping
+set nowrap
+
 set backspace=indent,eol,start
 
 set history=20
