@@ -9,6 +9,5 @@ Make sure to separately download and install the following vim bundles:
     perlomni
 	rainbow_parentheses
     syntastic
-	vim-bracketed-paste
     vim-fireplace
     vim-javascript
