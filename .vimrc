@@ -26,7 +26,8 @@ nnoremap U :redo<CR>
 vnoremap > > gv
 vnoremap < < gv
 
-set pastetoggle=<C-p>
+" This conflicts with omnicomplete...
+"set pastetoggle=<C-p>
 
 " Syntastic settings
 set statusline+=%#warningmsg#
