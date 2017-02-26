@@ -7,6 +7,7 @@ Make sure to separately download and install the following vim bundles:
     YouCompleteMe
     jshint2
     perlomni.vim
+	rainbow_parentheses.vim
     syntastic
     vim-fireplace
     vim-javascript
