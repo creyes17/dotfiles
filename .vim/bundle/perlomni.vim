@@ -1,1 +1,1 @@
-/Users/creyes/github/chumakd/perlomni.vim
+../../../../chumakd/perlomni.vim

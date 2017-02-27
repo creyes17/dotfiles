@@ -1,1 +1,1 @@
-/Users/creyes/github/kien/rainbow_parentheses.vim
+../../../../kien/rainbow_parentheses.vim
