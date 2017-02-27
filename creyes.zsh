@@ -199,4 +199,5 @@ USAGE
 	alias vimbrc="vim $zshcustom/creyes.zsh";
 	alias vimvrc="vim $HOME/.vimrc";
 	alias whatismyip="dig +short myip.opendns.com @resolver1.opendns.com";
+	alias untar="tar -zxvf ";
 }

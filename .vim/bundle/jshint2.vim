@@ -1,0 +1,1 @@
+../../../../Shutnik/jshint2.vim
