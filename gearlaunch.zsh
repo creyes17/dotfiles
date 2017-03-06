@@ -62,6 +62,83 @@ function gitco {
 	git commit -m "[#${id}] $@";
 }
 
+# Loads the postgres database for the given environment
+function glpostgres {
+	local pgpassfile=;
+
+	if [ -z "$PGPASSFILE" ]; then
+		local pgpassfile="$HOME/.pgpass";
+	else
+		local pgpassfile=$PGPASSFILE;
+	fi
+
+	local yamldir="$GLHOME/src/main/resources";
+
+	local dev="application-dev.yml";
+	local prod="application-prod.yml";
+	local sandbox="application-sandbox.yml";
+
+	local require_auth=true;
+	local ymlfile=;
+
+	case $1 in
+		sand|sandbox)
+			local require_auth=false;
+			local ymlfile=$sandbox
+			;;
+		dev)
+			local require_auth=false;
+			local ymlfile=$dev;
+			;;
+		prod)
+			local ymlfile=$prod;
+			;;
+		*)
+			local ymlfile="application-$1.yml";
+			if [ ! -e "$yamldir/$ymlfile" ]; then
+				echo "Unsupported environment! $1";
+				return 1;
+			fi
+			;;
+	esac
+
+	local config=$(grep -A5 "postgres" "$yamldir/$ymlfile");
+	
+	local quoted_value_regex='s/^.*\"\([^\"]*\)\".*/\1/p';
+
+	local hostname=$(echo $config | sed -ne "/host/ $quoted_value_regex")
+	local databasename=$(echo $config | sed -ne "/database/ $quoted_value_regex");
+	local username=$(echo $config | sed -ne "/user/ $quoted_value_regex");
+	local port=$(echo $config | sed -ne '/port/ s/^.*port: \([[:digit:]]*\)[[:space:]]*/\1/p');
+
+	if [ $require_auth != true ]; then
+		local password=$(echo $config | sed -ne "/password/ $quoted_value_regex");
+	fi
+
+	local args="-ab -d \"$databasename\" -h \"$hostname\" -p \"$port\"";
+
+	if [ -n "$username" ]; then
+		local args="$args -U \"$username\"";
+		if [ -n "$password" ]; then
+			local auth_string="$hostname:$port:$databasename:$username:$password";
+
+			if [ ! -e $pgpassfile ]; then
+				echo "Creating PGPASSFILE ($pgpassfile)";
+				touch $pgpassfile;
+				chmod 0600 $pgpassfile;
+			fi
+
+			local found=$(grep "$auth_string" $pgpassfile);
+			if [ -z "$found" ]; then
+				echo "Updating PGPASSFILE ($pgpassfile) to include this account";
+				echo $auth_string >> $pgpassfile;
+			fi
+		fi
+	fi
+
+	eval "psql $args";
+}
+
 # Useful aliases
 alias .bgl="source $HOME/.oh-my-zsh/custom/gearlaunch.zsh";
 alias gltun="autossh -M $GLPORTSECURE -R ${GLPORT}:localhost:8080 -nNT ${GLUSERNAME}@${GLHOST}";
@@ -69,4 +146,3 @@ alias mole="ssh ${GLUSERNAME}@${GLHOST}";
 alias pg-start="pg_ctl -D /usr/local/var/postgres -l /usr/local/var/postgres/server.log start";
 alias pg-stop="pg_ctl -D /usr/local/var/postgres stop";
 alias vimgl="vim $HOME/.oh-my-zsh/custom/gearlaunch.zsh";
-alias glpostgres="psql -ab -d 'hub' -h 'paly2.gearint.com' -L ~/logs/psql-output.txt -p 5432 -U 'hub-prod'";
