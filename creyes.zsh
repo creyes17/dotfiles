@@ -184,6 +184,12 @@ USAGE
 		return 0
 	}
 
+	# Gets the current git branch and writes it to STDOUT.
+	# Writes an error to STDERR if not currently in a git repo. (Writes nothing to STDOUT in that case)
+	function get_git_branch {
+		git rev-parse --abbrev-ref HEAD;
+	}
+
 	### Aliases
 
 	local zshcustom="$HOME/.oh-my-zsh/custom";
@@ -202,4 +208,5 @@ USAGE
 	alias vimvrc="vim $HOME/.vimrc";
 	alias whatismyip="dig +short myip.opendns.com @resolver1.opendns.com";
 	alias untar="tar -zxvf ";
+	alias gitup="git push --set-upstream origin \$(get_git_branch)"
 }

@@ -15,12 +15,6 @@ export PATH="$PATH:$HOME/bin/google-cloud-sdk/bin:$GLHOME/node_modules/.bin:$HOM
 
 # Useful functions
 
-# Gets the current git branch and writes it to STDOUT.
-# Writes an error to STDERR if not currently in a git repo. (Writes nothing to STDOUT in that case)
-function get_git_branch {
-	git rev-parse --abbrev-ref HEAD;
-}
-
 # Get Pivotal Ticket ID
 # Given the branch, finds the pivotal ticket ID
 function get_pivotal_id {
@@ -113,6 +107,9 @@ function glpostgres {
 
 	if [ $require_auth != true ]; then
 		local password=$(echo $config | sed -ne "/password/ $quoted_value_regex");
+	else
+		echo "Not automatically loading password. If you're sure, you can use this:";
+		echo $config | sed -ne "/password/ $quoted_value_regex";
 	fi
 
 	local args="-ab -d \"$databasename\" -h \"$hostname\" -p \"$port\"";
