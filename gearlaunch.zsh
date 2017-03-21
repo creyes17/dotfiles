@@ -26,7 +26,7 @@ function get_pivotal_id {
 	fi
 
 	# Find a segment in the git branch that is composed entirely of numbers
-	local id=$(echo $branch | sed -nEe 's/.*-([[:digit:]]+)(-.*)?$/\1/p');
+	local id=$(echo $branch | sed -nEe 's/(.*-)?([[:digit:]]+)(-.*)?$/\2/p');
 
 	if [[ -z $id ]]; then
 		echo "Git branch doesn't contain a pivotal id" >&2;
