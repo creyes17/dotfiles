@@ -37,8 +37,30 @@ function get_pivotal_id {
 	return;
 }
 
+# Get JIRA Ticket ID
+# Given the branch, finds the jira ticket ID
+function get_jira_id {
+	local branch=$(get_git_branch);
+
+	if [[ -z $branch ]]; then
+		echo "Could not obtain a git branch" >&2;
+		return;
+	fi
+
+	# Grab the first word and number combination and just assume that it's the ID
+	local id=$(echo $branch | perl -ne "s/(^\w+-\d+)(-.*)$/\U\1/ && print");
+
+	if [[ -z $id ]]; then
+		echo "Git branch doesn't seem to contain a jira id" >&2;
+		return;
+	fi
+
+	echo $id;
+	return;
+}
+
 # Git commit
-# Automatically prepends the pivotal task id to the beginning of the commit message
+# Automatically prepends the jira task id to the beginning of the commit message
 # Usage: 
 function gitco {
 	if [[ -z $1 ]]; then
@@ -46,14 +68,14 @@ function gitco {
 		return
 	fi
 
-	local id=$(get_pivotal_id);
+	local id=$(get_jira_id);
 
 	if [[ -z $id ]]; then
-		echo "Could not find pivotal ID. Skipping commit" >&2;
+		echo "Could not find JIRA ID. Skipping commit" >&2;
 		return
 	fi
 
-	git commit -m "[#${id}] $@";
+	git commit -m "$id $@";
 }
 
 # Loads the postgres database for the given environment
