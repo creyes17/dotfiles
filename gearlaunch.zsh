@@ -91,7 +91,6 @@ function glpostgres {
 	local yamldir="$GLHOME/src/main/resources";
 
 	local dev="application-dev.yml";
-	local prod="application-prod.yml";
 	local sandbox="application-sandbox.yml";
 
 	local require_auth=true;
@@ -107,7 +106,8 @@ function glpostgres {
 			local ymlfile=$dev;
 			;;
 		prod)
-			local ymlfile=$prod;
+			psql -ab -d "hub" -h "paly2.gearint.com" -p "5432" -U "chris.reyes";
+			return 0;
 			;;
 		*)
 			local ymlfile="application-$1.yml";
