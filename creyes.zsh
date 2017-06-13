@@ -27,8 +27,10 @@ function () {
 	export ANDROID_HOME="$HOME/Library/Android/sdk"; #TODO: This is for Mac, but need this to also work for Ubuntu
 	export GOPATH="$HOME/golang";
 	export VIMHOME="$HOME/.vim";
+	export NVM_DIR="$HOME/.nvm";
 
 	export PATH="$HOME/bin:/Applications/LilyPond.app/Contents/Resources/bin:$ANDROID_HOME/platform-tools:$ANDROID_HOME/tools:$GOPATH/bin:$VIMHOME/bin:$PERLPATH/bin:$PATH";
+	export PATH="$NVM_DIR/versions/node/v7.10.0/bin/npm:$PATH";
 
 	export EDITOR="vim -u NONE";
 
@@ -196,6 +198,7 @@ USAGE
 
 	alias .bp=". $zshcustom/creyes.zsh";
 	alias .brc=". $zshcustom/creyes.zsh";
+	alias .nvm=". $NVM_DIR/nvm.sh"
 	alias cdcs="cd $HOME/xamarin";
 	alias cdgo="cd $GOPATH/src/github.com/creyes17";
 	alias cdjs="cd $HOME/node";
