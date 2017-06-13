@@ -208,5 +208,6 @@ USAGE
 	alias vimvrc="vim $HOME/.vimrc";
 	alias whatismyip="dig +short myip.opendns.com @resolver1.opendns.com";
 	alias untar="tar -zxvf ";
-	alias gitup="git push --set-upstream origin \$(get_git_branch)"
+	alias gitup="git push --set-upstream origin \$(get_git_branch)";
+	alias gd="git diff -w";
 }
