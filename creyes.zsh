@@ -198,7 +198,7 @@ USAGE
 
 	alias .bp=". $zshcustom/creyes.zsh";
 	alias .brc=". $zshcustom/creyes.zsh";
-	alias .nvm=". $NVM_DIR/nvm.sh"
+	alias .nvm=". $NVM_DIR/nvm.sh; nvm use --delete-prefix v7.6.0"
 	alias cdcs="cd $HOME/xamarin";
 	alias cdgo="cd $GOPATH/src/github.com/creyes17";
 	alias cdjs="cd $HOME/node";
