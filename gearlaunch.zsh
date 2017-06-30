@@ -11,7 +11,7 @@ export GLHOST="mole.gearint.com";
 export SPRING_PROFILES_ACTIVE="development";
 
 # Make some further updates to my PATH for work
-export PATH="$PATH:$HOME/bin/google-cloud-sdk/bin:$GLHOME/node_modules/.bin:$HOME/Library/Google/appengine-java-sdk/bin";
+export PATH="$PATH:$HOME/bin/google-cloud-sdk/bin:$GLHOME/hub-war/node_modules/.bin:$HOME/Library/Google/appengine-java-sdk/bin";
 
 # Useful functions
 
@@ -88,7 +88,7 @@ function glpostgres {
 		local pgpassfile=$PGPASSFILE;
 	fi
 
-	local yamldir="$GLHOME/src/main/resources";
+	local yamldir="$GLHOME/hub-war/src/main/resources";
 
 	local dev="application-dev.yml";
 	local sandbox="application-sandbox.yml";
