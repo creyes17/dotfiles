@@ -34,6 +34,9 @@ function () {
 
 	export EDITOR="vim -u NONE";
 
+	export WINEARCH="win64";
+	export WINEPREFIX="$HOME/.wine";
+
 	### Useful Functions
 	
 	# Recursive Grep
