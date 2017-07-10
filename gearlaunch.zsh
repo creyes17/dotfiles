@@ -160,7 +160,7 @@ function glpostgres {
 
 # Useful aliases
 alias .bgl="source $HOME/.oh-my-zsh/custom/gearlaunch.zsh";
-alias gltun="autossh -M $GLPORTSECURE -R ${GLPORT}:localhost:8000 -nNT ${GLUSERNAME}@${GLHOST}";
+alias gltun="autossh -M $GLPORTSECURE -R ${GLPORT}:localhost:8080 -nNT ${GLUSERNAME}@${GLHOST}";
 alias mole="ssh ${GLUSERNAME}@${GLHOST}";
 alias pg-start="pg_ctl -D /usr/local/var/postgres -l /usr/local/var/postgres/server.log start";
 alias pg-stop="pg_ctl -D /usr/local/var/postgres stop";
