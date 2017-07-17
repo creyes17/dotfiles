@@ -1,8 +1,8 @@
 This is my cloud backup of my personal configuration files. Use at your own risk.
 
-To set up the global gitignore file, use:
+To set up the global gitignore file, run the following command from the root directory of this repo
 
-    git config --global core.excludesfile ~/.gitignore_global
+    git config --global core.excludesfile ./.gitignore_global
 
 I reference my own file system(s) here, so you'll likely need to make some edits if you want it to work for you as well.
 
