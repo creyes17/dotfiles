@@ -1,5 +1,9 @@
 This is my cloud backup of my personal configuration files. Use at your own risk.
 
+To set up the global gitignore file, use:
+
+    git config --global core.excludesfile ~/.gitignore_global
+
 I reference my own file system(s) here, so you'll likely need to make some edits if you want it to work for you as well.
 
 Make sure to separately download the following vim bundles. The sym links expect these to be located at $THIS-DIRECTORY/../../
