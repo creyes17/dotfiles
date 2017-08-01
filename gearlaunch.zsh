@@ -158,6 +158,44 @@ function glpostgres {
 	eval "psql $args";
 }
 
+# Connects to Gearlaunch's CloudSQL
+# Usage: `glcloudsql [environment]` where [environment] is one of sandbox, dev, or prod
+function glcloudsql {
+	local cloudsql_user="chris.reyes";
+	local ssl_home="$HOME/.ssl/gearlaunch";
+
+	local host=;
+	local ssl_dir=;
+	local use_local=false;
+
+	case $1 in
+		sand|sandbox)
+			local ssl_dir="$ssl_home/gearlaunch-hub-sandbox";
+			local host="35.188.207.94";
+			;;
+		dev)
+			local use_local=true;
+			;;
+		prod)
+			local ssl_dir="$ssl_home/gearlaunch-hub";
+			local host="35.188.39.236";
+			return 0;
+			;;
+		*)
+			echo "Unsupported environment! $1";
+			return 1;
+			;;
+	esac
+
+	if $use_local; then
+		mysql email_marketing_dev
+		return 0;
+	fi
+
+	mysql -u$cloudsql_user -p -h $host --ssl-ca=$ssl_dir/server-ca.pem --ssl-cert=$ssl_dir/client-cert.pem --ssl-key=$ssl_dir/client-key.pem
+	return 0;
+}
+
 # Useful aliases
 alias .bgl="source $HOME/.oh-my-zsh/custom/gearlaunch.zsh";
 alias gltun="autossh -M $GLPORTSECURE -R ${GLPORT}:localhost:8080 -nNT ${GLUSERNAME}@${GLHOST}";
