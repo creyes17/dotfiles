@@ -167,11 +167,13 @@ function glcloudsql {
 	local host=;
 	local ssl_dir=;
 	local use_local=false;
+	local database=;
 
 	case $1 in
 		sand|sandbox)
 			local ssl_dir="$ssl_home/gearlaunch-hub-sandbox";
 			local host="35.188.207.94";
+			local database="email_marketing_sandbox";
 			;;
 		dev)
 			local use_local=true;
@@ -179,7 +181,7 @@ function glcloudsql {
 		prod)
 			local ssl_dir="$ssl_home/gearlaunch-hub";
 			local host="35.188.39.236";
-			return 0;
+			local database="email_marketing_production";
 			;;
 		*)
 			echo "Unsupported environment! $1";
@@ -192,7 +194,7 @@ function glcloudsql {
 		return 0;
 	fi
 
-	mysql -u$cloudsql_user -p -h $host --ssl-ca=$ssl_dir/server-ca.pem --ssl-cert=$ssl_dir/client-cert.pem --ssl-key=$ssl_dir/client-key.pem
+	mysql --user=$cloudsql_user --password --host=$host --ssl-ca=$ssl_dir/server-ca.pem --ssl-cert=$ssl_dir/client-cert.pem --ssl-key=$ssl_dir/client-key.pem $database
 	return 0;
 }
 
