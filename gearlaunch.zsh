@@ -190,11 +190,11 @@ function glcloudsql {
 	esac
 
 	if $use_local; then
-		mysql email_marketing_dev
+		mysql email_marketing_dev ;
 		return 0;
 	fi
 
-	mysql --user=$cloudsql_user --password --host=$host --ssl-ca=$ssl_dir/server-ca.pem --ssl-cert=$ssl_dir/client-cert.pem --ssl-key=$ssl_dir/client-key.pem $database
+	mysql --user=$cloudsql_user --password --host=$host --ssl-ca=$ssl_dir/server-ca.pem --ssl-cert=$ssl_dir/client-cert.pem --ssl-key=$ssl_dir/client-key.pem $database ;
 	return 0;
 }
 
