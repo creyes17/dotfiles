@@ -198,6 +198,20 @@ function glcloudsql {
 	return 0;
 }
 
+function base64urlencode {
+	printf %s "$1" | base64 | perl -pe "chomp" | jq -s -R -r @uri;
+}
+
+# Usage: unsubscribe_link sandbox.travelersbrunch.com 1234 MyCoolUnsubscribeCode
+# output: sandbox.travelersbrunch.com/_unsubscribe#?i=MTIzNA%3D%3D&c=TXlDb29sVW5zdWJzY3JpYmVDb2Rl
+function unsubscribe_link {
+	local store_domain="$1";
+	local customer_id="$2";
+	local unsubscribe_code="$3";
+
+	printf "%s/_unsubscribe#?i=%s&c=%s" $store_domain $(base64urlencode $customer_id) $(base64urlencode $unsubscribe_code);
+}
+
 # Useful aliases
 alias .bgl="source $HOME/.oh-my-zsh/custom/gearlaunch.zsh";
 alias gltun="autossh -M $GLPORTSECURE -R ${GLPORT}:localhost:8080 -nNT ${GLUSERNAME}@${GLHOST}";
