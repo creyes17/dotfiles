@@ -212,8 +212,43 @@ function unsubscribe_link {
 	printf "%s/_unsubscribe#?i=%s&c=%s" $store_domain $(base64urlencode $customer_id) $(base64urlencode $unsubscribe_code);
 }
 
+function create-branch {
+	read -r -d '' usage <<-USAGE
+		Creates a new, appropriately named git branch and checks it out
+		usage: $0 [story number] [name]
+USAGE
+
+	if [ $# -ne 2 ]; then
+		echo $usage;
+		return 0;
+	fi
+
+	local num=$1;
+	if ! [[ $num =~ '^[[:digit:]]+$' ]]; then
+		echo "Error: story number must only contain digits 0-9" >&2;
+		echo >&2;
+		echo $usage >&2;
+		return 1;
+	fi
+
+	local name=$(echo -n "$2" | sed -e 's/[[:space:]]\{1,\}/-/g' | awk '{ print tolower($0) }');
+	local branch="dev-$num-$name";
+
+	if [ -z "$($GLHOME/bin/validate-branch-name.sh $branch)" ] && [ $? -eq 0 ]; then
+		# Validation successful
+		git checkout -b $branch;
+		return 0;
+	fi
+
+	echo "Error: name did not pass validation." >&2;
+	echo >&2;
+	echo $usage >&2;
+	return 2;
+}
+
 # Useful aliases
 alias .bgl="source $HOME/.oh-my-zsh/custom/gearlaunch.zsh";
+alias cb="create-branch";
 alias gltun="autossh -M $GLPORTSECURE -R ${GLPORT}:localhost:8080 -nNT ${GLUSERNAME}@${GLHOST}";
 alias mole="ssh ${GLUSERNAME}@${GLHOST}";
 alias pg-start="pg_ctl -D /usr/local/var/postgres -l /usr/local/var/postgres/server.log start";
