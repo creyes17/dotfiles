@@ -218,7 +218,7 @@ function create-branch {
 		usage: $0 [story number] [name]
 USAGE
 
-	if [ $# -ne 2 ]; then
+	if [ $# -lt 2 ]; then
 		echo $usage;
 		return 0;
 	fi
