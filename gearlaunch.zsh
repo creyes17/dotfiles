@@ -231,7 +231,8 @@ USAGE
 		return 1;
 	fi
 
-	local name=$(echo -n "$2" | sed -e 's/[[:space:]]\{1,\}/-/g' | awk '{ print tolower($0) }');
+	shift;
+	local name=$(echo -n "$@" | sed -e 's/[[:space:]]\{1,\}/-/g' | awk '{ print tolower($0) }');
 	local branch="dev-$num-$name";
 
 	if [ -z "$($GLHOME/bin/validate-branch-name.sh $branch)" ] && [ $? -eq 0 ]; then
@@ -250,6 +251,7 @@ USAGE
 alias .bgl="source $HOME/.oh-my-zsh/custom/gearlaunch.zsh";
 alias cb="create-branch";
 alias gltun="autossh -M $GLPORTSECURE -R ${GLPORT}:localhost:8080 -nNT ${GLUSERNAME}@${GLHOST}";
+alias gmd="git checkout develop; git pull; git checkout -; git merge develop;";
 alias mole="ssh ${GLUSERNAME}@${GLHOST}";
 alias pg-start="pg_ctl -D /usr/local/var/postgres -l /usr/local/var/postgres/server.log start";
 alias pg-stop="pg_ctl -D /usr/local/var/postgres stop";
