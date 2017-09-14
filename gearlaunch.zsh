@@ -198,6 +198,98 @@ function glcloudsql {
 	return 0;
 }
 
+# Usage
+# glclouddump {sandbox|dev|prod} {filename} {table-to-dump} [table-to-dump ...]
+function glclouddump {
+	local cloudsql_user="chris.reyes";
+	local ssl_home="$HOME/.ssl/gearlaunch";
+
+	local host=;
+	local ssl_dir=;
+	local use_local=false;
+	local database=;
+
+	local environment="$1";
+
+	local filename="$2";
+
+	shift 2;
+
+	local tables="$*";
+
+	case $environment in
+		sand|sandbox)
+			local ssl_dir="$ssl_home/gearlaunch-hub-sandbox";
+			local host="35.188.207.94";
+			local database="email_marketing_sandbox";
+			;;
+		dev|local)
+			local use_local=true;
+			;;
+		prod)
+			local ssl_dir="$ssl_home/gearlaunch-hub";
+			local host="35.188.39.236";
+			local database="email_marketing_production";
+			;;
+		*)
+			echo "Unsupported environment! $environment";
+			return 1;
+			;;
+	esac
+
+	if $use_local; then
+		mysqldump email_marketing_dev $tables > $filename;
+		return 0;
+	fi
+
+	mysqldump --user=$cloudsql_user --password --host=$host --ssl-ca=$ssl_dir/server-ca.pem --ssl-cert=$ssl_dir/client-cert.pem --ssl-key=$ssl_dir/client-key.pem $database $tables > $filename;
+	return 0;
+}
+
+# Usage
+# glcloudload {sandbox|dev|prod} {filename}
+function glcloudload {
+	local cloudsql_user="chris.reyes";
+	local ssl_home="$HOME/.ssl/gearlaunch";
+
+	local host=;
+	local ssl_dir=;
+	local use_local=false;
+	local database=;
+
+	local environment="$1";
+
+	local filename="$2";
+
+	case $environment in
+		sand|sandbox)
+			local ssl_dir="$ssl_home/gearlaunch-hub-sandbox";
+			local host="35.188.207.94";
+			local database="email_marketing_sandbox";
+			;;
+		dev|local)
+			local use_local=true;
+			;;
+		prod)
+			local ssl_dir="$ssl_home/gearlaunch-hub";
+			local host="35.188.39.236";
+			local database="email_marketing_production";
+			;;
+		*)
+			echo "Unsupported environment! $environment";
+			return 1;
+			;;
+	esac
+
+	if $use_local; then
+		mysql email_marketing_dev $tables < $filename;
+		return 0;
+	fi
+
+	mysql --user=$cloudsql_user --password --host=$host --ssl-ca=$ssl_dir/server-ca.pem --ssl-cert=$ssl_dir/client-cert.pem --ssl-key=$ssl_dir/client-key.pem $database $tables < $filename;
+	return 0;
+}
+
 function base64urlencode {
 	printf %s "$1" | base64 | perl -pe "chomp" | jq -s -R -r @uri;
 }
