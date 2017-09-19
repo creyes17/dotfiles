@@ -242,7 +242,7 @@ function glclouddump {
 		return 0;
 	fi
 
-	mysqldump --user=$cloudsql_user --password --host=$host --ssl-ca=$ssl_dir/server-ca.pem --ssl-cert=$ssl_dir/client-cert.pem --ssl-key=$ssl_dir/client-key.pem $database $tables > $filename;
+	mysqldump --user=$cloudsql_user --password --host=$host --ssl-ca=$ssl_dir/server-ca.pem --ssl-cert=$ssl_dir/client-cert.pem --ssl-key=$ssl_dir/client-key.pem $database "${tables[@]}" > $filename;
 	return 0;
 }
 
@@ -282,11 +282,81 @@ function glcloudload {
 	esac
 
 	if $use_local; then
-		mysql email_marketing_dev $tables < $filename;
+		mysql email_marketing_dev < $filename;
 		return 0;
 	fi
 
-	mysql --user=$cloudsql_user --password --host=$host --ssl-ca=$ssl_dir/server-ca.pem --ssl-cert=$ssl_dir/client-cert.pem --ssl-key=$ssl_dir/client-key.pem $database $tables < $filename;
+	mysql --user=$cloudsql_user --password --host=$host --ssl-ca=$ssl_dir/server-ca.pem --ssl-cert=$ssl_dir/client-cert.pem --ssl-key=$ssl_dir/client-key.pem $database < $filename;
+	return 0;
+}
+
+# Usage
+# glcloud {dump|load|sql} {sandbox|dev|prod} {filename} {table-to-dump} [table-to-dump ...]
+function glcloud {
+	local cloudsql_user="chris.reyes";
+	local ssl_home="$HOME/.ssl/gearlaunch";
+
+	local host=;
+	local ssl_dir=;
+	local use_local=false;
+	local database=;
+
+	local mode="$1";
+	local environment="$2";
+
+	shift 2;
+
+	local args=;
+
+	case $environment in
+		sand|sandbox)
+			local ssl_dir="$ssl_home/gearlaunch-hub-sandbox";
+			local host="35.188.207.94";
+			local database="email_marketing_sandbox";
+			;;
+		dev|local)
+			local use_local=true;
+			local database="email_marketing_dev";
+			;;
+		prod)
+			local ssl_dir="$ssl_home/gearlaunch-hub";
+			local host="35.188.39.236";
+			local database="email_marketing_production";
+			;;
+		*)
+			echo "Unsupported environment! $environment";
+			return 1;
+			;;
+	esac
+
+	if ! $use_local; then
+		local args="--user=$cloudsql_user --password --host=$host --ssl-ca=$ssl_dir/server-ca.pem --ssl-cert=$ssl_dir/client-cert.pem --ssl-key=$ssl_dir/client-key.pem";
+	fi
+
+	local cmd=;
+
+	case $mode in
+		dump)
+			local filename="$1";
+			shift;
+			local tables="$*";
+			local cmd="mysqldump $args $database $tables > $filename";
+			;;
+		load)
+			local filename="$1";
+			local cmd="mysql $args $database < $filename";
+			;;
+		sql)
+			local cmd="mysql $args $database";
+			;;
+		*)
+			echo "Unrecognized command: [$mode]" >&2;
+			echo "Usage: glcloud {dump|load|sql} {sandbox|dev|prod} [{filename} {table-to-dump} [table-to-dump ...]]" >&2;
+			return 1;
+			;;
+	esac
+
+	eval $cmd;
 	return 0;
 }
 
