@@ -159,50 +159,6 @@ function glpostgres {
 }
 
 # Usage
-# glcloudload {sandbox|dev|prod} {filename}
-function glcloudload {
-	local cloudsql_user="chris.reyes";
-	local ssl_home="$HOME/.ssl/gearlaunch";
-
-	local host=;
-	local ssl_dir=;
-	local use_local=false;
-	local database=;
-
-	local environment="$1";
-
-	local filename="$2";
-
-	case $environment in
-		sand|sandbox)
-			local ssl_dir="$ssl_home/gearlaunch-hub-sandbox";
-			local host="35.188.207.94";
-			local database="email_marketing_sandbox";
-			;;
-		dev|local)
-			local use_local=true;
-			;;
-		prod)
-			local ssl_dir="$ssl_home/gearlaunch-hub";
-			local host="35.188.39.236";
-			local database="email_marketing_production";
-			;;
-		*)
-			echo "Unsupported environment! $environment";
-			return 1;
-			;;
-	esac
-
-	if $use_local; then
-		mysql email_marketing_dev < $filename;
-		return 0;
-	fi
-
-	mysql --user=$cloudsql_user --password --host=$host --ssl-ca=$ssl_dir/server-ca.pem --ssl-cert=$ssl_dir/client-cert.pem --ssl-key=$ssl_dir/client-key.pem $database < $filename;
-	return 0;
-}
-
-# Usage
 # glcloud {dump|load|sql} {sandbox|dev|prod} {filename} {table-to-dump} [table-to-dump ...]
 function glcloud {
 	local cloudsql_user="chris.reyes";
@@ -270,6 +226,10 @@ function glcloud {
 
 	eval $cmd;
 	return 0;
+}
+
+function reset-local-datastore {
+	rm /var/tmp/local_db.bin /var/tmp/blobs;
 }
 
 function base64urlencode {
