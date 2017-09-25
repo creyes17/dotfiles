@@ -15,28 +15,6 @@ export PATH="$PATH:$HOME/bin/google-cloud-sdk/bin:$GLHOME/hub-war/node_modules/.
 
 # Useful functions
 
-# Get Pivotal Ticket ID
-# Given the branch, finds the pivotal ticket ID
-function get_pivotal_id {
-	local branch=$(get_git_branch);
-
-	if [[ -z $branch ]]; then
-		echo "Could not obtain a git branch" >&2;
-		return;
-	fi
-
-	# Find a segment in the git branch that is composed entirely of numbers
-	local id=$(echo $branch | sed -nEe 's/(.*-)?([[:digit:]]+)(-.*)?$/\2/p');
-
-	if [[ -z $id ]]; then
-		echo "Git branch doesn't contain a pivotal id" >&2;
-		return;
-	fi
-
-	echo $id;
-	return;
-}
-
 # Get JIRA Ticket ID
 # Given the branch, finds the jira ticket ID
 function get_jira_id {
@@ -234,16 +212,6 @@ function reset-local-datastore {
 
 function base64urlencode {
 	printf %s "$1" | base64 | perl -pe "chomp" | jq -s -R -r @uri;
-}
-
-# Usage: unsubscribe_link sandbox.travelersbrunch.com 1234 MyCoolUnsubscribeCode
-# output: sandbox.travelersbrunch.com/_unsubscribe#?i=MTIzNA%3D%3D&c=TXlDb29sVW5zdWJzY3JpYmVDb2Rl
-function unsubscribe_link {
-	local store_domain="$1";
-	local customer_id="$2";
-	local unsubscribe_code="$3";
-
-	printf "%s/_unsubscribe#?i=%s&c=%s" $store_domain $(base64urlencode $customer_id) $(base64urlencode $unsubscribe_code);
 }
 
 function create-branch {

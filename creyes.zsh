@@ -38,40 +38,6 @@ function () {
 	export WINEPREFIX="$HOME/.wine";
 
 	### Useful Functions
-	
-	# Recursive Grep
-	# Recursively looks through the current (or specified) directory for the given search term
-	function rgrep {
-		if [[ $# -eq 0 ]]; then
-			echo "Usage: rgrep [options] [search query]";
-			echo "Valid options:";
-			echo "    -d    Directory. Specify a directory other than the current directory in which to look";
-		fi
-
-		local backupoptind=$OPTIND;
-
-		local dir=".";
-
-		local extra_opts="";
-
-		while getopts "id:" opt; do
-			case $opt in
-				d)
-					local dir=$OPTARG;
-					;;
-				i)
-					local extra_opts="$extra_opts -i";
-					;;
-			esac
-		done
-
-		# Move past the last option we examined
-		shift $(expr $OPTIND - 1);
-
-		eval grep -r "$extra_opts" "$*" $dir;
-
-		export OPTIND=$backupoptind;
-	}
 
 	# View a small window of a file
 	# Probably needs a better name
