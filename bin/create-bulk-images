@@ -1,5 +1,9 @@
 #!/bin/zsh
 
+# Requires the imagemagick `convert` tool
+# brew install imagemagick
+# which convert
+
 backup_opt_ind=$OPTIND;
 
 font="Webdings";
