@@ -186,7 +186,7 @@ function glcloud {
 			local filename="$1";
 			shift;
 			local tables="$*";
-			local cmd="mysqldump $args $database $tables > $filename";
+			local cmd="mysqldump --set-gtid-purged=OFF $args $database $tables > $filename";
 			;;
 		load)
 			local filename="$1";
@@ -247,6 +247,24 @@ USAGE
 	echo >&2;
 	echo $usage >&2;
 	return 2;
+}
+
+# Cleans out and resets all the built files in the hub project
+clean-hub() {
+    local oldpwd="$OLDPWD";
+    local dir=$(pwd);
+
+    cd $GLHOME;
+    mvn clean install -pl '!hub-war';
+
+    cd hub-war;
+    mvn clean;
+    npm install --force;
+    mvn package -DskipTests;
+
+    # This resets "cd -" so that it works as expected
+    cd $oldpwd;
+    cd $dir;
 }
 
 # Useful aliases
