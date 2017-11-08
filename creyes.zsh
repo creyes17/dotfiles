@@ -173,13 +173,15 @@ USAGE
 	alias cdjs="cd $HOME/node";
 	alias cdperl="cd $HOME/perl";
 	alias f="fg";
+	alias gd="git diff -w";
+	alias gitup="git push --set-upstream origin \$(get_git_branch)";
+	alias gitpu="echo 'Did you mean git push?'";
 	alias gobuildandtest="go build; go install; go test";
 	alias j="jobs";
+	alias untar="tar -zxvf ";
 	alias vimbp="vim $zshcustom/creyes.zsh";
 	alias vimbrc="vim $zshcustom/creyes.zsh";
 	alias vimvrc="vim $HOME/.vimrc";
 	alias whatismyip="dig +short myip.opendns.com @resolver1.opendns.com";
-	alias untar="tar -zxvf ";
-	alias gitup="git push --set-upstream origin \$(get_git_branch)";
-	alias gd="git diff -w";
+	alias minivim="vim -u NONE";
 }

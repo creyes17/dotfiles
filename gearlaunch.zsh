@@ -66,7 +66,7 @@ function glpostgres {
 		local pgpassfile=$PGPASSFILE;
 	fi
 
-	local yamldir="$GLHOME/hub-war/src/main/resources";
+	local yamldir="$GLHOME/hub-war/src/main/resources/conf";
 
 	local dev="application-dev.yml";
 	local sandbox="application-sandbox.yml";
@@ -206,8 +206,29 @@ function glcloud {
 	return 0;
 }
 
-function reset-local-datastore {
+reset-local-datastore() {
 	rm /var/tmp/local_db.bin /var/tmp/blobs;
+}
+
+reset-local-postgres() {
+	(
+		cd $GLHOME/hub-war;
+		mvn flyway:clean flyway:migrate;
+	)
+}
+
+reset-local-mysql() {
+	(
+		cd $GLHOME/email-marketing;
+		mvn flyway:clean flyway:migrate;
+	)
+}
+
+reset-local-dev-environment() {
+	reset-local-datastore;
+	reset-local-postgres;
+	reset-local-mysql;
+	clean-hub;
 }
 
 function base64urlencode {
@@ -251,20 +272,16 @@ USAGE
 
 # Cleans out and resets all the built files in the hub project
 clean-hub() {
-    local oldpwd="$OLDPWD";
-    local dir=$(pwd);
+	# Run in a subshell so we don't affect the current directory stack
+	(
+		cd $GLHOME;
+		mvn clean install -pl '!hub-war';
 
-    cd $GLHOME;
-    mvn clean install -pl '!hub-war';
-
-    cd hub-war;
-    mvn clean;
-    npm install --force;
-    mvn package -DskipTests;
-
-    # This resets "cd -" so that it works as expected
-    cd $oldpwd;
-    cd $dir;
+		cd hub-war;
+		mvn clean;
+		npm install --force;
+		mvn package -DskipTests;
+	)
 }
 
 # Useful aliases
