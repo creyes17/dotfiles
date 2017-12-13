@@ -278,9 +278,7 @@ clean-hub() {
 		mvn clean install -pl '!hub-war';
 
 		cd hub-war;
-		mvn clean;
-		npm install --force;
-		mvn package -DskipTests;
+		mvn clean package -DskipTests;
 	)
 }
 
