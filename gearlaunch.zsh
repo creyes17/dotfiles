@@ -276,8 +276,14 @@ clean-hub() {
 	(
 		cd $GLHOME;
 		mvn clean install -pl '!hub-war';
-
 		cd hub-war;
+
+		# Sometimes the node_modules directory remains, even though it's been cleaned out.
+		# Remove it so that the package command will re-populate it
+		if [ "$(ls node_modules | wc -l)" -eq 0 ]; then
+			rm -r node_modules;
+		fi
+
 		mvn clean package -DskipTests;
 	)
 }
