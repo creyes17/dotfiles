@@ -161,6 +161,27 @@ USAGE
 		git rev-parse --abbrev-ref HEAD;
 	}
 
+
+	# Sets up default python version
+	use_python () {
+		local version=$1;
+		local venv_dir;
+
+		if [ "$version" -eq 2 ]; then
+			venv_dir="$HOME/.venv/py2";
+		else 
+			if [ "$version" -eq 3 ]; then
+				venv_dir="$HOME/.venv/py3";
+			else
+				echo "The only supported python versions are 2 and 3 at this time." >&2;
+				echo 'Set up more with `virtualenv --python=[executable]` in the dotfiles/venv directory and update this function' >&2;
+				return 1;
+			fi
+		fi
+
+		source $venv_dir/bin/activate;
+	}
+
 	### Aliases
 
 	local zshcustom="$HOME/.oh-my-zsh/custom";
