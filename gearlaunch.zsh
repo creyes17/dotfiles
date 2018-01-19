@@ -76,6 +76,8 @@ function glpostgres {
 
 	case $1 in
 		sand|sandbox)
+			echo "This no longer works, sorry." >&2;
+			return 2;
 			local require_auth=false;
 			local ymlfile=$sandbox
 			;;
@@ -88,6 +90,8 @@ function glpostgres {
 			return 0;
 			;;
 		*)
+			echo "This no longer works, sorry." >&2;
+			return 2;
 			local ymlfile="application-$1.yml";
 			if [ ! -e "$yamldir/$ymlfile" ]; then
 				echo "Unsupported environment! $1";
@@ -156,18 +160,24 @@ function glcloud {
 
 	case $environment in
 		sand|sandbox)
-			local ssl_dir="$ssl_home/gearlaunch-hub-sandbox";
-			local host="35.188.207.94";
-			local database="email_marketing_sandbox";
+			ssl_dir="$ssl_home/gearlaunch-hub-sandbox";
+			host="35.188.207.94";
+			database="email_marketing";
 			;;
 		dev|local)
-			local use_local=true;
-			local database="email_marketing_dev";
+			use_local=true;
+			database="email_marketing_dev";
 			;;
 		prod)
-			local ssl_dir="$ssl_home/gearlaunch-hub";
-			local host="35.188.39.236";
-			local database="email_marketing_production";
+			ssl_dir="$ssl_home/gearlaunch-hub";
+			host="35.188.39.236";
+			database="email_marketing_production";
+			;;
+		uat|uat02)
+			ssl_dir="$ssl_home/gearlaunch-uat-02";
+			host="35.225.61.91";
+			database="email_marketing";
+			cloudsql_user="chris";
 			;;
 		*)
 			echo "Unsupported environment! $environment";
@@ -176,7 +186,7 @@ function glcloud {
 	esac
 
 	if ! $use_local; then
-		local args="--user=$cloudsql_user --password --host=$host --ssl-ca=$ssl_dir/server-ca.pem --ssl-cert=$ssl_dir/client-cert.pem --ssl-key=$ssl_dir/client-key.pem";
+		args="--user=$cloudsql_user --password --host=$host --ssl-ca=$ssl_dir/server-ca.pem --ssl-cert=$ssl_dir/client-cert.pem --ssl-key=$ssl_dir/client-key.pem";
 	fi
 
 	local cmd=;
@@ -186,14 +196,14 @@ function glcloud {
 			local filename="$1";
 			shift;
 			local tables="$*";
-			local cmd="mysqldump --set-gtid-purged=OFF $args $database $tables > $filename";
+			cmd="mysqldump --set-gtid-purged=OFF $args $database $tables > $filename";
 			;;
 		load)
 			local filename="$1";
-			local cmd="mysql $args $database < $filename";
+			cmd="mysql $args $database < $filename";
 			;;
 		sql)
-			local cmd="mysql $args $database";
+			cmd="mysql $args $database";
 			;;
 		*)
 			echo "Unrecognized command: [$mode]" >&2;
@@ -291,6 +301,7 @@ clean-hub() {
 # Useful aliases
 alias .bgl="source $HOME/.oh-my-zsh/custom/gearlaunch.zsh";
 alias cb="create-branch";
+alias ginit="gcloud config configurations activate";
 alias gltun="autossh -M $GLPORTSECURE -R ${GLPORT}:localhost:8080 -nNT ${GLUSERNAME}@${GLHOST}";
 alias gmd="git checkout develop; git pull; git checkout -; git merge develop;";
 alias mole="ssh ${GLUSERNAME}@${GLHOST}";
