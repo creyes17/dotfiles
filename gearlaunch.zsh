@@ -161,7 +161,7 @@ function glcloud {
 	case $environment in
 		sand|sandbox)
 			ssl_dir="$ssl_home/gearlaunch-hub-sandbox";
-			host="35.188.207.94";
+			host=$GL_SANDBOX_CLOUDSQL;
 			database="email_marketing";
 			;;
 		dev|local)
@@ -170,12 +170,12 @@ function glcloud {
 			;;
 		prod)
 			ssl_dir="$ssl_home/gearlaunch-hub";
-			host="35.188.39.236";
+			host=$GL_PROD_CLOUDSQL;
 			database="email_marketing_production";
 			;;
 		uat|uat02)
 			ssl_dir="$ssl_home/gearlaunch-uat-02";
-			host="35.225.61.91";
+			host=$GL_UAT_CLOUDSQL;
 			database="email_marketing";
 			cloudsql_user="chris";
 			;;
