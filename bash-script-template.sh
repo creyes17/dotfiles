@@ -43,6 +43,7 @@ readonly tmp_filename=$(mktemp -t "$(basename $0)-$$-user-properties-bak.XXXXXXX
 #=============================================================================
 cleanup() {
 	rm $tmp_filename;
+	return 0;
 }
 trap cleanup EXIT;
 

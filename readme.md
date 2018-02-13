@@ -1,5 +1,7 @@
 This is my cloud backup of my personal configuration files. Use at your own risk.
 
+To install ohmyzsh, go to http://ohmyz.sh/ and follow the instructions.
+
 To set up the global gitignore file, run the following command from the root directory of this repo
 
     git config --global core.excludesfile ./.gitignore_global
@@ -17,3 +19,5 @@ Make sure to separately download the following vim bundles. The sym links expect
     pangloss/vim-javascript
 
 Make sure to install YouCompleteMe using the instructions here: https://github.com/Valloric/YouCompleteMe#full-installation-guide
+
+There is an install.sh script that is a work in progress. Use at your own risk, but it should hopefully get your environment setup on a new machine.
