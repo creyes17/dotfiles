@@ -179,6 +179,11 @@ function glcloud {
 			database="email_marketing";
 			cloudsql_user="chris";
 			;;
+		qa)
+			ssl_dir="$ssl_home/gearlaunch-qa1-02";
+			host=$GL_QA_CLOUDSQL;
+			database="email_marketing";
+			;;
 		*)
 			echo "Unsupported environment! $environment";
 			return 1;
