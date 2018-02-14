@@ -1,0 +1,27 @@
+[submodule "valloric/YouCompleteMe"]
+	path = third_party/valloric/YouCompleteMe
+	url = https://github.com/valloric/YouCompleteMe.git
+[submodule "gberenfield/cljfold.vim"]
+	path = third_party/gberenfield/cljfold.vim
+	url = https://github.com/gberenfield/cljfold.vim.git
+[submodule "Shutnik/jshint2.vim"]
+	path = third_party/Shutnik/jshint2.vim
+	url = https://github.com/Shutnik/jshint2.vim.git
+[submodule "chumakd/perlomni.vim"]
+	path = third_party/chumakd/perlomni.vim
+	url = https://github.com/chumakd/perlomni.vim.git
+[submodule "kien/rainbow_parentheses.vim"]
+	path = third_party/kien/rainbow_parentheses.vim
+	url = https://github.com/kien/rainbow_parentheses.vim.git
+[submodule "scrooloose/syntastic"]
+	path = third_party/scrooloose/syntastic
+	url = https://github.com/scrooloose/syntastic.git
+[submodule "guns/vim-clojure-static"]
+	path = third_party/guns/vim-clojure-static
+	url = https://github.com/guns/vim-clojure-static.git
+[submodule "tpope/vim-fireplace"]
+	path = third_party/tpope/vim-fireplace
+	url = https://github.com/tpope/vim-fireplace.git
+[submodule "pangloss/vim-javascript"]
+	path = third_party/pangloss/vim-javascript
+	url = https://github.com/pangloss/vim-javascript.git

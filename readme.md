@@ -24,3 +24,7 @@ Make sure to separately download the following vim bundles. The sym links expect
 Make sure to install YouCompleteMe using the instructions here: https://github.com/Valloric/YouCompleteMe#full-installation-guide
 
 There is an install.sh script that is a work in progress. Use at your own risk, but it should hopefully get your environment setup on a new machine.
+
+Known issues with install.sh:
+
+* Lein profiles installs with my name and email. You should update profiles.clj with your own name and email.

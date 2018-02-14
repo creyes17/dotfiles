@@ -1,1 +1,1 @@
-../../../../gberenfield/cljfold.vim
+../../third_party/gberenfield/cljfold.vim

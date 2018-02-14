@@ -1,1 +1,1 @@
-../../../../kien/rainbow_parentheses.vim
+../../third_party/kien/rainbow_parentheses.vim
