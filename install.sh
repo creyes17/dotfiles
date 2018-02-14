@@ -15,6 +15,7 @@ usage() {
 
 		usage: $0
 		    -h                              Display this help text and return
+		    -z                              Install oh-my-zsh. This is not idempotent as of this version, so be careful!
 
 		Relevant Environment Variables
 		    NONE
@@ -203,11 +204,16 @@ has_caffeine_setup() {
 }
 
 main() {
-	while getopts "h" opt; do
+	local install_zsh=false;
+
+	while getopts "hz" opt; do
 		case $opt in
 			h)
 				usage;
 				return 0;
+				;;
+			z)
+				install_zsh=true;
 				;;
 			*)
 				echo "Invalid argument!" >&2
@@ -216,7 +222,9 @@ main() {
 		esac;
 	done;
 
-	#setup_zsh; #TODO: Make zsh setup idempotent
+	#TODO: Make zsh setup idempotent
+	$install_zsh && setup_zsh;
+
 	setup_vim;
 	setup_caffeine;
 
