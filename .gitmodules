@@ -25,3 +25,6 @@
 [submodule "pangloss/vim-javascript"]
 	path = third_party/pangloss/vim-javascript
 	url = https://github.com/pangloss/vim-javascript.git
+[submodule "kward/shunit2"]
+	path = third_party/kward/shunit2
+	url = https://github.com/kward/shunit2.git
