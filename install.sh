@@ -119,16 +119,24 @@ has_zsh_setup() {
 # PARAMETERS: None.
 # ENVIRONMENT VARIABLES: None.
 # SIDE EFFECTS: Installs vim settings to ~/.vim and ~/.vimrc, as well as installing used plugins
-# DEPENDENCIES: git
+# DEPENDENCIES: git, python
 # EXIT CODES: None.
 #=============================================================================
 setup_vim() {
-	local plugins=("valloric/YouCompleteMe" "gberenfield/cljfold.vim" "Shutnik/jshint2.vim" "chumakd/perlomni.vim" "kien/rainbow_parentheses.vim" "scrooloose/syntastic" "guns/vim-clojure-static" "tpope/vim-fireplace" "pangloss/vim-javascript"); 
+	local ycm="valloric/YouCompleteMe";
+	local plugins=("$ycm" "gberenfield/cljfold.vim" "Shutnik/jshint2.vim" "chumakd/perlomni.vim" "kien/rainbow_parentheses.vim" "scrooloose/syntastic" "guns/vim-clojure-static" "tpope/vim-fireplace" "pangloss/vim-javascript"); 
 
+	# TODO: Use git submodules instead
 	for plugin in "${plugins[@]}"; do
 		local destination="$script_dir_abs/../../$plugin";
 		if [ ! -d "$destination" ]; then
 			git clone "https://github.com/${plugin}.git" "$destination";
+
+			if [ "$plugin" == "$ycm" ]; then
+				# Setup YouCompleteMe
+				git -C "$script_dir_abs/../../$ycm" submodule update --init --recursive;
+				python "$script_dir_abs/../../$ycm/install.py" --go-completer --js-completer --java-completer;
+			fi
 		fi
 	done
 
