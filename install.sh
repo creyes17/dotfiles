@@ -151,6 +151,57 @@ setup_vim() {
 	return 0;
 }
 
+#=== FUNCTION ================================================================
+# NAME: has_vim_setup
+# DESCRIPTION: Tests that vim was setup properly
+# PARAMETERS: None.
+# ENVIRONMENT VARIABLES: None.
+# SIDE EFFECTS: Echoes the return exit code to STDOUT
+# DEPENDENCIES: None.
+# EXIT CODES: $e_setup_failed if vim was not setup correctly.
+#=============================================================================
+has_vim_setup() {
+	# TODO: Add tests
+	return 0;
+}
+
+#=== FUNCTION ================================================================
+# NAME: setup_caffeine
+# DESCRIPTION: Sets up caffeine to prevent Mac from going to sleep
+# PARAMETERS: None.
+# ENVIRONMENT VARIABLES: None.
+# SIDE EFFECTS: Installs caffeine to ~/Applications
+# DEPENDENCIES: curl, unzip
+# EXIT CODES: None.
+#=============================================================================
+setup_caffeine() {
+	local applications="$HOME/Applications";
+	local caffeine="$applications/Caffeine.app";
+	if [ ! -d "$caffeine" ]; then
+		curl -fsSL http://download.lightheadsw.com/download.php\?software\=caffeine -o "$tmp_dir/caffeine.zip";
+		unzip "$tmp_dir/caffeine.zip" -d "$HOME/Applications";
+		open -a "$caffeine";
+	fi
+	return 0;
+}
+
+#=== FUNCTION ================================================================
+# NAME: has_caffeine_setup
+# DESCRIPTION: Checks that caffeine was installed
+# PARAMETERS: None.
+# ENVIRONMENT VARIABLES: None.
+# SIDE EFFECTS: Echoes the return exit code to STDOUT
+# DEPENDENCIES: None.
+# EXIT CODES: $e_setup_failed if caffeine was not installed correctly.
+#=============================================================================
+has_caffeine_setup() {
+	if [ ! -d "$caffeine" ]; then
+		echo $e_setup_failed;
+		return $e_setup_failed;
+	fi
+	return 0;
+}
+
 main() {
 	while getopts "h" opt; do
 		case $opt in
@@ -167,6 +218,7 @@ main() {
 
 	#setup_zsh; #TODO: Make zsh setup idempotent
 	setup_vim;
+	setup_caffeine;
 
 	return 0;
 }
