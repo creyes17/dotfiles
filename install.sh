@@ -111,6 +111,7 @@ has_zsh_setup() {
 
 	# TODO: Check that the appropriate files were linked from that custom directory
 
+	echo 0;
 	return 0;
 }
 
@@ -163,6 +164,7 @@ setup_vim() {
 #=============================================================================
 has_vim_setup() {
 	# TODO: Add tests
+	echo 0;
 	return 0;
 }
 
@@ -200,6 +202,70 @@ has_caffeine_setup() {
 		echo $e_setup_failed;
 		return $e_setup_failed;
 	fi
+	echo 0;
+	return 0;
+}
+
+#=== FUNCTION ================================================================
+# NAME: setup_git
+# DESCRIPTION: Sets up git with global gitignore
+# PARAMETERS: None.
+# ENVIRONMENT VARIABLES: None.
+# SIDE EFFECTS: Modifies git configuration
+# DEPENDENCIES: git
+# EXIT CODES: None.
+#=============================================================================
+setup_git() {
+	# Check if global config file is already set:
+	local no_config=0;
+	local excludesfile;
+	set +e;
+	excludesfile=$(git config --global core.excludesfile);
+	no_config=$?;
+	set -e;
+
+	if [ "$no_config" -ne 0 ]; then
+		# This means the config file didn't exist
+		git config --global core.excludesfile "$script_dir_abs/.gitignore_global";
+	fi
+
+	return 0;
+}
+
+#=== FUNCTION ================================================================
+# NAME: has_git_setup
+# DESCRIPTION: Checks that git was configured properly
+# PARAMETERS: None.
+# ENVIRONMENT VARIABLES: None.
+# SIDE EFFECTS: Echoes the return exit code to STDOUT
+# DEPENDENCIES: None.
+# EXIT CODES: $e_setup_failed if git was not configured correctly.
+#=============================================================================
+has_git_setup() {
+	local expected_excludesfile="$script_dir_abs/.gitignore_global";
+	local no_config=0;
+	local excludesfile;
+
+	set +e;
+	excludesfile=$(git config --global core.excludesfile);
+	no_config=$?;
+	set -e;
+
+	if [ "$no_config" -ne 0 ]; then
+		echo "Global ignore file for git not configured" >&2;
+		echo $e_setup_failed;
+		return $e_setup_failed;
+	fi
+
+	if [ "$excludesfile" != "$expected_excludesfile" ]; then
+		echo "Global ignore file for git does not match" >&2;
+		echo -e "\tActually [$excludesfile]" >&2;
+		echo -e "\tExpected [$expected_excludesfile]" >&2;
+		echo $e_setup_failed;
+		return $e_setup_failed;
+	fi
+
+	echo 0;
 	return 0;
 }
 
@@ -227,6 +293,7 @@ main() {
 
 	setup_vim;
 	setup_caffeine;
+	setup_git;
 
 	return 0;
 }
