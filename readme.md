@@ -25,3 +25,4 @@ There is an install.sh script that is a work in progress. Use at your own risk, 
 Known issues with install.sh:
 
 * Lein profiles installs with my name and email. You should update profiles.clj with your own name and email.
+* Relies on a number of script dependencies. Run with `install.sh -h` to see the usage statement and all of the dependencies
