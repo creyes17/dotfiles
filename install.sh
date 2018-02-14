@@ -30,6 +30,7 @@ usage() {
 		    node
 		    npm
 		    python
+		    readlink
 		    rustc
 		    tsserver
 		    unzip
@@ -297,6 +298,65 @@ setup_clojure() {
 		ln -s "$script_dir_abs/profiles.clj" "$lein_home";
 	fi
 
+	# TODO: Add tests
+	return 0;
+}
+
+#=== FUNCTION ================================================================
+# NAME: setup_bin
+# DESCRIPTION: Sets up bin directory
+# PARAMETERS: None.
+# ENVIRONMENT VARIABLES: None.
+# SIDE EFFECTS: Adds symlink for bin directory to home directory
+# DEPENDENCIES: readlink
+# EXIT CODES: None.
+#=============================================================================
+setup_bin() {
+	local bin_home="$HOME/bin";
+	local bin_origin="$script_dir_abs/bin";
+	local should_link=false;
+	local save_existing_files=false;
+
+	if [ ! -d "$bin_home" ]; then
+		should_link=true;
+	else
+		# Bin directory already exists. Determine if it's already a symlink
+		if [ -L "$bin_home" ]; then
+			# Relative to the containing directory of $bin_home
+			local link_target_rel=$(readlink "$bin_home");
+			local link_target_abs;
+
+			if [[ "$link_target_rel" =~ "^/" ]]; then
+				link_target_abs="$link_target_rel";
+			else
+				local complex_abs_path="$(dirname $bin_home)/$link_target_rel";
+				link_target_abs=$(cd $complex_abs_path >/dev/null && pwd);
+			fi
+
+			# It is a symlink. Only setup bin directory if the link isn't already pointing to our bin directory
+			if [ "$link_target_abs" != "$bin_origin" ]; then
+				save_existing_files=true;
+				should_link=true;
+			fi
+		else
+			# It is not a symlink. Copy existing bin files so they don't get lost
+			save_existing_files=true;
+			should_link=true;
+		fi
+	fi
+
+	if $save_existing_files; then
+		local has_files=$(ls -A $bin_home);
+		if [ -n "$has_files" ]; then
+			cp $bin_home/* $bin_origin;
+		fi
+	fi
+
+	if $should_link; then
+		ln -s $bin_origin $bin_home;
+	fi
+
+	# TODO: Add tests
 	return 0;
 }
 
@@ -332,6 +392,7 @@ main() {
 	setup_caffeine;
 	setup_git;
 	setup_clojure;
+	setup_bin;
 
 	return 0;
 }
