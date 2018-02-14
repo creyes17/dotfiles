@@ -364,17 +364,17 @@ main() {
 	local install_zsh=false;
 	local install_vim=false;
 
-	while getopts "hz" opt; do
+	while getopts "hVz" opt; do
 		case $opt in
 			h)
 				usage;
 				return 0;
 				;;
-			z)
-				install_zsh=true;
-				;;
 			V)
 				install_vim=true;
+				;;
+			z)
+				install_zsh=true;
 				;;
 			*)
 				echo "Invalid argument!" >&2
