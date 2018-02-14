@@ -16,12 +16,25 @@ usage() {
 		usage: $0
 		    -h                              Display this help text and return
 		    -z                              Install oh-my-zsh. This is not idempotent as of this version, so be careful!
+		    -V                              Setup Vim. This also sets up autocomplete with YouCompleteMe.
+		                                        While this is idempotent, it takes a long time to execute.
 
 		Relevant Environment Variables
 		    NONE
 
 		Dependencies
+		    cargo
 		    curl
+		    git
+		    go
+		    node
+		    npm
+		    python
+		    rustc
+		    tsserver
+		    unzip
+		    xbuild
+		    xcode-select
 
 		Side Effects
 		    Installs multiple tools and preferences
@@ -86,7 +99,7 @@ setup_zsh() {
 # PARAMETERS: None.
 # ENVIRONMENT VARIABLES: None.
 # SIDE EFFECTS: Echoes the return exit code to STDOUT
-# DEPENDENCIES: finger
+# DEPENDENCIES: None.
 # EXIT CODES: $e_setup_failed if zsh was not installed correctly.
 #=============================================================================
 has_zsh_setup() {
@@ -121,26 +134,22 @@ has_zsh_setup() {
 # PARAMETERS: None.
 # ENVIRONMENT VARIABLES: None.
 # SIDE EFFECTS: Installs vim settings to ~/.vim and ~/.vimrc, as well as installing used plugins
-# DEPENDENCIES: git, python
+# DEPENDENCIES: git, python, xcode-select, xbuild, go, tsserver, node, npm, rustc, cargo
 # EXIT CODES: None.
 #=============================================================================
 setup_vim() {
-	local ycm="valloric/YouCompleteMe";
-	local plugins=("$ycm" "gberenfield/cljfold.vim" "Shutnik/jshint2.vim" "chumakd/perlomni.vim" "kien/rainbow_parentheses.vim" "scrooloose/syntastic" "guns/vim-clojure-static" "tpope/vim-fireplace" "pangloss/vim-javascript"); 
+	# Get all dependencies. This git command is idempotent
+	git -C "$script_dir_abs" submodule update --init --recursive;
 
-	# TODO: Use git submodules instead
-	for plugin in "${plugins[@]}"; do
-		local destination="$script_dir_abs/../../$plugin";
-		if [ ! -d "$destination" ]; then
-			git clone "https://github.com/${plugin}.git" "$destination";
+	# Setup YouCompleteMe
+	
+	# Requires xcode tools. This returns an error if already installed, so just ignore that error
+	set +e;
+	xcode-select --install;
+	set -e;
 
-			if [ "$plugin" == "$ycm" ]; then
-				# Setup YouCompleteMe
-				git -C "$script_dir_abs/../../$ycm" submodule update --init --recursive;
-				python "$script_dir_abs/../../$ycm/install.py" --go-completer --js-completer --java-completer;
-			fi
-		fi
-	done
+	# TODO: Make this idempotent
+	python "$script_dir_abs/third_party/valloric/YouCompleteMe/install.py" --all;
 
 	if [ ! -d "$HOME/.vim" ]; then
 		ln -s "$script_dir_abs/.vim" "$HOME";
@@ -269,8 +278,31 @@ has_git_setup() {
 	return 0;
 }
 
+#=== FUNCTION ================================================================
+# NAME: setup_clojure
+# DESCRIPTION: Sets up clojure with leiningen defaults
+# PARAMETERS: None.
+# ENVIRONMENT VARIABLES: None.
+# SIDE EFFECTS: Installs clojure settings and various plugins
+# DEPENDENCIES: None.
+# EXIT CODES: None.
+#=============================================================================
+setup_clojure() {
+	local lein_home="$HOME/.lein";
+	if [ ! -d "$lein_home" ]; then
+		mkdir "$lein_home";
+	fi
+
+	if [ ! -e "$lein_home/profiles.clj" ]; then
+		ln -s "$script_dir_abs/profiles.clj" "$lein_home";
+	fi
+
+	return 0;
+}
+
 main() {
 	local install_zsh=false;
+	local install_vim=false;
 
 	while getopts "hz" opt; do
 		case $opt in
@@ -280,6 +312,9 @@ main() {
 				;;
 			z)
 				install_zsh=true;
+				;;
+			V)
+				install_vim=true;
 				;;
 			*)
 				echo "Invalid argument!" >&2
@@ -291,9 +326,12 @@ main() {
 	#TODO: Make zsh setup idempotent
 	$install_zsh && setup_zsh;
 
-	setup_vim;
+	#TODO: Make vim setup idempotent
+	$install_vim && setup_vim;
+
 	setup_caffeine;
 	setup_git;
+	setup_clojure;
 
 	return 0;
 }

@@ -1,1 +1,1 @@
-../../../../Shutnik/jshint2.vim
+../../third_party/Shutnik/jshint2.vim

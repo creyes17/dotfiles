@@ -6,10 +6,7 @@ To set up the global gitignore file, run the following command from the root dir
 
     git config --global core.excludesfile ./.gitignore_global
 
-I reference my own file system(s) here, so you'll likely need to make some edits if you want it to work for you as well.
-
-Make sure to separately download the following vim bundles. The sym links expect these to be located at $THIS-DIRECTORY/../../
-
+Relies on the following other git repositories (included as submodules)
 	
     valloric/YouCompleteMe
     gberenfield/cljfold.vim
@@ -21,6 +18,10 @@ Make sure to separately download the following vim bundles. The sym links expect
     tpope/vim-fireplace
     pangloss/vim-javascript
 
-Make sure to install YouCompleteMe using the instructions here: https://github.com/Valloric/YouCompleteMe#full-installation-guide
+Make sure to install YouCompleteMe using the instructions here: https://github.com/Valloric/YouCompleteMe#full-installation-guide. I recommend using Valloric's install.py script.
 
 There is an install.sh script that is a work in progress. Use at your own risk, but it should hopefully get your environment setup on a new machine.
+
+Known issues with install.sh:
+
+* Lein profiles installs with my name and email. You should update profiles.clj with your own name and email.

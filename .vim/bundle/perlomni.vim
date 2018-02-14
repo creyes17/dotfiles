@@ -1,1 +1,1 @@
-../../../../chumakd/perlomni.vim
+../../third_party/chumakd/perlomni.vim
