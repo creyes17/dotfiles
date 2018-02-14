@@ -33,6 +33,8 @@ USAGE
 }
 
 readonly tmp_dir=$(mktemp -d -t "$(basename $0)-$$-install.XXXXXXXX") || exit $e_no_tmp_file;
+readonly script_dir_rel=$(dirname $0);
+readonly script_dir_abs=$(cd $script_dir_rel >/dev/null && pwd);
 
 #=== FUNCTION ================================================================
 # NAME: cleanup
@@ -43,7 +45,9 @@ readonly tmp_dir=$(mktemp -d -t "$(basename $0)-$$-install.XXXXXXXX") || exit $e
 # EXIT CODES: None.
 #=============================================================================
 cleanup() {
-	rm $tmp_dir;
+	if [ "$tmp_dir" != "/" ]; then
+		rm -rf $tmp_dir;
+	fi
 	return 0;
 }
 trap cleanup EXIT;
@@ -70,7 +74,7 @@ setup_zsh() {
 	source $zsh_install;
 
 	# Install my specific settings to the custom directory
-	ln -s "$(dirname $0)/creyes.zsh" "$HOME/.oh-my-zsh/custom"
+	ln -s "$(dirname $0)/creyes.zsh" "$HOME/.oh-my-zsh/custom";
 
 	return 0;
 }
@@ -88,6 +92,10 @@ has_zsh_setup() {
 	local has_issue;
 
 	# TODO: Check that the user's default shell was changed to zsh
+	if [ "$SHELL" != "$(which zsh)" ]; then
+		echo $e_setup_failed;
+		return $e_setup_failed;
+	fi
 
 	# Check that the custom directory was set up
 	set +e;
@@ -95,12 +103,42 @@ has_zsh_setup() {
 	has_issue=$?;
 	set -e;
 
-	if [ "$custom_dir" -ne 0 ];
-		echo $custom_dir;
-		return $custom_dir;
+	if [ "$custom_dir" -ne 0 ]; then
+		echo $e_setup_failed;
+		return $e_setup_failed;
 	fi
 
 	# TODO: Check that the appropriate files were linked from that custom directory
+
+	return 0;
+}
+
+#=== FUNCTION ================================================================
+# NAME: setup_vim
+# DESCRIPTION: Sets up vim
+# PARAMETERS: None.
+# ENVIRONMENT VARIABLES: None.
+# SIDE EFFECTS: Installs vim settings to ~/.vim and ~/.vimrc, as well as installing used plugins
+# DEPENDENCIES: git
+# EXIT CODES: None.
+#=============================================================================
+setup_vim() {
+	local plugins=("valloric/YouCompleteMe" "gberenfield/cljfold.vim" "Shutnik/jshint2.vim" "chumakd/perlomni.vim" "kien/rainbow_parentheses.vim" "scrooloose/syntastic" "guns/vim-clojure-static" "tpope/vim-fireplace" "pangloss/vim-javascript"); 
+
+	for plugin in "${plugins[@]}"; do
+		local destination="$script_dir_abs/../../$plugin";
+		if [ ! -d "$destination" ]; then
+			git clone "https://github.com/${plugin}.git" "$destination";
+		fi
+	done
+
+	if [ ! -d "$HOME/.vim" ]; then
+		ln -s "$script_dir_abs/.vim" "$HOME";
+	fi
+
+	if [ ! -e "$HOME/.vimrc" ]; then
+		ln -s "$script_dir_abs/.vimrc" "$HOME";
+	fi
 
 	return 0;
 }
@@ -119,7 +157,8 @@ main() {
 		esac;
 	done;
 
-	setup_zsh;
+	#setup_zsh; #TODO: Make zsh setup idempotent
+	setup_vim;
 
 	return 0;
 }

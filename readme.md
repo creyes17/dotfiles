@@ -10,11 +10,14 @@ I reference my own file system(s) here, so you'll likely need to make some edits
 
 Make sure to separately download the following vim bundles. The sym links expect these to be located at $THIS-DIRECTORY/../../
 
+	
     valloric/YouCompleteMe
-    Shutnik/jshint2
-    chumakd/perlomni
-	kien/rainbow_parentheses
+    gberenfield/cljfold.vim
+    Shutnik/jshint2.vim
+    chumakd/perlomni.vim
+    kien/rainbow_parentheses.vim
     scrooloose/syntastic
+    guns/vim-clojure-static
     tpope/vim-fireplace
     pangloss/vim-javascript
 
