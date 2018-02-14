@@ -23,7 +23,18 @@ usage() {
 		    NONE
 
 		Dependencies
+		    cargo
 		    curl
+		    git
+		    go
+		    node
+		    npm
+		    python
+		    rustc
+		    tsserver
+		    unzip
+		    xbuild
+		    xcode-select
 
 		Side Effects
 		    Installs multiple tools and preferences
@@ -88,7 +99,7 @@ setup_zsh() {
 # PARAMETERS: None.
 # ENVIRONMENT VARIABLES: None.
 # SIDE EFFECTS: Echoes the return exit code to STDOUT
-# DEPENDENCIES: finger
+# DEPENDENCIES: None.
 # EXIT CODES: $e_setup_failed if zsh was not installed correctly.
 #=============================================================================
 has_zsh_setup() {
