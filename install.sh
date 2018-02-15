@@ -360,6 +360,50 @@ setup_bin() {
 	return 0;
 }
 
+#=== FUNCTION ================================================================
+# NAME: setup_home_end_keys
+# DESCRIPTION: Causes home and end keys to move to the start and end of the line instead of the page
+# PARAMETERS: None.
+# ENVIRONMENT VARIABLES: None.
+# SIDE EFFECTS: Adds or updates a configuration file for the logged in user
+# DEPENDENCIES: None.
+# EXIT CODES: None.
+#=============================================================================
+setup_home_end_keys() {
+	local key_binding_dir="$HOME/Library/KeyBindings";
+	local default_binding="$key_binding_dir/DefaultKeyBinding.dict";
+
+	local safe_to_overwrite=false;
+
+	if [ ! -d "$key_binding_dir" ]; then
+		mkdir -p "$key_binding_dir";
+		safe_to_overwrite=true;
+	fi
+
+	if [ ! -e "$default_binding" ]; then
+		safe_to_overwrite=true;
+	fi
+
+	# TODO: Figure out how to modify existing file
+	if $safe_to_overwrite; then
+		cat <<-'BINDINGS' >$default_binding
+		{
+		    "\UF729"  = moveToBeginningOfParagraph:; // home
+		    "\UF72B"  = moveToEndOfParagraph:; // end
+		    "$\UF729" = moveToBeginningOfParagraphAndModifySelection:; // shift-home
+		    "$\UF72B" = moveToEndOfParagraphAndModifySelection:; // shift-end
+		    "^\UF729" = moveToBeginningOfDocument:; // ctrl-home
+		    "^\UF72B" = moveToEndOfDocument:; // ctrl-end
+		    "^$\UF729" = moveToBeginningOfDocumentAndModifySelection:; // ctrl-shift-home
+		    "^$\UF72B" = moveToEndOfDocumentAndModifySelection:; // ctrl-shift-end
+		}
+BINDINGS
+	fi
+
+	# TODO: Add tests
+	return 0;
+}
+
 main() {
 	local install_zsh=false;
 	local install_vim=false;
@@ -393,6 +437,7 @@ main() {
 	setup_git;
 	setup_clojure;
 	setup_bin;
+	setup_home_end_keys;
 
 	return 0;
 }
