@@ -152,12 +152,21 @@ setup_vim() {
 	# TODO: Make this idempotent
 	python "$script_dir_abs/third_party/valloric/YouCompleteMe/install.py" --all;
 
+	# TODO: Loop through all the files that should be symlinked in the home directory
 	if [ ! -d "$HOME/.vim" ]; then
 		ln -s "$script_dir_abs/.vim" "$HOME";
 	fi
 
 	if [ ! -e "$HOME/.vimrc" ]; then
 		ln -s "$script_dir_abs/.vimrc" "$HOME";
+	fi
+
+	if [ ! -e "$HOME/.jshintrc"]; then
+		ln -s "$script_dir_abs/.jshintrc" "$HOME";
+	fi
+
+	if [ ! -e "$HOME/.tern-project"]; then
+		ln -s "$script_dir_abs/.tern-project" "$HOME";
 	fi
 
 	return 0;
