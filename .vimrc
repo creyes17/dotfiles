@@ -30,6 +30,8 @@ nnoremap U :redo<CR>
 
 vnoremap > > gv
 vnoremap < < gv
+vnoremap <silent> <Leader>e :call setline(line('.') , substitute(getline('.'), '^', '#', ''))<CR>
+vnoremap <silent> <Leader>E :call setline(line('.') , substitute(getline('.'), '^#', '', ''))<CR>
 
 nnoremap <Leader>p :set paste!<CR>
 nnoremap <Leader>sv :so $HOME/.vimrc<CR>
@@ -59,6 +61,9 @@ let g:syntastic_ignore_files = ['html$']
 "	Don't automatically insert/select anything automatically
 "set completeopt+=noinsert
 "set completeopt+=noselect
+" Specify the correct python executable to use
+let g:ycm_server_python_interpreter = '/usr/local/bin/python3'
+let g:ycm_python_binary_path = '/usr/local/bin/python3'
 
 "Clojure options
 au VimEnter * RainbowParenthesesToggle
