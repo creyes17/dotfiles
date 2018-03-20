@@ -29,6 +29,8 @@ function () {
 	export VIMHOME="$HOME/.vim";
 	export NVM_DIR="$HOME/.nvm";
 
+	export CHEAP_STASH_HOME="$HOME/tmp/cheap-stash";
+
 	export PATH="$HOME/bin:/Applications/LilyPond.app/Contents/Resources/bin:$ANDROID_HOME/platform-tools:$ANDROID_HOME/tools:$GOPATH/bin:$VIMHOME/bin:$PERLPATH/bin:$PATH";
 	export PATH="$NVM_DIR/versions/node/v7.10.0/bin/npm:$PATH";
 
@@ -161,6 +163,22 @@ USAGE
 		git rev-parse --abbrev-ref HEAD;
 	}
 
+	#=== FUNCTION ================================================================
+	# NAME: gmm
+	# DESCRIPTION: Git Merge Master. Pulls the latest from master and merges into the current git branch
+	# PARAMETERS: None.
+	# ENVIRONMENT VARIABLES: None.
+	# DEPENDENCIES: git
+	# SIDE EFFECTS: Pulls the latest from master. May result in merge conflicts
+	# EXIT CODES: see git
+	#=============================================================================
+	gmm() {
+		local old_branch=$(get_git_branch);
+		git checkout master;
+		git pull;
+		git checkout "$old_branch";
+		git merge master;
+	}
 
 	# Sets up default python version
 	use_python () {
@@ -187,6 +205,124 @@ USAGE
 		source $venv_dir/bin/activate;
 	}
 
+	#=== FUNCTION ================================================================
+	# NAME: cstash
+	# DESCRIPTION: Cheap Stash. Saves a copy
+	# PARAMETERS: command  Tells cstash what to do with the file. Defaults to save
+	#                      Options are list, save, apply, pop, delete, view, or edit
+	#             file     The file to work with
+	# DEPENDENCIES: None.
+	# ENVIRONMENT VARIABLES: CHEAP_STASH_HOME
+	# SIDE EFFECTS: Could apply
+	# EXIT CODES: 1 - invalid number of arguments
+	#             2 - invalid command
+	#             3 - file does not exist in local directory
+	#             4 - file does not exist in cheap stash
+	#             5 - encountered unknown error
+	#=============================================================================
+	cstash() {
+		if [ $# -gt 2 ]; then
+			echo "Invalid number of arguments" >&2;
+			echo $usage >&2;
+			return 1;
+		fi
+
+		local cmd=$1;
+		local file=$2;
+
+		local usage="Usage: cstash {list|save|apply|pop|remove|delete|view|edit} [file]";
+
+		local stash_dir;
+		local stash_file;
+		local stash_file_exists=false;
+
+		if [ -n "$file" ]; then
+			stash_dir="${CHEAP_STASH_HOME}$(pwd)/$(dirname $file)";
+			stash_file="$stash_dir/$(basename $file)";
+
+			if [ -e "$stash_file" ]; then
+				stash_file_exists=true;
+			fi
+		fi
+
+		case "$cmd" in
+			list)
+				if [ -n "$file" ]; then
+					ls -la $stash_file;
+				else
+					tree $CHEAP_STASH_HOME;
+				fi
+				;;
+			save)
+				if [ -e "$file" ]; then
+					mkdir -p $stash_dir;
+					cp $file $stash_dir;
+				else
+					echo "File [$file] not found!" >&2;
+					echo $usage >&2;
+					return 3;
+				fi
+				;;
+			apply)
+				if $stash_file_exists; then
+					cp $stash_file $file;
+				else
+					echo "File [$file] not found in stash" >&2;
+					echo $usage >&2;
+					return 4;
+				fi
+				;;
+			pop)
+				if $stash_file_exists; then
+					mv $stash_file $file;
+					local error_code=$?;
+					if [ $error_code -ne 0 ]; then
+						echo "Unable to copy stashed file [$stash_file] to file [$file] and remove from stash" >&2;
+						echo "Encountered error code: $error_code" >&2;
+						return 5;
+					fi
+				else
+					echo "File [$file] not found in stash" >&2;
+					echo $usage >&2;
+					return 4;
+				fi
+				;;
+			remove|delete)
+				if $stash_file_exists; then
+					rm $stash_file;
+				else
+					echo "File [$file] has already been removed from stash" >&2;
+					return 4;
+				fi
+				;;
+			view)
+				if $stash_file_exists; then
+					view $stash_file;
+				else
+					echo "File [$file] not found in stash" >&2;
+					echo $usage >&2;
+					return 4;
+				fi
+				;;
+			edit)
+				if $stash_file_exists; then
+					vim $stash_file;
+				else
+					echo "File [$file] not found in stash" >&2;
+					echo $usage >&2;
+					return 4;
+				fi
+				;;
+			*)
+				echo "Invalid command [$cmd]" >&2;
+				echo $usage >&2;
+				return 2;
+				;;
+		esac
+
+		return 0;
+	}
+
 	### Aliases
 
 	local zshcustom="$HOME/.oh-my-zsh/custom";
@@ -201,7 +337,7 @@ USAGE
 	alias f="fg";
 	alias gd="git diff -w";
 	alias gitup="git push --set-upstream origin \$(get_git_branch)";
-	alias gitpu="echo 'Did you mean git push?'";
+	alias gitpu="echo 'Did you mean git push or gitup?'";
 	alias gobuildandtest="go build; go install; go test";
 	alias j="jobs";
 	alias untar="tar -zxvf ";

@@ -38,6 +38,7 @@ readonly tmp_filename=$(mktemp -t "$(basename $0)-$$-user-properties-bak.XXXXXXX
 # DESCRIPTION: Deletes temporary files. Should be called when script exits
 # PARAMETERS: None.
 # ENVIRONMENT VARIABLES: None.
+# DEPENDENCIES: None.
 # SIDE EFFECTS: None.
 # EXIT CODES: None.
 #=============================================================================
