@@ -428,27 +428,18 @@ class supervisor_xmlrpc_handler(xmlrpc_handler):
         return traverse(self.rpcinterface, method, params)
 
 def traverse(ob, method, params):
-    dotted_parts = method.split('.')
-    # security (CVE-2017-11610, don't allow object traversal)
-    if len(dotted_parts) != 2:
-        raise RPCError(Faults.UNKNOWN_METHOD)
-    namespace, method = dotted_parts
-
-    # security (don't allow methods that start with an underscore to
-    # be called remotely)
-    if method.startswith('_'):
-        raise RPCError(Faults.UNKNOWN_METHOD)
-
-    rpcinterface = getattr(ob, namespace, None)
-    if rpcinterface is None:
-        raise RPCError(Faults.UNKNOWN_METHOD)
-
-    func = getattr(rpcinterface, method, None)
-    if not isinstance(func, types.MethodType):
-        raise RPCError(Faults.UNKNOWN_METHOD)
+    path = method.split('.')
+    for name in path:
+        if name.startswith('_'):
+            # security (don't allow things that start with an underscore to
+            # be called remotely)
+            raise RPCError(Faults.UNKNOWN_METHOD)
+        ob = getattr(ob, name, None)
+        if ob is None:
+            raise RPCError(Faults.UNKNOWN_METHOD)
 
     try:
-        return func(*params)
+        return ob(*params)
     except TypeError:
         raise RPCError(Faults.INCORRECT_PARAMETERS)
 

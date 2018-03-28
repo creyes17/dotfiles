@@ -1,4 +1,0 @@
-#!/Users/chris/github/creyes17/dotfiles/venv/work/bin/python2.7
-
-from whenchanged.whenchanged import main
-main()

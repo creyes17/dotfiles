@@ -55,6 +55,25 @@ let g:syntastic_enable_signs = 1
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
 
+" Toggle between python 2 and python 3 for Syntastic
+function Creyes17Py2()
+  let g:syntastic_python_flake8_exec = 'flake8-py2'
+  let g:syntastic_python_python_exec = 'python2.7'
+endfunction
+
+function Creyes17Py3()
+  let g:syntastic_python_flake8_exec = 'flake8-py3'
+  let g:syntastic_python_python_exec = 'python3'
+endfunction
+
+" Default to python 2
+call Creyes17Py2()
+
+" Allow changing between them
+nnoremap <Leader>p2 :call Creyes17Py2()<CR>
+nnoremap <Leader>p3 :call Creyes17Py3()<CR>
+
+
 let g:syntastic_mode_map = {
 	\ "mode": "active",
 	\ "active_filetypes": [],

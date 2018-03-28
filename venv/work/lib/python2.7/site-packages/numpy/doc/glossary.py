@@ -11,7 +11,7 @@ Glossary
        vertically downwards across rows (axis 0), and the second running
        horizontally across columns (axis 1).
 
-       Many operations can take place along one of these axes.  For example,
+       Many operation can take place along one of these axes.  For example,
        we can sum each row of an array, in which case we operate along
        columns, or axis 1::
 
@@ -48,7 +48,7 @@ Glossary
          array([(1, 2.0), (3, 4.0)],
                dtype=[('x', '<i4'), ('y', '<f8')])
 
-       Fast element-wise operations, called :term:`ufuncs`, operate on arrays.
+       Fast element-wise operations, called `ufuncs`_, operate on arrays.
 
    array_like
        Any sequence that can be interpreted as an ndarray.  This includes
@@ -82,7 +82,7 @@ Glossary
          array([[4, 5],
                 [5, 6]])
 
-       See `numpy.doc.broadcasting` for more information.
+       See `doc.broadcasting`_ for more information.
 
    C order
        See `row-major`
@@ -155,8 +155,7 @@ Glossary
        See `column-major`
 
    flattened
-       Collapsed to a one-dimensional array. See `numpy.ndarray.flatten`
-       for details.
+       Collapsed to a one-dimensional array. See `ndarray.flatten`_ for details.
 
    immutable
        An object that cannot be modified after execution is called
@@ -183,7 +182,7 @@ Glossary
          >>> [item**2 for item in x]
          [1, 4, 9]
 
-       It is often used in combination with ``enumerate``::
+       It is often used in combintion with ``enumerate``::
          >>> keys = ['a','b','c']
          >>> for n, k in enumerate(keys):
          ...     print("Key %d: %s" % (n, k))
@@ -233,7 +232,7 @@ Glossary
 
          >>> mask = (x > 2)
          >>> mask
-         array([False, False, False, True,  True])
+         array([False, False, False, True,  True], dtype=bool)
 
          >>> x[mask] = -1
          >>> x
@@ -285,9 +284,9 @@ Glossary
        See *array*.
 
    record array
-       An :term:`ndarray` with :term:`structured data type`_ which has been
-       subclassed as ``np.recarray`` and whose dtype is of type ``np.record``,
-       making the fields of its data type to be accessible by attribute.
+       An `ndarray`_ with `structured data type`_ which has been subclassed as
+       np.recarray and whose dtype is of type np.record, making the
+       fields of its data type to be accessible by attribute.
 
    reference
        If ``a`` is a reference to ``b``, then ``(a is b) == True``.  Therefore,
@@ -306,7 +305,7 @@ Glossary
            [1, 2, 3, 4, 5, 6]
 
        Row-major order is also known as the C order, as the C programming
-       language uses it. New NumPy arrays are by default in row-major order.
+       language uses it. New Numpy arrays are by default in row-major order.
 
    self
        Often seen in method signatures, ``self`` refers to the instance
@@ -349,10 +348,10 @@ Glossary
 
          >>> x[:, 1]
          array([2, 4])
-
+   
    structured data type
        A data type composed of other datatypes
-
+   
    tuple
        A sequence that may contain a variable number of types of any
        kind.  A tuple is immutable, i.e., once constructed it cannot be

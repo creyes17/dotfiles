@@ -14,8 +14,7 @@ original value was)
 Note: cannot use equality to test NaNs. E.g.: ::
 
  >>> myarr = np.array([1., 0., np.nan, 3.])
- >>> np.nonzero(myarr == np.nan)
- (array([], dtype=int64),)
+ >>> np.where(myarr == np.nan)
  >>> np.nan == np.nan  # is always False! Use special numpy functions instead.
  False
  >>> myarr[myarr == np.nan] = 0. # doesn't work

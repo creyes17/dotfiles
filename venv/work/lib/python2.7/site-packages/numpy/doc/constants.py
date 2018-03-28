@@ -3,7 +3,7 @@
 Constants
 =========
 
-NumPy includes several constants:
+Numpy includes several constants:
 
 %(constant_list)s
 """
@@ -82,7 +82,7 @@ add_newdoc('numpy', 'NINF',
 
     Notes
     -----
-    NumPy uses the IEEE Standard for Binary Floating-Point for Arithmetic
+    Numpy uses the IEEE Standard for Binary Floating-Point for Arithmetic
     (IEEE 754). This means that Not a Number is not equivalent to infinity.
     Also that positive infinity is not equivalent to negative infinity. But
     infinity is equivalent to positive infinity.
@@ -122,7 +122,7 @@ add_newdoc('numpy', 'NZERO',
 
     Notes
     -----
-    NumPy uses the IEEE Standard for Binary Floating-Point for Arithmetic
+    Numpy uses the IEEE Standard for Binary Floating-Point for Arithmetic
     (IEEE 754). Negative zero is considered to be a finite number.
 
     Examples
@@ -133,11 +133,11 @@ add_newdoc('numpy', 'NZERO',
     0.0
 
     >>> np.isfinite([np.NZERO])
-    array([ True])
+    array([ True], dtype=bool)
     >>> np.isnan([np.NZERO])
-    array([False])
+    array([False], dtype=bool)
     >>> np.isinf([np.NZERO])
-    array([False])
+    array([False], dtype=bool)
 
     """)
 
@@ -193,7 +193,7 @@ add_newdoc('numpy', 'PZERO',
 
     Notes
     -----
-    NumPy uses the IEEE Standard for Binary Floating-Point for Arithmetic
+    Numpy uses the IEEE Standard for Binary Floating-Point for Arithmetic
     (IEEE 754). Positive zero is considered to be a finite number.
 
     Examples
@@ -204,11 +204,11 @@ add_newdoc('numpy', 'PZERO',
     -0.0
 
     >>> np.isfinite([np.PZERO])
-    array([ True])
+    array([ True], dtype=bool)
     >>> np.isnan([np.PZERO])
-    array([False])
+    array([False], dtype=bool)
     >>> np.isinf([np.PZERO])
-    array([False])
+    array([False], dtype=bool)
 
     """)
 
@@ -253,7 +253,7 @@ add_newdoc('numpy', 'inf',
 
     Notes
     -----
-    NumPy uses the IEEE Standard for Binary Floating-Point for Arithmetic
+    Numpy uses the IEEE Standard for Binary Floating-Point for Arithmetic
     (IEEE 754). This means that Not a Number is not equivalent to infinity.
     Also that positive infinity is not equivalent to negative infinity. But
     infinity is equivalent to positive infinity.
@@ -298,7 +298,7 @@ add_newdoc('numpy', 'nan',
 
     Notes
     -----
-    NumPy uses the IEEE Standard for Binary Floating-Point for Arithmetic
+    Numpy uses the IEEE Standard for Binary Floating-Point for Arithmetic
     (IEEE 754). This means that Not a Number is not equivalent to infinity.
 
     `NaN` and `NAN` are aliases of `nan`.

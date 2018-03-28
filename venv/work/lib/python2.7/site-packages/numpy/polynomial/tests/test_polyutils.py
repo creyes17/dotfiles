@@ -6,12 +6,11 @@ from __future__ import division, absolute_import, print_function
 import numpy as np
 import numpy.polynomial.polyutils as pu
 from numpy.testing import (
-    assert_almost_equal, assert_raises, assert_equal, assert_,
-    run_module_suite
-    )
+    TestCase, assert_almost_equal, assert_raises,
+    assert_equal, assert_, run_module_suite)
 
 
-class TestMisc(object):
+class TestMisc(TestCase):
 
     def test_trimseq(self):
         for i in range(5):
@@ -44,7 +43,7 @@ class TestMisc(object):
         assert_equal(pu.trimcoef(coef, 2), [0])
 
 
-class TestDomain(object):
+class TestDomain(TestCase):
 
     def test_getdomain(self):
         # test for real values

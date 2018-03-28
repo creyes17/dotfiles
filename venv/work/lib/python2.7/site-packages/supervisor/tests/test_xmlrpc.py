@@ -269,89 +269,28 @@ class XMLRPCHandlerTests(unittest.TestCase):
         self.assertEqual(request._error, 500)
 
 class TraverseTests(unittest.TestCase):
-    def test_security_disallows_underscore_methods(self):
+    def test_underscore(self):
         from supervisor import xmlrpc
-        class Root:
-            pass
-        class A:
-            def _danger(self):
-                return True
-        root = Root()
-        root.a = A()
-        self.assertRaises(xmlrpc.RPCError, xmlrpc.traverse,
-            root, 'a._danger', [])
+        self.assertRaises(xmlrpc.RPCError, xmlrpc.traverse, None, '_', None)
 
-    def test_security_disallows_object_traversal(self):
+    def test_notfound(self):
         from supervisor import xmlrpc
-        class Root:
-            pass
-        class A:
-            pass
-        class B:
-            def danger(self):
-                return True
-        root = Root()
-        root.a = A()
-        root.a.b = B()
-        self.assertRaises(xmlrpc.RPCError, xmlrpc.traverse,
-            root, 'a.b.danger', [])
+        self.assertRaises(xmlrpc.RPCError, xmlrpc.traverse, None, 'foo', None)
 
-    def test_namespace_name_not_found(self):
+    def test_badparams(self):
         from supervisor import xmlrpc
-        class Root:
-            pass
-        root = Root()
-        self.assertRaises(xmlrpc.RPCError, xmlrpc.traverse,
-            root, 'notfound.hello', None)
-
-    def test_method_name_not_found(self):
-        from supervisor import xmlrpc
-        class Root:
-            pass
-        class A:
-            pass
-        root = Root()
-        root.a = A()
-        self.assertRaises(xmlrpc.RPCError, xmlrpc.traverse,
-            root, 'a.notfound', [])
-
-    def test_method_name_exists_but_is_not_a_method(self):
-        from supervisor import xmlrpc
-        class Root:
-            pass
-        class A:
-            pass
-        class B:
-            pass
-        root = Root()
-        root.a = A()
-        root.a.b = B()
-        self.assertRaises(xmlrpc.RPCError, xmlrpc.traverse,
-            root, 'a.b', [])  # b is not a method
-
-    def test_bad_params(self):
-        from supervisor import xmlrpc
-        class Root:
-            pass
-        class A:
-            def hello(self, name):
-                return "Hello %s" % name
-        root = Root()
-        root.a = A()
-        self.assertRaises(xmlrpc.RPCError, xmlrpc.traverse,
-            root, 'a.hello', ["there", "extra"])  # too many params
+        self.assertRaises(xmlrpc.RPCError, xmlrpc.traverse, self,
+                          'test_badparams', (1, 2, 3))
 
     def test_success(self):
         from supervisor import xmlrpc
-        class Root:
-            pass
-        class A:
-            def hello(self, name):
-                return "Hello %s" % name
-        root = Root()
-        root.a = A()
-        result = xmlrpc.traverse(root, 'a.hello', ["there"])
-        self.assertEqual(result, "Hello there")
+        L = []
+        class Dummy:
+            def foo(self, a):
+                L.append(a)
+        dummy = Dummy()
+        xmlrpc.traverse(dummy, 'foo', [1])
+        self.assertEqual(L, [1])
 
 class SupervisorTransportTests(unittest.TestCase):
     def _getTargetClass(self):

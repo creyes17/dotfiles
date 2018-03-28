@@ -2,10 +2,10 @@ from __future__ import division, absolute_import, print_function
 
 import numpy as np
 from numpy.testing import (
-    run_module_suite, assert_, assert_equal, assert_array_equal
+    TestCase, run_module_suite, assert_, assert_equal, assert_array_equal
 )
 
-class TestView(object):
+class TestView(TestCase):
     def test_type(self):
         x = np.array([1, 2, 3])
         assert_(isinstance(x.view(np.matrix), np.matrix))

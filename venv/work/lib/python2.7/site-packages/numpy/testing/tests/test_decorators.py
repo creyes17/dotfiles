@@ -1,14 +1,8 @@
-"""
-Test the decorators from ``testing.decorators``.
-
-"""
 from __future__ import division, absolute_import, print_function
-
-import warnings
 
 from numpy.testing import (dec, assert_, assert_raises, run_module_suite,
                            SkipTest, KnownFailureException)
-
+import nose
 
 def test_slow():
     @dec.slow
@@ -16,7 +10,6 @@ def test_slow():
         pass
 
     assert_(slow_func.slow)
-
 
 def test_setastest():
     @dec.setastest()
@@ -34,7 +27,6 @@ def test_setastest():
     assert_(f_default.__test__)
     assert_(f_istest.__test__)
     assert_(not f_isnottest.__test__)
-
 
 class DidntSkipException(Exception):
     pass
@@ -116,7 +108,7 @@ def test_skip_generators_hardcoded():
         for j in g2(10):
             pass
     except KnownFailureException:
-        raise Exception('Marked incorrectly as known failure')
+        raise Exception('Marked incorretly as known failure')
     except DidntSkipException:
         pass
 
@@ -150,7 +142,7 @@ def test_skip_generators_callable():
         for j in g2(10):
             pass
     except KnownFailureException:
-        raise Exception('Marked incorrectly as known failure')
+        raise Exception('Marked incorretly as known failure')
     except DidntSkipException:
         pass
 
@@ -180,20 +172,10 @@ def test_deprecated():
     assert_raises(AssertionError, non_deprecated_func)
     # should be silent
     deprecated_func()
-    with warnings.catch_warnings(record=True):
-        warnings.simplefilter("always")  # do not propagate unrelated warnings
-        # fails if deprecated decorator just disables test. See #1453.
-        assert_raises(ValueError, deprecated_func2)
-        # warning is not a DeprecationWarning
-        assert_raises(AssertionError, deprecated_func3)
-
-
-@dec.parametrize('base, power, expected',
-        [(1, 1, 1),
-         (2, 1, 2),
-         (2, 2, 4)])
-def test_parametrize(base, power, expected):
-    assert_(base**power == expected)
+    # fails if deprecated decorator just disables test. See #1453.
+    assert_raises(ValueError, deprecated_func2)
+    # first warnings is not a DeprecationWarning
+    assert_raises(AssertionError, deprecated_func3)
 
 
 if __name__ == '__main__':

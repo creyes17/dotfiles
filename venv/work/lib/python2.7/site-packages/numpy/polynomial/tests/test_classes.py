@@ -53,7 +53,6 @@ def test_class_methods():
         yield check_cutdeg, Poly
         yield check_truncate, Poly
         yield check_trim, Poly
-        yield check_ufunc_override, Poly
 
 
 #
@@ -574,38 +573,6 @@ def check_mapparms(Poly):
     w = 2*d + 1
     p = Poly([1], domain=d, window=w)
     assert_almost_equal([1, 2], p.mapparms())
-
-
-def check_ufunc_override(Poly):
-    p = Poly([1, 2, 3])
-    x = np.ones(3)
-    assert_raises(TypeError, np.add, p, x)
-    assert_raises(TypeError, np.add, x, p)
-
-
-class TestInterpolate(object):
-
-    def f(self, x):
-        return x * (x - 1) * (x - 2)
-
-    def test_raises(self):
-        assert_raises(ValueError, Chebyshev.interpolate, self.f, -1)
-        assert_raises(TypeError, Chebyshev.interpolate, self.f, 10.)
-
-    def test_dimensions(self):
-        for deg in range(1, 5):
-            assert_(Chebyshev.interpolate(self.f, deg).degree() == deg)
-
-    def test_approximation(self):
-
-        def powx(x, p):
-            return x**p
-
-        x = np.linspace(0, 2, 10)
-        for deg in range(0, 10):
-            for t in range(0, deg + 1):
-                p = Chebyshev.interpolate(powx, deg, domain=[0, 2], args=(t,))
-                assert_almost_equal(p(x), powx(x, t), decimal=12)
 
 
 if __name__ == "__main__":

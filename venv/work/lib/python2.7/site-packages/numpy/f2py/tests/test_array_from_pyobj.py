@@ -12,12 +12,12 @@ from numpy.testing import (
     run_module_suite, assert_, assert_equal, SkipTest
 )
 from numpy.core.multiarray import typeinfo
-from . import util
+import util
 
 wrap = None
 
 
-def setup_module():
+def setup():
     """
     Build the required testing extension module
 
@@ -51,7 +51,7 @@ def flags2names(flags):
     info = []
     for flagname in ['CONTIGUOUS', 'FORTRAN', 'OWNDATA', 'ENSURECOPY',
                      'ENSUREARRAY', 'ALIGNED', 'NOTSWAPPED', 'WRITEABLE',
-                     'WRITEBACKIFCOPY', 'UPDATEIFCOPY', 'BEHAVED', 'BEHAVED_RO',
+                     'UPDATEIFCOPY', 'BEHAVED', 'BEHAVED_RO',
                      'CARRAY', 'FARRAY'
                      ]:
         if abs(flags) & getattr(wrap, flagname, 0):
@@ -294,7 +294,7 @@ class Array(object):
         return obj_attr[0] == self.arr_attr[0]
 
 
-class TestIntent(object):
+class test_intent(unittest.TestCase):
 
     def test_in_out(self):
         assert_equal(str(intent.in_.out), 'intent(in,out)')
@@ -305,7 +305,7 @@ class TestIntent(object):
         assert_(not intent.in_.is_intent('c'))
 
 
-class _test_shared_memory(object):
+class _test_shared_memory:
     num2seq = [1, 2]
     num23seq = [[1, 2, 3], [4, 5, 6]]
 
@@ -578,12 +578,14 @@ class _test_shared_memory(object):
 
 for t in _type_names:
     exec('''\
-class TestGen_%s(_test_shared_memory):
-    def setup(self):
+class test_%s_gen(unittest.TestCase,
+              _test_shared_memory
+              ):
+    def setUp(self):
         self.type = Type(%r)
     array = lambda self,dims,intent,obj: Array(Type(%r),dims,intent,obj)
 ''' % (t, t, t))
 
 if __name__ == "__main__":
-    setup_module()
+    setup()
     run_module_suite()

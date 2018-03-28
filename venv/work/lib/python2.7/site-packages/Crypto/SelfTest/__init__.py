@@ -66,13 +66,11 @@ def run(module=None, verbosity=0, stream=None, tests=None, config=None, **kwargs
             raise ValueError("'module' and 'tests' arguments are mutually exclusive")
     if stream is None:
         kwargs['stream'] = StringIO()
-    else:
-        kwargs['stream'] = stream
     runner = unittest.TextTestRunner(verbosity=verbosity, **kwargs)
     result = runner.run(suite)
     if not result.wasSuccessful():
         if stream is None:
-            sys.stderr.write(kwargs['stream'].getvalue())
+            sys.stderr.write(stream.getvalue())
         raise SelfTestError("Self-test failed", result)
     return result
 
@@ -85,8 +83,6 @@ def get_tests(config={}):
     from Crypto.SelfTest import Random; tests += Random.get_tests(config=config)
     from Crypto.SelfTest import Util;   tests += Util.get_tests(config=config)
     from Crypto.SelfTest import Signature;   tests += Signature.get_tests(config=config)
-    from Crypto.SelfTest import IO;   tests += IO.get_tests(config=config)
-    from Crypto.SelfTest import Math;   tests += Math.get_tests(config=config)
     return tests
 
 if __name__ == '__main__':

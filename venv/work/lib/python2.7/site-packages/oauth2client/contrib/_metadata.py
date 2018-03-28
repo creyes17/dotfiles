@@ -19,7 +19,6 @@ See https://cloud.google.com/compute/docs/metadata
 
 import datetime
 import json
-import os
 
 from six.moves import http_client
 from six.moves.urllib import parse as urlparse
@@ -29,8 +28,7 @@ from oauth2client import client
 from oauth2client import transport
 
 
-METADATA_ROOT = 'http://{}/computeMetadata/v1/'.format(
-    os.getenv('GCE_METADATA_ROOT', 'metadata.google.internal'))
+METADATA_ROOT = 'http://metadata.google.internal/computeMetadata/v1/'
 METADATA_HEADERS = {'Metadata-Flavor': 'Google'}
 
 
@@ -40,7 +38,7 @@ def get(http, path, root=METADATA_ROOT, recursive=None):
     Args:
         http: an object to be used to make HTTP requests.
         path: A string indicating the resource to retrieve. For example,
-            'instance/service-accounts/default'
+            'instance/service-accounts/defualt'
         root: A string indicating the full path to the metadata server root.
         recursive: A boolean indicating whether to do a recursive query of
             metadata. See

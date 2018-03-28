@@ -44,14 +44,11 @@ DEF_OBJ_ACL = 'defaultObjectAcl'
 STANDARD_ACL = 'acl'
 CORS_ARG = 'cors'
 LIFECYCLE_ARG = 'lifecycle'
-STORAGE_CLASS_ARG='storageClass'
 ERROR_DETAILS_REGEX = re.compile(r'<Details>(?P<details>.*)</Details>')
 
 class Bucket(S3Bucket):
     """Represents a Google Cloud Storage bucket."""
 
-    StorageClassBody = ('<?xml version="1.0" encoding="UTF-8"?>\n'
-                        '<StorageClass>%s</StorageClass>')
     VersioningBody = ('<?xml version="1.0" encoding="UTF-8"?>\n'
                       '<VersioningConfiguration><Status>%s</Status>'
                       '</VersioningConfiguration>')
@@ -602,7 +599,7 @@ class Bucket(S3Bucket):
         :return: The StorageClass for the bucket.
         """
         response = self.connection.make_request('GET', self.name,
-                                                query_args=STORAGE_CLASS_ARG)
+                                                query_args='storageClass')
         body = response.read()
         if response.status == 200:
             rs = ResultSet(self)
@@ -613,15 +610,6 @@ class Bucket(S3Bucket):
             raise self.connection.provider.storage_response_error(
                 response.status, response.reason, body)
 
-    def set_storage_class(self, storage_class, headers=None):
-        """
-        Sets a bucket's storage class.
-
-        :param str storage_class: A string containing the storage class.
-        :param dict headers: Additional headers to send with the request.
-        """
-        req_body = self.StorageClassBody % (get_utf8_value(storage_class))
-        self.set_subresource(STORAGE_CLASS_ARG, req_body, headers=headers)
 
     # Method with same signature as boto.s3.bucket.Bucket.add_email_grant(),
     # to allow polymorphic treatment at application layer.

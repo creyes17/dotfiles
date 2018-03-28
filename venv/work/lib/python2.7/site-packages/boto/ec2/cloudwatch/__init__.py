@@ -29,7 +29,6 @@ from boto.ec2.cloudwatch.metric import Metric
 from boto.ec2.cloudwatch.alarm import MetricAlarm, MetricAlarms, AlarmHistoryItem
 from boto.ec2.cloudwatch.datapoint import Datapoint
 from boto.regioninfo import RegionInfo, get_regions, load_regions
-from boto.regioninfo import connect
 import boto
 
 RegionData = load_regions().get('cloudwatch', {})
@@ -56,8 +55,10 @@ def connect_to_region(region_name, **kw_params):
     :return: A connection to the given region, or None if an invalid region
         name is given
     """
-    return connect('cloudwatch', region_name,
-                   connection_cls=CloudWatchConnection, **kw_params)
+    for region in regions():
+        if region.name == region_name:
+            return region.connect(**kw_params)
+    return None
 
 
 class CloudWatchConnection(AWSQueryConnection):

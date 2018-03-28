@@ -5,13 +5,13 @@ import collections
 import numpy as np
 from numpy import matrix, asmatrix, bmat
 from numpy.testing import (
-    run_module_suite, assert_, assert_equal, assert_almost_equal,
+    TestCase, run_module_suite, assert_, assert_equal, assert_almost_equal,
     assert_array_equal, assert_array_almost_equal, assert_raises
 )
 from numpy.matrixlib.defmatrix import matrix_power
 from numpy.matrixlib import mat
 
-class TestCtor(object):
+class TestCtor(TestCase):
     def test_basic(self):
         A = np.array([[1, 2], [3, 4]])
         mA = matrix(A)
@@ -35,8 +35,8 @@ class TestCtor(object):
         assert_(mvec.shape == (1, 5))
 
     def test_exceptions(self):
-        # Check for ValueError when called with invalid string data.
-        assert_raises(ValueError, matrix, "invalid")
+        # Check for TypeError when called with invalid string data.
+        assert_raises(TypeError, matrix, "invalid")
 
     def test_bmat_nondefault_str(self):
         A = np.array([[1, 2], [3, 4]])
@@ -58,7 +58,7 @@ class TestCtor(object):
         assert_(np.all(b2 == mixresult))
 
 
-class TestProperties(object):
+class TestProperties(TestCase):
     def test_sum(self):
         """Test whether matrix.sum(axis=1) preserves orientation.
         Fails in NumPy <= 0.9.6.2127.
@@ -186,12 +186,7 @@ class TestProperties(object):
         A = matrix([[1, 0], [0, 1]])
         assert_(repr(A) == "matrix([[1, 0],\n        [0, 1]])")
 
-    def test_make_bool_matrix_from_str(self):
-        A = matrix('True; True; False')
-        B = matrix([[True], [True], [False]])
-        assert_array_equal(A, B)
-
-class TestCasting(object):
+class TestCasting(TestCase):
     def test_basic(self):
         A = np.arange(100).reshape(10, 10)
         mA = matrix(A)
@@ -210,7 +205,7 @@ class TestCasting(object):
         assert_(np.all(mA != mB))
 
 
-class TestAlgebra(object):
+class TestAlgebra(TestCase):
     def test_basic(self):
         import numpy.linalg as linalg
 
@@ -249,12 +244,6 @@ class TestAlgebra(object):
         assert_array_almost_equal(m4, np.dot(m2, m2))
         assert_array_almost_equal(np.dot(mi, m), np.eye(2))
 
-    def test_scalar_type_pow(self):
-        m = matrix([[1, 2], [3, 4]])
-        for scalar_t in [np.int8, np.uint8]:
-            two = scalar_t(2)
-            assert_array_almost_equal(m ** 2, m ** two)
-
     def test_notimplemented(self):
         '''Check that 'not implemented' operations produce a failure.'''
         A = matrix([[1., 2.],
@@ -277,7 +266,7 @@ class TestAlgebra(object):
             self.fail("matrix.__mul__ with non-numeric object doesn't raise"
                       "a TypeError")
 
-class TestMatrixReturn(object):
+class TestMatrixReturn(TestCase):
     def test_instance_methods(self):
         a = matrix([1.0], dtype='f8')
         methodargs = {
@@ -319,7 +308,7 @@ class TestMatrixReturn(object):
         assert_(type(d) is np.ndarray)
 
 
-class TestIndexing(object):
+class TestIndexing(TestCase):
     def test_basic(self):
         x = asmatrix(np.zeros((3, 2), float))
         y = np.zeros((3, 1), float)
@@ -328,8 +317,9 @@ class TestIndexing(object):
         assert_equal(x, [[0, 1], [0, 0], [0, 0]])
 
 
-class TestNewScalarIndexing(object):
-    a = matrix([[1, 2], [3, 4]])
+class TestNewScalarIndexing(TestCase):
+    def setUp(self):
+        self.a = matrix([[1, 2], [3, 4]])
 
     def test_dimesions(self):
         a = self.a
@@ -395,7 +385,7 @@ class TestNewScalarIndexing(object):
         assert_array_equal(x[[2, 1, 0],:], x[::-1,:])
 
 
-class TestPower(object):
+class TestPower(TestCase):
     def test_returntype(self):
         a = np.array([[0, 1], [0, 0]])
         assert_(type(matrix_power(a, 2)) is np.ndarray)
@@ -406,10 +396,10 @@ class TestPower(object):
         assert_array_equal(matrix_power([[0, 1], [0, 0]], 2), [[0, 0], [0, 0]])
 
 
-class TestShape(object):
-
-    a = np.array([[1], [2]])
-    m = matrix([[1], [2]])
+class TestShape(TestCase):
+    def setUp(self):
+        self.a = np.array([[1], [2]])
+        self.m = matrix([[1], [2]])
 
     def test_shape(self):
         assert_equal(self.a.shape, (2, 1))

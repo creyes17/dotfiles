@@ -21,7 +21,6 @@
 # IN THE SOFTWARE.
 #
 from boto.regioninfo import RegionInfo, get_regions
-from boto.regioninfo import connect
 
 
 def regions():
@@ -36,6 +35,7 @@ def regions():
 
 
 def connect_to_region(region_name, **kw_params):
-    from boto.directconnect.layer1 import DirectConnectConnection
-    return connect('directconnect', region_name,
-                   connection_cls=DirectConnectConnection, **kw_params)
+    for region in regions():
+        if region.name == region_name:
+            return region.connect(**kw_params)
+    return None

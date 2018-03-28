@@ -5,7 +5,9 @@ import sys
 import re
 
 from numpy.linalg import lapack_lite
-from numpy.testing import run_module_suite, assert_, dec
+from numpy.testing import TestCase, dec, run_module_suite
+
+from numpy.compat import asbytes_nested
 
 
 class FindDependenciesLdd(object):
@@ -40,15 +42,15 @@ class FindDependenciesLdd(object):
         return founds
 
 
-class TestF77Mismatch(object):
+class TestF77Mismatch(TestCase):
 
     @dec.skipif(not(sys.platform[:5] == 'linux'),
                 "Skipping fortran compiler mismatch on non Linux platform")
     def test_lapack(self):
         f = FindDependenciesLdd()
         deps = f.grep_dependencies(lapack_lite.__file__,
-                                   [b'libg2c', b'libgfortran'])
-        assert_(len(deps) <= 1,
+                                   asbytes_nested(['libg2c', 'libgfortran']))
+        self.assertFalse(len(deps) > 1,
                          """Both g77 and gfortran runtimes linked in lapack_lite ! This is likely to
 cause random crashes and wrong results. See numpy INSTALL.txt for more
 information.""")

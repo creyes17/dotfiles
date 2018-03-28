@@ -1,7 +1,6 @@
 #! /usr/bin/env python
-# -*- coding: iso-8859-1 -*-
+# -*- coding: utf-8 -*-
 # vi:ts=4:et
-# $Id$
 
 #
 # Usage: python retriever-multi.py <file with URLs to fetch> [<# of
@@ -15,7 +14,6 @@ import pycurl
 # the libcurl tutorial for more info.
 try:
     import signal
-    from signal import SIGPIPE, SIG_IGN
     signal.signal(signal.SIGPIPE, signal.SIG_IGN)
 except ImportError:
     pass
@@ -31,7 +29,7 @@ try:
     if len(sys.argv) >= 3:
         num_conn = int(sys.argv[2])
 except:
-    print "Usage: %s <file with URLs to fetch> [<# of concurrent connections>]" % sys.argv[0]
+    print("Usage: %s <file with URLs to fetch> [<# of concurrent connections>]" % sys.argv[0])
     raise SystemExit
 
 
@@ -50,8 +48,8 @@ assert queue, "no URLs given"
 num_urls = len(queue)
 num_conn = min(num_conn, num_urls)
 assert 1 <= num_conn <= 10000, "invalid number of concurrent connections"
-print "PycURL %s (compiled against 0x%x)" % (pycurl.version, pycurl.COMPILE_LIBCURL_VERSION_NUM)
-print "----- Getting", num_urls, "URLs using", num_conn, "connections -----"
+print("PycURL %s (compiled against 0x%x)" % (pycurl.version, pycurl.COMPILE_LIBCURL_VERSION_NUM))
+print("----- Getting", num_urls, "URLs using", num_conn, "connections -----")
 
 
 # Pre-allocate a list of curl objects
@@ -95,13 +93,13 @@ while num_processed < num_urls:
             c.fp.close()
             c.fp = None
             m.remove_handle(c)
-            print "Success:", c.filename, c.url, c.getinfo(pycurl.EFFECTIVE_URL)
+            print("Success:", c.filename, c.url, c.getinfo(pycurl.EFFECTIVE_URL))
             freelist.append(c)
         for c, errno, errmsg in err_list:
             c.fp.close()
             c.fp = None
             m.remove_handle(c)
-            print "Failed: ", c.filename, c.url, errno, errmsg
+            print("Failed: ", c.filename, c.url, errno, errmsg)
             freelist.append(c)
         num_processed = num_processed + len(ok_list) + len(err_list)
         if num_q == 0:

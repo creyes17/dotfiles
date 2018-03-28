@@ -20,6 +20,10 @@
 # SOFTWARE.
 # ===================================================================
 
+from __future__ import nested_scopes
+
+__revision__ = "$Id$"
+
 import unittest
 
 from Crypto.SelfTest.st_common import list_test_cases, a2b_hex, b2a_hex
@@ -27,7 +31,7 @@ from Crypto.SelfTest.st_common import list_test_cases, a2b_hex, b2a_hex
 from Crypto.Util.py3compat import *
 from Crypto.PublicKey import RSA
 from Crypto.Cipher import PKCS1_OAEP as PKCS
-from Crypto.Hash import MD2,MD5,SHA1,SHA256,RIPEMD160
+from Crypto.Hash import MD2,MD5,SHA as SHA1,SHA256,RIPEMD
 from Crypto import Random
 
 def rws(t):
@@ -278,7 +282,8 @@ class PKCS1_OAEP_Tests(unittest.TestCase):
                                 self.idx += N
                                 return r
                         # The real test
-                        cipher = PKCS.new(key, test[4], randfunc=randGen(t2b(test[3])))
+                        key._randfunc = randGen(t2b(test[3]))
+                        cipher = PKCS.new(key, test[4])
                         ct = cipher.encrypt(t2b(test[1]))
                         self.assertEqual(ct, t2b(test[2]))
 
@@ -309,12 +314,11 @@ class PKCS1_OAEP_Tests(unittest.TestCase):
                 # Encrypt/Decrypt messages of length [0..128-2*20-2]
                 for pt_len in xrange(0,128-2*20-2):
                     pt = self.rng(pt_len)
-                    cipher = PKCS.new(self.key1024)
-                    ct = cipher.encrypt(pt)
-                    pt2 = cipher.decrypt(ct)
+                    ct = PKCS.encrypt(pt, self.key1024)
+                    pt2 = PKCS.decrypt(ct, self.key1024)
                     self.assertEqual(pt,pt2)
 
-        def testEncryptDecrypt2(self):
+        def testEncryptDecrypt1(self):
                 # Helper function to monitor what's requested from RNG
                 global asked
                 def localRng(N):
@@ -322,17 +326,18 @@ class PKCS1_OAEP_Tests(unittest.TestCase):
                     asked += N
                     return self.rng(N)
                 # Verify that OAEP is friendly to all hashes
-                for hashmod in (MD2,MD5,SHA1,SHA256,RIPEMD160):
+                for hashmod in (MD2,MD5,SHA1,SHA256,RIPEMD):
                     # Verify that encrypt() asks for as many random bytes
                     # as the hash output size
                     asked = 0
                     pt = self.rng(40)
-                    cipher = PKCS.new(self.key1024, hashmod, randfunc=localRng)
+                    self.key1024._randfunc = localRng
+                    cipher = PKCS.new(self.key1024, hashmod)
                     ct = cipher.encrypt(pt)
                     self.assertEqual(cipher.decrypt(ct), pt)
-                    self.assertEqual(asked, hashmod.digest_size)
+                    self.failUnless(asked > hashmod.digest_size)
 
-        def testEncryptDecrypt3(self):
+        def testEncryptDecrypt2(self):
                 # Verify that OAEP supports labels
                 pt = self.rng(35)
                 xlabel = self.rng(22)
@@ -340,7 +345,7 @@ class PKCS1_OAEP_Tests(unittest.TestCase):
                 ct = cipher.encrypt(pt)
                 self.assertEqual(cipher.decrypt(ct), pt)
 
-        def testEncryptDecrypt4(self):
+        def testEncryptDecrypt3(self):
                 # Verify that encrypt() uses the custom MGF
                 global mgfcalls
                 # Helper function to monitor what's requested from MGF

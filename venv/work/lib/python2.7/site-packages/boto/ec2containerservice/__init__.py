@@ -21,7 +21,6 @@
 # IN THE SOFTWARE.
 #
 from boto.regioninfo import get_regions
-from boto.regioninfo import connect
 
 
 def regions():
@@ -37,6 +36,7 @@ def regions():
 
 
 def connect_to_region(region_name, **kw_params):
-    from boto.ec2containerservice.layer1 import EC2ContainerServiceConnection
-    return connect('ec2containerservice', region_name,
-                   connection_cls=EC2ContainerServiceConnection, **kw_params)
+    for region in regions():
+        if region.name == region_name:
+            return region.connect(**kw_params)
+    return None

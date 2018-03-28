@@ -85,7 +85,6 @@ from __future__ import division, absolute_import, print_function
 import types as _types
 import sys
 import numbers
-import warnings
 
 from numpy.compat import bytes, long
 from numpy.core.multiarray import (
@@ -439,7 +438,7 @@ sctypes = {'int': [],
            'uint':[],
            'float':[],
            'complex':[],
-           'others':[bool, object, bytes, unicode, void]}
+           'others':[bool, object, str, unicode, void]}
 
 def _add_array_type(typename, bits):
     try:
@@ -502,11 +501,11 @@ def maximum_sctype(t):
 
     Examples
     --------
-    >>> np.maximum_sctype(int)
+    >>> np.maximum_sctype(np.int)
     <type 'numpy.int64'>
     >>> np.maximum_sctype(np.uint8)
     <type 'numpy.uint64'>
-    >>> np.maximum_sctype(complex)
+    >>> np.maximum_sctype(np.complex)
     <type 'numpy.complex192'>
 
     >>> np.maximum_sctype(str)
@@ -529,6 +528,33 @@ def maximum_sctype(t):
     else:
         return sctypes[base][-1]
 
+try:
+    buffer_type = _types.BufferType
+except AttributeError:
+    # Py3K
+    buffer_type = memoryview
+
+_python_types = {int: 'int_',
+                 float: 'float_',
+                 complex: 'complex_',
+                 bool: 'bool_',
+                 bytes: 'bytes_',
+                 unicode: 'unicode_',
+                 buffer_type: 'void',
+                 }
+
+if sys.version_info[0] >= 3:
+    def _python_type(t):
+        """returns the type corresponding to a certain Python type"""
+        if not isinstance(t, type):
+            t = type(t)
+        return allTypes[_python_types.get(t, 'object_')]
+else:
+    def _python_type(t):
+        """returns the type corresponding to a certain Python type"""
+        if not isinstance(t, _types.TypeType):
+            t = type(t)
+        return allTypes[_python_types.get(t, 'object_')]
 
 def issctype(rep):
     """
@@ -571,7 +597,7 @@ def issctype(rep):
         if res and res != object_:
             return True
         return False
-    except Exception:
+    except:
         return False
 
 def obj2sctype(rep, default=None):
@@ -613,19 +639,22 @@ def obj2sctype(rep, default=None):
     <type 'list'>
 
     """
-    # prevent abtract classes being upcast
-    if isinstance(rep, type) and issubclass(rep, generic):
-        return rep
-    # extract dtype from arrays
+    try:
+        if issubclass(rep, generic):
+            return rep
+    except TypeError:
+        pass
+    if isinstance(rep, dtype):
+        return rep.type
+    if isinstance(rep, type):
+        return _python_type(rep)
     if isinstance(rep, ndarray):
         return rep.dtype.type
-    # fall back on dtype to convert
     try:
         res = dtype(rep)
-    except Exception:
+    except:
         return default
-    else:
-        return res.type
+    return res.type
 
 
 def issubclass_(arg1, arg2):
@@ -655,9 +684,9 @@ def issubclass_(arg1, arg2):
 
     Examples
     --------
-    >>> np.issubclass_(np.int32, int)
+    >>> np.issubclass_(np.int32, np.int)
     True
-    >>> np.issubclass_(np.int32, float)
+    >>> np.issubclass_(np.int32, np.float)
     False
 
     """
@@ -688,9 +717,9 @@ def issubsctype(arg1, arg2):
     --------
     >>> np.issubsctype('S8', str)
     True
-    >>> np.issubsctype(np.array([1]), int)
+    >>> np.issubsctype(np.array([1]), np.int)
     True
-    >>> np.issubsctype(np.array([1]), float)
+    >>> np.issubsctype(np.array([1]), np.float)
     False
 
     """
@@ -716,46 +745,20 @@ def issubdtype(arg1, arg2):
 
     Examples
     --------
-    >>> np.issubdtype('S1', np.string_)
+    >>> np.issubdtype('S1', str)
     True
     >>> np.issubdtype(np.float64, np.float32)
     False
 
     """
-    if not issubclass_(arg1, generic):
-        arg1 = dtype(arg1).type
-    if not issubclass_(arg2, generic):
-        arg2_orig = arg2
-        arg2 = dtype(arg2).type
-        if not isinstance(arg2_orig, dtype):
-            # weird deprecated behaviour, that tried to infer np.floating from
-            # float, and similar less obvious things, such as np.generic from
-            # basestring
-            mro = arg2.mro()
-            arg2 = mro[1] if len(mro) > 1 else mro[0]
-
-            def type_repr(x):
-                """ Helper to produce clear error messages """
-                if not isinstance(x, type):
-                    return repr(x)
-                elif issubclass(x, generic):
-                    return "np.{}".format(x.__name__)
-                else:
-                    return x.__name__
-
-            # 1.14, 2017-08-01
-            warnings.warn(
-                "Conversion of the second argument of issubdtype from `{raw}` "
-                "to `{abstract}` is deprecated. In future, it will be treated "
-                "as `{concrete} == np.dtype({raw}).type`.".format(
-                    raw=type_repr(arg2_orig),
-                    abstract=type_repr(arg2),
-                    concrete=type_repr(dtype(arg2_orig).type)
-                ),
-                FutureWarning, stacklevel=2
-            )
-
-    return issubclass(arg1, arg2)
+    if issubclass_(arg2, generic):
+        return issubclass(dtype(arg1).type, arg2)
+    mro = dtype(arg2).type.mro()
+    if len(mro) > 1:
+        val = mro[1]
+    else:
+        val = mro[0]
+    return issubclass(dtype(arg1).type, val)
 
 
 # This dictionary allows look up based on any alias for an array data-type
@@ -818,7 +821,7 @@ def sctype2char(sctype):
 
     Examples
     --------
-    >>> for sctype in [np.int32, float, complex, np.string_, np.ndarray]:
+    >>> for sctype in [np.int32, np.float, np.complex, np.string_, np.ndarray]:
     ...     print(np.sctype2char(sctype))
     l
     d
@@ -955,7 +958,6 @@ def _register_types():
     numbers.Integral.register(integer)
     numbers.Complex.register(inexact)
     numbers.Real.register(floating)
-    numbers.Number.register(number)
 
 _register_types()
 
@@ -984,7 +986,7 @@ def find_common_type(array_types, scalar_types):
 
     Examples
     --------
-    >>> np.find_common_type([], [np.int64, np.float32, complex])
+    >>> np.find_common_type([], [np.int64, np.float32, np.complex])
     dtype('complex128')
     >>> np.find_common_type([np.int64, np.float32], [])
     dtype('float64')
@@ -1000,7 +1002,7 @@ def find_common_type(array_types, scalar_types):
     Complex is of a different type, so it up-casts the float in the
     `array_types` argument:
 
-    >>> np.find_common_type([np.float32], [complex])
+    >>> np.find_common_type([np.float32], [np.complex])
     dtype('complex128')
 
     Type specifier strings are convertible to dtypes and can therefore
