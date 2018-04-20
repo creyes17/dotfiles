@@ -213,7 +213,7 @@ USAGE
 	#             file     The file to work with
 	# DEPENDENCIES: None.
 	# ENVIRONMENT VARIABLES: CHEAP_STASH_HOME
-	# SIDE EFFECTS: Could apply
+	# SIDE EFFECTS: Could apply changes to local workspace and/or clobber files stashed with cstash
 	# EXIT CODES: 1 - invalid number of arguments
 	#             2 - invalid command
 	#             3 - file does not exist in local directory
@@ -333,6 +333,43 @@ USAGE
 		esac
 
 		return 0;
+	}
+
+	#=== FUNCTION ================================================================
+	# NAME: pytest
+	# DESCRIPTION: Automatically runs python unit tests whenever the given files are updated
+	# PARAMETERS: module - The python module containing the tests
+	#             file   - The file that you're testing
+	#             files  - Any additional files you want to watch
+	# DEPENDENCIES: when-changed
+	# ENVIRONMENT VARIABLES: None.
+	# SIDE EFFECTS: None.
+	# EXIT CODES: 1 - invalid number of arguments
+	#             2 - invalid command
+	#             3 - file does not exist in local directory
+	#             4 - file does not exist in cheap stash
+	#             5 - encountered unknown error
+	#=============================================================================
+	pytest() {
+		local module="$1"
+		local file="$2"
+		shift 2
+
+		if ! [[ "$file" =~ "\.py$" ]]; then
+			echo "$0 only works with python files (*.py)"
+			return 1
+		fi
+
+		local test_file="$file"
+		if [[ "$test_file" =~ "_test\.py$" ]]; then
+			file=$(echo $file | sed -ne 's/_test\.py$/.py/p')
+		else
+			test_file=$(echo $test_file | sed -ne 's/\.py$/_test.py/p')
+		fi
+
+		when-changed -s "$file" "$test_file" "$@" -c "clear; date; python -m unittest -v $module"
+
+		return 0
 	}
 
 	### Aliases
