@@ -137,7 +137,7 @@ USAGE
 		#+-----------+-------+------+-------++------+------+
 		#|    20     |       |  20  |  10   ||  20  |  10  |
 		#+-----------+-------+------+-------++------+------+
-		
+
 		local tailarg=$lines;
 
 		if [ -z $lines ]; then
@@ -188,7 +188,7 @@ USAGE
 
 		if [ "$version" = "2" ]; then
 			venv_dir="$venv_home/py2";
-		else 
+		else
 			if [ "$version" = "3" ]; then
 				venv_dir="$venv_home/py3";
 			else
@@ -209,7 +209,7 @@ USAGE
 	# NAME: cstash
 	# DESCRIPTION: Cheap Stash. Saves a copy
 	# PARAMETERS: command  Tells cstash what to do with the file. Defaults to save
-	#                      Options are list, save, apply, pop, delete, view, or edit
+	#                      Options are list, save, apply, pop, delete, view, edit, or clear
 	#             file     The file to work with
 	# DEPENDENCIES: None.
 	# ENVIRONMENT VARIABLES: CHEAP_STASH_HOME
@@ -230,7 +230,7 @@ USAGE
 		local cmd=$1;
 		local file=$2;
 
-		local usage="Usage: cstash {list|save|apply|pop|remove|delete|view|edit} [file]";
+		local usage="Usage: cstash {list|save|apply|pop|remove|delete|view|edit|clear} [file]";
 
 		local stash_dir;
 		local stash_file;
@@ -311,6 +311,18 @@ USAGE
 					echo "File [$file] not found in stash" >&2;
 					echo $usage >&2;
 					return 4;
+				fi
+				;;
+			clear)
+				# Note: -q is a zsh argument. It looks for the first instance of a
+				# question mark and saves the user response to a variable with that name.
+				read -q "response?Are you sure you want to remove all files from stash? [y/n]   "
+				echo;
+				if [ "$response" = "y" ]; then
+					rm -r $CHEAP_STASH_HOME;
+					mkdir -p $CHEAP_STASH_HOME;
+				else
+					echo "Okay, leaving stash alone";
 				fi
 				;;
 			*)

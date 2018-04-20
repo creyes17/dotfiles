@@ -55,13 +55,16 @@ let g:syntastic_enable_signs = 1
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
 
+" Ignore 'line too long' errors
+"let g:syntastic_python_flake8_args='--ignore=E501'
+
 " Toggle between python 2 and python 3 for Syntastic
-function Creyes17Py2()
+function! Creyes17Py2()
   let g:syntastic_python_flake8_exec = 'flake8-py2'
   let g:syntastic_python_python_exec = 'python2.7'
 endfunction
 
-function Creyes17Py3()
+function! Creyes17Py3()
   let g:syntastic_python_flake8_exec = 'flake8-py3'
   let g:syntastic_python_python_exec = 'python3'
 endfunction
@@ -70,8 +73,8 @@ endfunction
 call Creyes17Py2()
 
 " Allow changing between them
-nnoremap <Leader>p2 :call Creyes17Py2()<CR>
-nnoremap <Leader>p3 :call Creyes17Py3()<CR>
+nnoremap <Leader>sp2 :call Creyes17Py2()<CR>
+nnoremap <Leader>sp3 :call Creyes17Py3()<CR>
 
 
 let g:syntastic_mode_map = {
@@ -82,7 +85,12 @@ let g:syntastic_mode_map = {
 " Ignore html files
 let g:syntastic_ignore_files = ['html$']
 
+" Navigate between Syntastic errors
+nnoremap <silent> <Leader>sn :lnext<CR>
+nnoremap <silent> <Leader>sp :lprev<CR>
+
 "" YouCompleteMe settings
+
 "	Let the "Enter" key also select an option from the menu
 "let g:ycm_key_list_select_completion = ['<TAB>', '<Down>', '<Enter>']
 "	Don't automatically insert/select anything automatically
@@ -94,8 +102,28 @@ let g:ycm_server_python_interpreter = '/usr/bin/python'
 
 "let g:ycm_python_binary_path = '/usr/local/bin/python3'
 
-""Clojure options
+"" RainbowParentheses Options
 au VimEnter * RainbowParenthesesToggle
 au Syntax * RainbowParenthesesLoadRound
 au Syntax * RainbowParenthesesLoadSquare
 au Syntax * RainbowParenthesesLoadBraces
+
+" Change colors so dark red and red aren't right next to each other
+let g:rbpt_colorpairs = [
+	\ ['darkcyan',    'RoyalBlue3'],
+	\ ['darkred',     'SeaGreen3'],
+	\ ['darkmagenta', 'DarkOrchid3'],
+	\ ['brown',       'firebrick3'],
+	\ ['gray',        'RoyalBlue3'],
+	\ ['Darkblue',    'SeaGreen3'],
+	\ ['darkgreen',   'DarkOrchid3'],
+	\ ['darkcyan',    'firebrick3'],
+	\ ['darkred',     'RoyalBlue3'],
+	\ ['darkmagenta', 'SeaGreen3'],
+	\ ['brown',       'DarkOrchid3'],
+	\ ['gray',        'firebrick3'],
+	\ ['Darkblue',    'RoyalBlue3'],
+	\ ['darkgreen',   'SeaGreen3'],
+	\ ['darkcyan',    'DarkOrchid3'],
+	\ ['red',         'firebrick3'],
+	\ ]

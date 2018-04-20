@@ -1,7 +1,2 @@
 *.swp
-Creyes*.java
-Creyes*.js
-Creyes*.ts
-Creyes*.py
-Creyes*.go
-Creyes*.clj
+creyes*
