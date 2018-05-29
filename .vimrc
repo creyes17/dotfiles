@@ -36,13 +36,13 @@ nnoremap <silent> <Leader>sv :so $HOME/.vimrc<CR>
 
 "" Python mappings
 " In both visual and normal mode, insert a '#' at the start of a line (to comment it out)
-vnoremap <silent> <Leader>e :call setline(line('.') , substitute(getline('.'), '^', '#', ''))<CR>
-nnoremap <silent> <Leader>e :call setline(line('.') , substitute(getline('.'), '^', '#', ''))<CR>
+vnoremap <silent> <Leader>e :call setline(line('.') , substitute(getline('.'), '^\s*\zs', '# ', ''))<CR>
+nnoremap <silent> <Leader>e :call setline(line('.') , substitute(getline('.'), '^\s*\zs', '# ', ''))<CR>
 " In both visual and normal mode, remove a '#' at the start of a line (to uncomment it)
-vnoremap <silent> <Leader>E :call setline(line('.') , substitute(getline('.'), '^#', '', ''))<CR>
-nnoremap <silent> <Leader>E :call setline(line('.') , substitute(getline('.'), '^#', '', ''))<CR>
+vnoremap <silent> <Leader>E :call setline(line('.') , substitute(getline('.'), '^\s*\zs#\s*', '', ''))<CR>
+nnoremap <silent> <Leader>E :call setline(line('.') , substitute(getline('.'), '^\s*\zs#\s*', '', ''))<CR>
 " Put a python debugger statement above the current line using the same leading whitespace as is in the current line
-nnoremap <silent> <Leader>db :call append(line('.') - 1, [substitute(getline('.'), '^\(\s*\).*$', '\1', '') . 'import pdb; pdb.set_trace()'])<CR>
+nnoremap <silent> <Leader>db :call append(line('.') - 1, [substitute(getline('.'), '^\(\s*\).*$', '\1', '') . 'import pdb; pdb.set_trace()  # noqa E702'])<CR>
 
 "" Syntastic settings
 set statusline+=%#warningmsg#
@@ -88,6 +88,7 @@ let g:syntastic_ignore_files = ['html$']
 " Navigate between Syntastic errors
 nnoremap <silent> <Leader>sn :lnext<CR>
 nnoremap <silent> <Leader>sp :lprev<CR>
+nnoremap <silent> <Leader>st :SyntasticToggle<CR>
 
 "" YouCompleteMe settings
 
