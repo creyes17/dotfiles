@@ -1,0 +1,3 @@
+[console_scripts]
+uniseg-dbpath = uniseg.db:print_dbpath
+
