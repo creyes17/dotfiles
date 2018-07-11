@@ -89,6 +89,7 @@ let g:syntastic_mode_map = {
 " Add javascript and html checkers
 let g:syntastic_javascript_checkers = ['jshint']
 let g:syntastic_html_checkers = ['htmlhint']
+let g:syntastic_html_htmlhint_args = "--config ~/.htmlhintrc"
 
 " Navigate between Syntastic errors
 nnoremap <silent> <Leader>sn :lnext<CR>
