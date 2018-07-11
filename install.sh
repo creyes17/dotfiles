@@ -502,6 +502,8 @@ main() {
 	#TODO: Make vim setup idempotent
 	$install_vim && setup_vim;
 
+    #TODO: setup htmlhint and jshint
+
 	setup_caffeine;
 	setup_git;
 	setup_clojure;

@@ -1,4 +1,5 @@
 execute pathogen#infect()
+execute pathogen#helptags()
 
 filetype plugin indent on
 
@@ -23,6 +24,9 @@ set hlsearch
 set nu
 set scrolloff=5
 au BufRead,BufNewFile jquery.*.js set ft=javascript syntax=jquery
+
+" Okay, I give up. Github and your 8-space tabs on the web ruined diffs.
+set expandtab
 
 let mapleader = "-"
 
@@ -82,8 +86,9 @@ let g:syntastic_mode_map = {
 	\ "active_filetypes": [],
 	\ "passive_filetypes": [] }
 
-" Ignore html files
-let g:syntastic_ignore_files = ['html$']
+" Add javascript and html checkers
+let g:syntastic_javascript_checkers = ['jshint']
+let g:syntastic_html_checkers = ['htmlhint']
 
 " Navigate between Syntastic errors
 nnoremap <silent> <Leader>sn :lnext<CR>
