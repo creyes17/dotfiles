@@ -12,6 +12,6 @@
   "space-tab-mixed-disabled": "space",
   "jshint": {},
   "id-class-ad-disabled": true,
-  "id-class-value": "dash",
+  "id-class-value": "false",
   "title-require": false
 }
