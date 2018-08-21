@@ -28,3 +28,6 @@
 [submodule "kward/shunit2"]
 	path = third_party/kward/shunit2
 	url = https://github.com/kward/shunit2.git
+[submodule "third_party/chrisbra/csv.vim"]
+	path = third_party/chrisbra/csv.vim
+	url = https://github.com/chrisbra/csv.vim
