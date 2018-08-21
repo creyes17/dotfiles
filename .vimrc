@@ -7,6 +7,7 @@ syntax on
 
 set hlsearch
 set ruler
+set rulerformat=%f\ %c%V\ %p%%
 
 " Turn off line wrapping
 set nowrap
