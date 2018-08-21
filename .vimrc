@@ -7,7 +7,7 @@ syntax on
 
 set hlsearch
 set ruler
-set rulerformat=%f\ %c%V\ %p%%
+set rulerformat=%60(%f\ %c%V\ %p%%%)
 
 " Turn off line wrapping
 set nowrap
@@ -35,6 +35,10 @@ nnoremap U :redo<CR>
 
 vnoremap > > gv
 vnoremap < < gv
+" Without holding 'shift', make < (now a comma) only shift the selection by a
+" single space. Same with > (now a period).
+vnoremap <silent> , :call setline(line('.') , substitute(getline('.'), '^\s\=', '', ''))<CR>gv
+vnoremap <silent> . :call setline(line('.') , substitute(getline('.'), '^', ' ', ''))<CR>gv
 
 nnoremap <Leader>p :set paste!<CR>
 nnoremap <silent> <Leader>sv :so $HOME/.vimrc<CR>
