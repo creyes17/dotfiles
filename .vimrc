@@ -45,13 +45,32 @@ nnoremap <silent> <Leader>sv :so $HOME/.vimrc<CR>
 
 "" Python mappings
 " In both visual and normal mode, insert a '#' at the start of a line (to comment it out)
-vnoremap <silent> <Leader>e :call setline(line('.') , substitute(getline('.'), '^\s*\zs', '# ', ''))<CR>
-nnoremap <silent> <Leader>e :call setline(line('.') , substitute(getline('.'), '^\s*\zs', '# ', ''))<CR>
+autocmd FileType python vnoremap <buffer> <silent> <Leader>e :call setline(line('.') , substitute(getline('.'), '^\s*\zs', '# ', ''))<CR>
+autocmd FileType python nnoremap <buffer> <silent> <Leader>e :call setline(line('.') , substitute(getline('.'), '^\s*\zs', '# ', ''))<CR>
 " In both visual and normal mode, remove a '#' at the start of a line (to uncomment it)
-vnoremap <silent> <Leader>E :call setline(line('.') , substitute(getline('.'), '^\s*\zs#\s*', '', ''))<CR>
-nnoremap <silent> <Leader>E :call setline(line('.') , substitute(getline('.'), '^\s*\zs#\s*', '', ''))<CR>
+autocmd FileType python vnoremap <buffer> <silent> <Leader>E :call setline(line('.') , substitute(getline('.'), '^\s*\zs#\s*', '', ''))<CR>
+autocmd FileType python nnoremap <buffer> <silent> <Leader>E :call setline(line('.') , substitute(getline('.'), '^\s*\zs#\s*', '', ''))<CR>
 " Put a python debugger statement above the current line using the same leading whitespace as is in the current line
-nnoremap <silent> <Leader>db :call append(line('.') - 1, [substitute(getline('.'), '^\(\s*\).*$', '\1', '') . 'import pdb; pdb.set_trace()  # noqa E702'])<CR>
+autocmd FileType python nnoremap <buffer> <silent> <Leader>db :call append(line('.') - 1, [substitute(getline('.'), '^\(\s*\).*$', '\1', '') . 'import pdb; pdb.set_trace()  # noqa E702'])<CR>
+
+"" Javascript mappings
+" In both visual and normal mode, insert '//' at the start of a line (to comment it out)
+autocmd FileType javascript vnoremap <buffer> <silent> <Leader>e :call setline(line('.') , substitute(getline('.'), '^\s*\zs', '\/\/ ', ''))<CR>
+autocmd FileType javascript nnoremap <buffer> <silent> <Leader>e :call setline(line('.') , substitute(getline('.'), '^\s*\zs', '\/\/ ', ''))<CR>
+" In both visual and normal mode, remove '//' at the start of a line (to uncomment it)
+autocmd FileType javascript vnoremap <buffer> <silent> <Leader>E :call setline(line('.') , substitute(getline('.'), '^\s*\zs\/\/\s*', '', ''))<CR>
+autocmd FileType javascript nnoremap <buffer> <silent> <Leader>E :call setline(line('.') , substitute(getline('.'), '^\s*\zs\/\/\s*', '', ''))<CR>
+
+"" CSV mappings
+" In normal mode, report what column we're in
+autocmd FileType csv nnoremap <buffer> <silent> <Leader>c :CSVWhatColumn!<CR>
+autocmd FileType csv nnoremap <buffer> <silent> <Leader>C :CSVWhatColumn<CR>
+" In normal mode, highlight or unhighlight the current column
+autocmd FileType csv nnoremap <buffer> <silent> <Leader>h :CSVHiColumn<CR>
+autocmd FileType csv nnoremap <buffer> <silent> <Leader>H :CSVHiColumn!<CR>
+" In normal mode, show or hide the header
+autocmd FileType csv nnoremap <buffer> <silent> <Leader>t :Header<CR>
+autocmd FileType csv nnoremap <buffer> <silent> <Leader>T :Header!<CR>
 
 "" Syntastic settings
 set statusline+=%#warningmsg#
