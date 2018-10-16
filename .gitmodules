@@ -31,3 +31,6 @@
 [submodule "third_party/chrisbra/csv.vim"]
 	path = third_party/chrisbra/csv.vim
 	url = https://github.com/chrisbra/csv.vim
+[submodule "third_party/mxw/vim-jsx"]
+	path = third_party/mxw/vim-jsx
+	url = https://github.com/mxw/vim-jsx.git
