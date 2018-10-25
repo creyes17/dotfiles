@@ -1,0 +1,8 @@
+[core]
+	excludesfile = /Users/chris/github/creyes17/dotfiles/.gitignore_global
+[pager]
+    branch = false
+[user]
+	name = Christopher R. Reyes
+	email = ChrisReyes@alum.mit.edu
+[credential]
