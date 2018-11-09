@@ -247,7 +247,7 @@ setup_git() {
 
 	if [ "$no_config" -ne 0 ]; then
 		# This means the config file didn't exist
-		git config --global core.excludesfile "$script_dir_abs/.gitignore_global";
+		ln -s "$script_dir_abs/.gitconfig" "$HOME/.gitconfig"
 	fi
 
 	return 0;
