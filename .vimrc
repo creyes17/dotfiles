@@ -63,11 +63,16 @@ autocmd FileType javascript nnoremap <buffer> <silent> <Leader>E :call setline(l
 
 "" Golang mappings
 " In both visual and normal mode, insert '//' at the start of a line (to comment it out)
-autocmd FileType *.go vnoremap <buffer> <silent> <Leader>e :call setline(line('.') , substitute(getline('.'), '^\s*\zs', '\/\/ ', ''))<CR>
-autocmd FileType *.go nnoremap <buffer> <silent> <Leader>e :call setline(line('.') , substitute(getline('.'), '^\s*\zs', '\/\/ ', ''))<CR>
+autocmd FileType go vnoremap <buffer> <silent> <Leader>e :call setline(line('.') , substitute(getline('.'), '^\s*\zs', '\/\/ ', ''))<CR>
+autocmd FileType go nnoremap <buffer> <silent> <Leader>e :call setline(line('.') , substitute(getline('.'), '^\s*\zs', '\/\/ ', ''))<CR>
 " In both visual and normal mode, remove '//' at the start of a line (to uncomment it)
-autocmd FileType *.go vnoremap <buffer> <silent> <Leader>E :call setline(line('.') , substitute(getline('.'), '^\s*\zs\/\/\s*', '', ''))<CR>
-autocmd FileType *.go nnoremap <buffer> <silent> <Leader>E :call setline(line('.') , substitute(getline('.'), '^\s*\zs\/\/\s*', '', ''))<CR>
+autocmd FileType go vnoremap <buffer> <silent> <Leader>E :call setline(line('.') , substitute(getline('.'), '^\s*\zs\/\/\s*', '', ''))<CR>
+autocmd FileType go nnoremap <buffer> <silent> <Leader>E :call setline(line('.') , substitute(getline('.'), '^\s*\zs\/\/\s*', '', ''))<CR>
+" Attempt to build and navigate through errors
+autocmd FileType go nnoremap <silent> <Leader>gb :GoBuild<CR>
+autocmd FileType go nnoremap <silent> <Leader>gt :cclose<CR>
+autocmd FileType go nnoremap <silent> <Leader>sn :cnext<CR>
+autocmd FileType go nnoremap <silent> <Leader>sp :cprevious<CR>
 
 "" CSV mappings
 " In normal mode, report what column we're in
@@ -124,9 +129,9 @@ let g:syntastic_html_checkers = ['htmlhint']
 let g:syntastic_html_htmlhint_args = "--config ~/.htmlhintrc"
 
 " Navigate between Syntastic errors
-nnoremap <silent> <Leader>sn :lnext<CR>
-nnoremap <silent> <Leader>sp :lprev<CR>
-nnoremap <silent> <Leader>st :SyntasticToggle<CR>
+nmap <silent> <Leader>sn :lnext<CR>
+nmap <silent> <Leader>sp :lprev<CR>
+nmap <silent> <Leader>st :SyntasticToggle<CR>
 
 "" YouCompleteMe settings
 
