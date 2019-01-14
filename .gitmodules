@@ -35,5 +35,5 @@
 	path = third_party/mxw/vim-jsx
 	url = https://github.com/mxw/vim-jsx.git
 [submodule "third_party/faith/vim-go"]
-	path = third_party/faith/vim-go
+	path = third_party/fatih/vim-go
 	url = https://github.com/fatih/vim-go.git
