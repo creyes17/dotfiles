@@ -61,6 +61,14 @@ autocmd FileType javascript nnoremap <buffer> <silent> <Leader>e :call setline(l
 autocmd FileType javascript vnoremap <buffer> <silent> <Leader>E :call setline(line('.') , substitute(getline('.'), '^\s*\zs\/\/\s*', '', ''))<CR>
 autocmd FileType javascript nnoremap <buffer> <silent> <Leader>E :call setline(line('.') , substitute(getline('.'), '^\s*\zs\/\/\s*', '', ''))<CR>
 
+"" Golang mappings
+" In both visual and normal mode, insert '//' at the start of a line (to comment it out)
+autocmd FileType *.go vnoremap <buffer> <silent> <Leader>e :call setline(line('.') , substitute(getline('.'), '^\s*\zs', '\/\/ ', ''))<CR>
+autocmd FileType *.go nnoremap <buffer> <silent> <Leader>e :call setline(line('.') , substitute(getline('.'), '^\s*\zs', '\/\/ ', ''))<CR>
+" In both visual and normal mode, remove '//' at the start of a line (to uncomment it)
+autocmd FileType *.go vnoremap <buffer> <silent> <Leader>E :call setline(line('.') , substitute(getline('.'), '^\s*\zs\/\/\s*', '', ''))<CR>
+autocmd FileType *.go nnoremap <buffer> <silent> <Leader>E :call setline(line('.') , substitute(getline('.'), '^\s*\zs\/\/\s*', '', ''))<CR>
+
 "" CSV mappings
 " In normal mode, report what column we're in
 autocmd FileType csv nnoremap <buffer> <silent> <Leader>c :CSVWhatColumn!<CR>
