@@ -77,6 +77,8 @@ autocmd FileType go nnoremap <silent> <Leader>gp :cprevious<CR>
 autocmd FileType go nnoremap <silent> <Leader>gt :GoAlternate<CR>
 " Jump to definition
 autocmd FileType go nnoremap <silent> <Leader>gd :GoDef<CR>
+" Search for functions/tags/packages/etc.
+autocmd FileType go nnoremap <silent> <Leader>gf :GoDeclsDir<CR>
 " Don't expand tabs in go files
 autocmd FileType go set noexpandtab
 
