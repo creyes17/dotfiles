@@ -70,9 +70,15 @@ autocmd FileType go vnoremap <buffer> <silent> <Leader>E :call setline(line('.')
 autocmd FileType go nnoremap <buffer> <silent> <Leader>E :call setline(line('.') , substitute(getline('.'), '^\s*\zs\/\/\s*', '', ''))<CR>
 " Attempt to build and navigate through errors
 autocmd FileType go nnoremap <silent> <Leader>gb :GoBuild<CR>
-autocmd FileType go nnoremap <silent> <Leader>gt :cclose<CR>
-autocmd FileType go nnoremap <silent> <Leader>sn :cnext<CR>
-autocmd FileType go nnoremap <silent> <Leader>sp :cprevious<CR>
+autocmd FileType go nnoremap <silent> <Leader>gq :cclose<CR>
+autocmd FileType go nnoremap <silent> <Leader>gn :cnext<CR>
+autocmd FileType go nnoremap <silent> <Leader>gp :cprevious<CR>
+" Jump between source and test files
+autocmd FileType go nnoremap <silent> <Leader>gt :GoAlternate<CR>
+" Jump to definition
+autocmd FileType go nnoremap <silent> <Leader>gd :GoDef<CR>
+" Don't expand tabs in go files
+autocmd FileType go set noexpandtab
 
 "" CSV mappings
 " In normal mode, report what column we're in

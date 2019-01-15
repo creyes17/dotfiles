@@ -37,3 +37,6 @@
 [submodule "third_party/faith/vim-go"]
 	path = third_party/fatih/vim-go
 	url = https://github.com/fatih/vim-go.git
+[submodule "third_party/ctrlpvim/ctrlp.vim"]
+	path = third_party/ctrlpvim/ctrlp.vim
+	url = https://github.com/ctrlpvim/ctrlp.vim.git
