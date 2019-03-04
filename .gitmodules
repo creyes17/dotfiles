@@ -43,3 +43,6 @@
 [submodule "third_party/ludovicchabant/vim-gutentags"]
 	path = third_party/ludovicchabant/vim-gutentags
 	url = https://github.com/ludovicchabant/vim-gutentags.git
+[submodule "third_party/JamshedVesuna/vim-markdown-preview"]
+	path = third_party/JamshedVesuna/vim-markdown-preview
+	url = git@github.com:JamshedVesuna/vim-markdown-preview.git

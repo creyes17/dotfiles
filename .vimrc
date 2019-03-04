@@ -141,6 +141,22 @@ nmap <silent> <Leader>sn :lnext<CR>
 nmap <silent> <Leader>sp :lprev<CR>
 nmap <silent> <Leader>st :SyntasticToggle<CR>
 
+"" Markdown Settings
+" Use github-style markdown
+" NOTE: This option requires a network connection. Set to 0 if you need this
+"       offline
+let vim_markdown_preview_github=1
+" Display images and generate previews on buffer writes
+let vim_markdown_preview_toggle=2
+" Normally the documentation says you should use vim_markdown_preview_hotkey
+" here instead, but that doesn't seem to work. Just setting this up manually
+autocmd Filetype markdown,md map <buffer> <Leader>m :call Vim_Markdown_Preview_Local()<CR>
+let vim_markdown_preview_hotkey='<Leader><Leader><Leader>' "Something I'm unlikely to use accidentally
+" Use Chrome instead of Safari for previews
+let vim_markdown_preview_browser='Google Chrome'
+" Remove the generated preview html file after use
+let vim_markdown_preview_temp_file=1
+
 "" YouCompleteMe settings
 
 "	Let the "Enter" key also select an option from the menu
