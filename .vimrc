@@ -170,6 +170,14 @@ let g:ycm_server_python_interpreter = '/usr/bin/python'
 
 "let g:ycm_python_binary_path = '/usr/local/bin/python3'
 
+
+"" Vim-Prettier settings
+" Don't use the quickfix for parsing warnings. (This is already done by eshint)
+let g:prettier#quickfix_enabled = 0
+" Automatically run when saving javascript, css, markdown, or html files.
+let g:prettier#autoformat = 0
+autocmd BufWritePre *.js,*.jsx,*.es6,*.less,*.scss,*.sass,*.css,*.md,*.html Prettier
+
 "" RainbowParentheses Options
 au VimEnter * RainbowParenthesesToggle
 au Syntax * RainbowParenthesesLoadRound
