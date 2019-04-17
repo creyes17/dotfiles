@@ -30,6 +30,7 @@ function () {
 	export NVM_DIR="$HOME/.nvm";
 
 	export CHEAP_STASH_HOME="$HOME/tmp/cheap-stash";
+	export DOTFILES_HOME="$HOME/github/creyes17/dotfiles";
 
 	export PATH="$HOME/bin:/Applications/LilyPond.app/Contents/Resources/bin:$ANDROID_HOME/platform-tools:$ANDROID_HOME/tools:$GOPATH/bin:$VIMHOME/bin:$PERLPATH/bin:$PATH";
 	export PATH="$NVM_DIR/versions/node/v7.10.0/bin/npm:$PATH";
@@ -370,6 +371,28 @@ USAGE
 		when-changed -s "$file" "$test_file" "$@" -c "clear; date; python -m unittest -v $module"
 
 		return 0
+	}
+
+	#=== FUNCTION ================================================================
+	# NAME: create-script
+	# DESCRIPTION: Creates a bash script with the given name using a template.
+	# PARAMETERS: name  - The name of the script to create
+	# DEPENDENCIES: None.
+	# ENVIRONMENT VARIABLES: None.
+	# SIDE EFFECTS: None.
+	# EXIT CODES: 1 - invalid number of arguments
+	#=============================================================================
+	create-script() {
+		if [ $# -ne 1 ]; then
+			echo "Expecting required argument: script name"
+			return 1;
+		fi
+
+		local script_name="$1";
+		cp $DOTFILES_HOME/bash-script-template.sh $1;
+		chmod +x $1;
+
+		return 0;
 	}
 
 	### Aliases
