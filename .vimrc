@@ -93,7 +93,11 @@ autocmd FileType csv nnoremap <buffer> <silent> <Leader>H :CSVHiColumn!<CR>
 autocmd FileType csv nnoremap <buffer> <silent> <Leader>t :Header<CR>
 autocmd FileType csv nnoremap <buffer> <silent> <Leader>T :Header!<CR>
 
+"" Gutentags settings
+let g:gutentags_ctags_exclude = ["node_modules", ".git", "ext"]
+
 "" Syntastic settings
+set statusline+=%{gutentags#statusline()}
 set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
@@ -203,3 +207,7 @@ let g:rbpt_colorpairs = [
 	\ ['darkcyan',    'DarkOrchid3'],
 	\ ['red',         'firebrick3'],
 	\ ]
+
+
+"" Other Colors
+hi Visual  term=reverse ctermbg=7 guibg=LightGrey guifg=Black ctermfg=0
