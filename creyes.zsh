@@ -171,14 +171,18 @@ USAGE
 	# ENVIRONMENT VARIABLES: None.
 	# DEPENDENCIES: git
 	# SIDE EFFECTS: Pulls the latest from master. May result in merge conflicts
-	# EXIT CODES: see git
+	# EXIT CODES: 1 if could not checkout a different branch
 	#=============================================================================
 	gmm() {
 		local old_branch=$(get_git_branch);
+        git checkout - || return 1;
+        local old_previous_branch=$(get_git_branch);
 		git checkout master;
 		git pull;
 		git checkout "$old_branch";
 		git merge master;
+        git checkout "$old_previous_branch";
+        git checkout "$old_branch";
 	}
 
 	# Sets up default python version
