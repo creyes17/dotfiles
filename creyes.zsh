@@ -405,6 +405,7 @@ USAGE
 	alias cdcs="cd $HOME/xamarin";
 	alias cdgo="cd $GOPATH/src/github.com/creyes17";
 	alias cdjs="cd $HOME/node";
+	alias cddot="cd $HOME/github/creyes17/dotfiles";
 	alias cdperl="cd $HOME/perl";
 	alias f="fg";
 	alias gd="git diff -w";
@@ -417,5 +418,3 @@ USAGE
 	alias vimbrc="vim $zshcustom/creyes.zsh";
 	alias vimvrc="vim $HOME/.vimrc";
 	alias whatismyip="dig +short myip.opendns.com @resolver1.opendns.com";
-	alias minivim="vim -u NONE";
-}
