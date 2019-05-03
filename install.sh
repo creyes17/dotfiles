@@ -501,8 +501,11 @@ main() {
 
 	#TODO: Make vim setup idempotent
 	$install_vim && setup_vim;
+    #TODO: install prettier for vim-prettier via `brew install prettier`
 
-    #TODO: setup htmlhint and jshint
+    #TODO: setup htmlhint and eslint
+
+    #TODO: install programmer dvorak
 
 	setup_caffeine;
 	setup_git;
