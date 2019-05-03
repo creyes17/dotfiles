@@ -61,6 +61,27 @@ autocmd FileType javascript nnoremap <buffer> <silent> <Leader>e :call setline(l
 autocmd FileType javascript vnoremap <buffer> <silent> <Leader>E :call setline(line('.') , substitute(getline('.'), '^\s*\zs\/\/\s*', '', ''))<CR>
 autocmd FileType javascript nnoremap <buffer> <silent> <Leader>E :call setline(line('.') , substitute(getline('.'), '^\s*\zs\/\/\s*', '', ''))<CR>
 
+"" Golang mappings
+" In both visual and normal mode, insert '//' at the start of a line (to comment it out)
+autocmd FileType go vnoremap <buffer> <silent> <Leader>e :call setline(line('.') , substitute(getline('.'), '^\s*\zs', '\/\/ ', ''))<CR>
+autocmd FileType go nnoremap <buffer> <silent> <Leader>e :call setline(line('.') , substitute(getline('.'), '^\s*\zs', '\/\/ ', ''))<CR>
+" In both visual and normal mode, remove '//' at the start of a line (to uncomment it)
+autocmd FileType go vnoremap <buffer> <silent> <Leader>E :call setline(line('.') , substitute(getline('.'), '^\s*\zs\/\/\s*', '', ''))<CR>
+autocmd FileType go nnoremap <buffer> <silent> <Leader>E :call setline(line('.') , substitute(getline('.'), '^\s*\zs\/\/\s*', '', ''))<CR>
+" Attempt to build and navigate through errors
+autocmd FileType go nnoremap <silent> <Leader>gb :GoBuild<CR>
+autocmd FileType go nnoremap <silent> <Leader>gq :cclose<CR>
+autocmd FileType go nnoremap <silent> <Leader>gn :cnext<CR>
+autocmd FileType go nnoremap <silent> <Leader>gp :cprevious<CR>
+" Jump between source and test files
+autocmd FileType go nnoremap <silent> <Leader>gt :GoAlternate<CR>
+" Jump to definition
+autocmd FileType go nnoremap <silent> <Leader>gd :GoDef<CR>
+" Search for functions/tags/packages/etc.
+autocmd FileType go nnoremap <silent> <Leader>gf :GoDeclsDir<CR>
+" Don't expand tabs in go files
+autocmd FileType go set noexpandtab
+
 "" CSV mappings
 " In normal mode, report what column we're in
 autocmd FileType csv nnoremap <buffer> <silent> <Leader>c :CSVWhatColumn!<CR>
@@ -72,7 +93,11 @@ autocmd FileType csv nnoremap <buffer> <silent> <Leader>H :CSVHiColumn!<CR>
 autocmd FileType csv nnoremap <buffer> <silent> <Leader>t :Header<CR>
 autocmd FileType csv nnoremap <buffer> <silent> <Leader>T :Header!<CR>
 
+"" Gutentags settings
+let g:gutentags_ctags_exclude = ["node_modules", ".git", "ext"]
+
 "" Syntastic settings
+set statusline+=%{gutentags#statusline()}
 set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
@@ -111,14 +136,30 @@ let g:syntastic_mode_map = {
 	\ "passive_filetypes": [] }
 
 " Add javascript and html checkers
-let g:syntastic_javascript_checkers = ['jshint']
+let g:syntastic_javascript_checkers = ['eslint']
 let g:syntastic_html_checkers = ['htmlhint']
 let g:syntastic_html_htmlhint_args = "--config ~/.htmlhintrc"
 
 " Navigate between Syntastic errors
-nnoremap <silent> <Leader>sn :lnext<CR>
-nnoremap <silent> <Leader>sp :lprev<CR>
-nnoremap <silent> <Leader>st :SyntasticToggle<CR>
+nmap <silent> <Leader>sn :lnext<CR>
+nmap <silent> <Leader>sp :lprev<CR>
+nmap <silent> <Leader>st :SyntasticToggle<CR>
+
+"" Markdown Settings
+" Use github-style markdown
+" NOTE: This option requires a network connection. Set to 0 if you need this
+"       offline
+let vim_markdown_preview_github=1
+" Display images and generate previews on buffer writes
+let vim_markdown_preview_toggle=2
+" Normally the documentation says you should use vim_markdown_preview_hotkey
+" here instead, but that doesn't seem to work. Just setting this up manually
+autocmd Filetype markdown,md map <buffer> <Leader>m :call Vim_Markdown_Preview_Local()<CR>
+let vim_markdown_preview_hotkey='<Leader><Leader><Leader>' "Something I'm unlikely to use accidentally
+" Use Chrome instead of Safari for previews
+let vim_markdown_preview_browser='Google Chrome'
+" Remove the generated preview html file after use
+let vim_markdown_preview_temp_file=1
 
 "" YouCompleteMe settings
 
@@ -132,6 +173,14 @@ nnoremap <silent> <Leader>st :SyntasticToggle<CR>
 let g:ycm_server_python_interpreter = '/usr/bin/python'
 
 "let g:ycm_python_binary_path = '/usr/local/bin/python3'
+
+
+"" Vim-Prettier settings
+" Don't use the quickfix for parsing warnings. (This is already done by eshint)
+let g:prettier#quickfix_enabled = 0
+" Automatically run when saving javascript, css, markdown, or html files.
+let g:prettier#autoformat = 0
+autocmd BufWritePre *.js,*.jsx,*.es6,*.less,*.scss,*.sass,*.css,*.md,*.html Prettier
 
 "" RainbowParentheses Options
 au VimEnter * RainbowParenthesesToggle
@@ -158,3 +207,7 @@ let g:rbpt_colorpairs = [
 	\ ['darkcyan',    'DarkOrchid3'],
 	\ ['red',         'firebrick3'],
 	\ ]
+
+
+"" Other Colors
+hi Visual  term=reverse ctermbg=7 guibg=LightGrey guifg=Black ctermfg=0

@@ -8,15 +8,22 @@ To set up the global gitignore file, run the following command from the root dir
 
 Relies on the following other git repositories (included as submodules)
 	
-    valloric/YouCompleteMe
-    gberenfield/cljfold.vim
-    Shutnik/jshint2.vim
+    chrisbra/csv.vim
     chumakd/perlomni.vim
-    kien/rainbow_parentheses.vim
-    scrooloose/syntastic
+    ctrlpvim/ctrlp.vim
+    fatih/vim-go
+    gberenfield/cljfold.vim
     guns/vim-clojure-static
-    tpope/vim-fireplace
+    JamshedVesuna/vim-markdown-preview
+    kien/rainbow_parentheses.vim
+    kward/shunit2
+    ludovicchabant/vim-gutentags
+    mxw/vim-jsx
     pangloss/vim-javascript
+    scrooloose/syntastic
+    Shutnik/jshint2.vim
+    tpope/vim-fireplace
+    valloric/YouCompleteMe
 
 Make sure to install YouCompleteMe using the instructions here: https://github.com/Valloric/YouCompleteMe#full-installation-guide. I recommend using Valloric's install.py script.
 
