@@ -40,7 +40,7 @@ deactivate () {
 # unset irrelevant variables
 deactivate nondestructive
 
-VIRTUAL_ENV="/Users/world/github/creyes17/dotfiles/venv/personal-website"
+VIRTUAL_ENV="$HOME/github/creyes17/dotfiles/venv/personal-website"
 export VIRTUAL_ENV
 
 _OLD_VIRTUAL_PATH="$PATH"
