@@ -40,6 +40,13 @@ function () {
 	export WINEARCH="win64";
 	export WINEPREFIX="$HOME/.wine";
 
+    ### Virtualenv wrapper setup
+    if [ -f $(which virtualenvwrapper.sh) ]; then
+        source $(which virtualenvwrapper.sh);
+    else
+        echo 'Note: virtualenvwrapper not installed. Install via pip';
+    fi
+
 	### Useful Functions
 
 	# View a small window of a file
@@ -406,11 +413,7 @@ USAGE
 	alias .bp=". $zshcustom/creyes.zsh";
 	alias .brc=". $zshcustom/creyes.zsh";
 	alias .nvm=". $NVM_DIR/nvm.sh; nvm use --delete-prefix v7.6.0"
-	alias cdcs="cd $HOME/xamarin";
-	alias cdgo="cd $GOPATH/src/github.com/creyes17";
-	alias cdjs="cd $HOME/node";
 	alias cddot="cd $HOME/github/creyes17/dotfiles";
-	alias cdperl="cd $HOME/perl";
 	alias f="fg";
 	alias gd="git diff -w";
 	alias gitup="git push --set-upstream origin \$(get_git_branch)";
