@@ -93,6 +93,14 @@ autocmd FileType csv nnoremap <buffer> <silent> <Leader>H :CSVHiColumn!<CR>
 autocmd FileType csv nnoremap <buffer> <silent> <Leader>t :Header<CR>
 autocmd FileType csv nnoremap <buffer> <silent> <Leader>T :Header!<CR>
 
+"" Clojure mappings
+" In both visual and normal mode, insert a ';' at the start of a line (to comment it out)
+autocmd FileType clojure vnoremap <buffer> <silent> <Leader>e :call setline(line('.') , substitute(getline('.'), '^\s*\zs', '; ', ''))<CR>
+autocmd FileType clojure nnoremap <buffer> <silent> <Leader>e :call setline(line('.') , substitute(getline('.'), '^\s*\zs', '; ', ''))<CR>
+" In both visual and normal mode, remove a ';' at the start of a line (to uncomment it)
+autocmd FileType clojure vnoremap <buffer> <silent> <Leader>E :call setline(line('.') , substitute(getline('.'), '^\s*\zs;\s\=', '', ''))<CR>
+autocmd FileType clojure nnoremap <buffer> <silent> <Leader>E :call setline(line('.') , substitute(getline('.'), '^\s*\zs;\s\=', '', ''))<CR>
+
 "" Gutentags settings
 let g:gutentags_ctags_exclude = ["node_modules", ".git", "ext"]
 
