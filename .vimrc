@@ -182,8 +182,16 @@ let g:ycm_server_python_interpreter = '/usr/bin/python'
 
 "let g:ycm_python_binary_path = '/usr/local/bin/python3'
 
+"" CtrlP Settings for file searching
+" Force Ctrl P to index as many files as it finds in the project
+let g:ctrlp_max_files=0
+" Force Ctrl P to go very deep into directory structures
+let g:ctrlp_max_depth=40
+
 
 "" Vim-Prettier settings
+" Use the globally installed prettier
+let g:prettier#exec_cmd_path = "/usr/local/bin/prettier"
 " Don't use the quickfix for parsing warnings. (This is already done by eshint)
 let g:prettier#quickfix_enabled = 0
 " Automatically run when saving javascript, css, markdown, or html files.
