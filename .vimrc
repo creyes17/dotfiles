@@ -103,6 +103,8 @@ autocmd FileType clojure nnoremap <buffer> <silent> <Leader>E :call setline(line
 
 "" Gutentags settings
 let g:gutentags_ctags_exclude = ["node_modules", ".git", "ext"]
+" Gutentags has trouble figuring out tags for clojure files
+let g:gutentags_exclude_filetypes = ["clojure"]
 
 "" Syntastic settings
 set statusline+=%{gutentags#statusline()}
