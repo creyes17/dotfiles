@@ -184,6 +184,11 @@ let g:ycm_server_python_interpreter = '/usr/bin/python'
 
 "let g:ycm_python_binary_path = '/usr/local/bin/python3'
 
+"" UltiSnips settings
+nmap <silent> <Leader>ue :UltiSnipsEdit<CR>
+let g:UltiSnipsExpandTrigger="<Leader>ut"
+let g:UltiSnipsEditSplit="horizontal"
+
 "" CtrlP Settings for file searching
 " Force Ctrl P to index as many files as it finds in the project
 let g:ctrlp_max_files=0
