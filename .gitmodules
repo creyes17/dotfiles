@@ -49,3 +49,6 @@
 [submodule "third_party/prettier/vim-prettier"]
 	path = third_party/prettier/vim-prettier
 	url = git@github.com:prettier/vim-prettier.git
+[submodule "third_party/SirVer/ultisnips"]
+	path = third_party/SirVer/ultisnips
+	url = git@github.com:SirVer/ultisnips.git
