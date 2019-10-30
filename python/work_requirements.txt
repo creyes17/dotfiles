@@ -16,7 +16,7 @@ cffi==1.12.3
 chardet==3.0.4
 cryptography==2.7
 docutils==0.14
-ecdsa==0.13.2
+ecdsa==0.13.3
 enum34==1.1.6
 expiringdict==1.1.4
 Fabric==1.11.1
