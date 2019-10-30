@@ -419,6 +419,7 @@ USAGE
 	alias gitup="git push --set-upstream origin \$(get_git_branch)";
 	alias gitpu="echo 'Did you mean git push or gitup?'";
 	alias gobuildandtest="go build; go install; go test";
+    alias ipython="python -m IPython";
 	alias j="jobs";
 	alias untar="tar -zxvf ";
 	alias vimbp="vim $zshcustom/creyes.zsh";
