@@ -80,7 +80,7 @@ qrcode==5.3
 redis==2.10.5
 redis-py-cluster==1.3.6
 reportlab==3.3.0
-requests==2.18.4
+requests==2.20.0
 rsa==4.0
 s3transfer==0.1.13
 semver==2.8.1
