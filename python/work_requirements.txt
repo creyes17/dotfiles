@@ -59,7 +59,7 @@ paramiko==1.18.5
 passlib==1.7.1
 pathtools==0.1.2
 pbr==5.4.0
-Pillow==3.3.0
+Pillow==6.2.0
 pyasn1==0.4.5
 pyasn1-modules==0.2.5
 pycparser==2.19
