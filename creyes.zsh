@@ -21,6 +21,9 @@ function () {
 	# Beep when accessing nonexistent history.
 	setopt HIST_BEEP;
 
+    # Make sure GPG is able to ask for user passphrase
+    export GPG_TTY=$(tty);
+
 	### Paths and Other Important Variables
 
 	export PERLPATH="/usr/local/Cellar/perl/5.24.0_1";
