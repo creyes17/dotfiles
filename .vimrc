@@ -60,6 +60,10 @@ autocmd FileType javascript nnoremap <buffer> <silent> <Leader>e :call setline(l
 " In both visual and normal mode, remove '//' at the start of a line (to uncomment it)
 autocmd FileType javascript vnoremap <buffer> <silent> <Leader>E :call setline(line('.') , substitute(getline('.'), '^\s*\zs\/\/\s*', '', ''))<CR>
 autocmd FileType javascript nnoremap <buffer> <silent> <Leader>E :call setline(line('.') , substitute(getline('.'), '^\s*\zs\/\/\s*', '', ''))<CR>
+" Prettier likes 2 spaces instead of 4
+autocmd FileType javascript set ts=2
+autocmd FileType javascript set tabstop=2
+autocmd FileType javascript set shiftwidth=2
 
 "" Golang mappings
 " In both visual and normal mode, insert '//' at the start of a line (to comment it out)
@@ -195,6 +199,8 @@ let g:ycm_server_python_interpreter = '/usr/bin/python'
 let g:ctrlp_max_files=0
 " Force Ctrl P to go very deep into directory structures
 let g:ctrlp_max_depth=40
+" Ignore node_modules and git internal files
+let g:ctrlp_custom_ignore = 'node_modules'
 
 
 "" Vim-Prettier settings
