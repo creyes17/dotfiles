@@ -160,11 +160,11 @@ setup_vim() {
         ln -s "$script_dir_abs/.vimrc" "$HOME";
     fi
 
-    if [ ! -e "$HOME/.jshintrc"]; then
+    if [ ! -e "$HOME/.jshintrc" ]; then
         ln -s "$script_dir_abs/.jshintrc" "$HOME";
     fi
 
-    if [ ! -e "$HOME/.tern-project"]; then
+    if [ ! -e "$HOME/.tern-project" ]; then
         ln -s "$script_dir_abs/.tern-project" "$HOME";
     fi
 
