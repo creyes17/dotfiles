@@ -136,8 +136,8 @@ function! Creyes17Py3()
   let g:syntastic_python_python_exec = 'python3'
 endfunction
 
-" Default to python 2
-call Creyes17Py2()
+" Default to python 3
+call Creyes17Py3()
 
 " Allow changing between them
 nnoremap <Leader>sp2 :call Creyes17Py2()<CR>
