@@ -1,5 +1,5 @@
 [core]
-	excludesfile = /Users/chris/github/creyes17/dotfiles/.gitignore_global
+	excludesfile = ~/.gitignore_global
 [pager]
     branch = false
 [user]

@@ -300,7 +300,7 @@ setup_bin() {
             local link_target_rel=$(readlink "$bin_home");
             local link_target_abs;
 
-            if [[ "$link_target_rel" =~ "^/" ]]; then
+            if [[ "$link_target_rel" == "/"* ]]; then
                 link_target_abs="$link_target_rel";
             else
                 local complex_abs_path="$(dirname $bin_home)/$link_target_rel";
@@ -474,7 +474,10 @@ main() {
     setup_clojure;
     setup_bin;
     setup_home_end_keys;
-    setup_python;
+
+    # Going to switch to virtualenv-wrapper and just share
+    # requirements.txt files instead of whole directories
+    # setup_python;
 
     return 0;
 }
