@@ -479,6 +479,9 @@ main() {
     # requirements.txt files instead of whole directories
     # setup_python;
 
+    # TODO: Set up home/end buttons on mac
+    #       See https://damieng.com/blog/2015/04/24/make-home-end-keys-behave-like-windows-on-mac-os-x
+
     return 0;
 }
 
