@@ -37,6 +37,7 @@ function () {
 
     export PATH="$HOME/bin:/Applications/LilyPond.app/Contents/Resources/bin:$ANDROID_HOME/platform-tools:$ANDROID_HOME/tools:$GOPATH/bin:$VIMHOME/bin:$PERLPATH/bin:$PATH";
     export PATH="$NVM_DIR/versions/node/v7.10.0/bin/npm:$PATH";
+    export PATH="/usr/local/bin:/usr/local/sbin:$PATH";
 
     export EDITOR="vim -u NONE";
 
