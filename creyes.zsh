@@ -48,8 +48,10 @@ function () {
     export WINEPREFIX="$HOME/.wine";
 
     ### Virtualenv wrapper setup
-    if [ -f $(which virtualenvwrapper.sh) ]; then
-        virtualenvwrapper.sh;
+    if command -v pyenv; then
+        pyenv virtualenvwrapper;
+    elif [ -f $(which virtualenvwrapper.sh) ]; then
+        source $(which virtualenvwrapper.sh);
     else
         echo 'Note: virtualenvwrapper not installed. Install via pip';
     fi
