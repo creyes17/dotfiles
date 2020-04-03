@@ -39,6 +39,9 @@ function () {
     export PATH="$NVM_DIR/versions/node/v7.10.0/bin/npm:$PATH";
     export PATH="/usr/local/bin:/usr/local/sbin:$PATH";
 
+    # Use pyenv distributions of python before homebrew if installed
+    export PATH="$HOME/.pyenv/shims/:$PATH"
+
     export EDITOR="vim -u NONE";
 
     export WINEARCH="win64";
