@@ -182,11 +182,6 @@ let vim_markdown_preview_temp_file=1
 "	Don't automatically insert/select anything automatically
 "set completeopt+=noinsert
 "set completeopt+=noselect
-" Specify the correct python executable to use
-"let g:ycm_server_python_interpreter = '/Users/chris/github/creyes17/dotfiles/venv/work/bin/python'
-let g:ycm_server_python_interpreter = '/usr/bin/python'
-
-"let g:ycm_python_binary_path = '/usr/local/bin/python3'
 
 "" UltiSnips settings
 " XXX Disabling these until I figure out how to use ulti snips
