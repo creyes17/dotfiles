@@ -40,7 +40,7 @@ function () {
     export PATH="/usr/local/bin:/usr/local/sbin:$PATH";
 
     # Use pyenv distributions of python before homebrew if installed
-    export PATH="$HOME/.pyenv/shims/:$PATH"
+    export PATH="$HOME/.pyenv/shims:$PATH";
 
     export EDITOR="vim -u NONE";
 
@@ -49,7 +49,7 @@ function () {
 
     ### Virtualenv wrapper setup
     if [ -f $(which virtualenvwrapper.sh) ]; then
-        source $(which virtualenvwrapper.sh);
+        virtualenvwrapper.sh;
     else
         echo 'Note: virtualenvwrapper not installed. Install via pip';
     fi
@@ -435,3 +435,5 @@ USAGE
     alias vimvrc="vim $HOME/.vimrc";
     alias whatismyip="dig +short myip.opendns.com @resolver1.opendns.com";
 }
+# If you need to turn on debugging, uncomment the following line and comment the preceding line.
+#} 2>"$HOME/startup.$(date '+%Y-%m-%d.%H-%M-%S').err" 1>"$HOME/startup.$(date '+%Y-%m-%d.%H-%M-%S').out";
