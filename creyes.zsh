@@ -426,8 +426,9 @@ USAGE
     alias ctags="$(brew --prefix)/bin/ctags";  # Note: This fails if brew is not installed
     alias f="fg";
     alias gd="git diff -w";
-    alias gitup="git push --set-upstream origin \$(get_git_branch)";
+    alias gg="git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %C(yellow):%an%Creset %Cgreen(%cr)%Creset' --abbrev-commit --date=relative";
     alias gitpu="echo 'Did you mean git push or gitup?'";
+    alias gitup="git push --set-upstream origin \$(get_git_branch)";
     alias gobuildandtest="go build; go install; go test";
     alias ipython="python -m IPython";
     alias j="jobs";
