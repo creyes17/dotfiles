@@ -31,8 +31,6 @@ set expandtab
 
 let mapleader = "-"
 
-nnoremap U :redo<CR>
-
 vnoremap > > gv
 vnoremap < < gv
 " Without holding 'shift', make < (now a comma) only shift the selection by a
@@ -121,38 +119,22 @@ let g:syntastic_check_on_wq = 0
 let g:syntastic_enable_signs = 1
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
-
-" Ignore 'line too long' errors
-"let g:syntastic_python_flake8_args='--ignore=E501'
-
-" Toggle between python 2 and python 3 for Syntastic
-function! Creyes17Py2()
-  let g:syntastic_python_flake8_exec = 'flake8-py2'
-  let g:syntastic_python_python_exec = 'python2.7'
-endfunction
-
-function! Creyes17Py3()
-  let g:syntastic_python_flake8_exec = 'flake8-py3'
-  let g:syntastic_python_python_exec = 'python3'
-endfunction
-
-" Default to python 3
-call Creyes17Py3()
-
-" Allow changing between them
-nnoremap <Leader>sp2 :call Creyes17Py2()<CR>
-nnoremap <Leader>sp3 :call Creyes17Py3()<CR>
-
+let g:syntastic_aggregate_errors = 1
 
 let g:syntastic_mode_map = {
 	\ "mode": "active",
 	\ "active_filetypes": [],
 	\ "passive_filetypes": [] }
 
+" Python settings
+let g:syntastic_python_flake8_args='--max-line-length=120'
+let g:syntastic_python_pylint_post_args="--py3k --reports=n"
+
 " Add javascript and html checkers
 let g:syntastic_javascript_checkers = ['eslint']
 let g:syntastic_html_checkers = ['htmlhint']
 let g:syntastic_html_htmlhint_args = "--config ~/.htmlhintrc"
+let g:syntastic_python_checkers = ['flake8', 'pylint']
 
 " Navigate between Syntastic errors
 nmap <silent> <Leader>sn :lnext<CR>
@@ -194,8 +176,8 @@ let vim_markdown_preview_temp_file=1
 let g:ctrlp_max_files=0
 " Force Ctrl P to go very deep into directory structures
 let g:ctrlp_max_depth=40
-" Ignore node_modules and git internal files
-let g:ctrlp_custom_ignore = 'node_modules'
+" Ignore node_modules and python compiled files
+let g:ctrlp_custom_ignore = 'node_modules\|\.pyc$'
 
 
 "" Vim-Prettier settings

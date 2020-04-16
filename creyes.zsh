@@ -42,7 +42,7 @@ function () {
     # Use pyenv distributions of python before homebrew if installed
     export PATH="$HOME/.pyenv/shims:$PATH";
 
-    export EDITOR="vim -u NONE";
+    export EDITOR="vim";
 
     export WINEARCH="win64";
     export WINEPREFIX="$HOME/.wine";
