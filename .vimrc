@@ -195,6 +195,15 @@ au Syntax * RainbowParenthesesLoadRound
 au Syntax * RainbowParenthesesLoadSquare
 au Syntax * RainbowParenthesesLoadBraces
 
+"" Vim-TODO-List Settings
+" See :help VimTodoListUsage for more information
+" Prevent items from jumping around in the list
+let g:VimTodoListsMoveItems = 0
+" Don't add an underline to the currently selected TODO item.
+autocmd FileType todo set nocursorline
+" Add a timestamp to completed items
+"let g:VimTodoListsDatesEnabled = 1
+
 " Change colors so dark red and red aren't right next to each other
 let g:rbpt_colorpairs = [
 	\ ['darkcyan',    'RoyalBlue3'],
