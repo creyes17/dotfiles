@@ -161,9 +161,13 @@ let vim_markdown_preview_temp_file=1
 
 "	Let the "Enter" key also select an option from the menu
 "let g:ycm_key_list_select_completion = ['<TAB>', '<Down>', '<Enter>']
+
 "	Don't automatically insert/select anything automatically
 "set completeopt+=noinsert
 "set completeopt+=noselect
+
+" Don't autocomplete TODO files.
+let g:ycm_filetype_blacklist = { 'todo': 1 }
 
 "" UltiSnips settings
 " XXX Disabling these until I figure out how to use ulti snips
