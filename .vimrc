@@ -203,8 +203,12 @@ au Syntax * RainbowParenthesesLoadBraces
 " See :help VimTodoListUsage for more information
 " Prevent items from jumping around in the list
 let g:VimTodoListsMoveItems = 0
-" Don't add an underline to the currently selected TODO item.
-autocmd FileType todo set nocursorline
+" Disable current-item highlighting. (Note: This is not the best solution.
+" Should instead figure out how to get 'set nocursorline' to run after the
+" plugin sets cursorline. Or fork the plugin to use a parameter to determine
+" if it should use cursorline.)
+autocmd FileType todo highlight Cursorline cterm=NONE ctermfg=NONE ctermbg=NONE gui=NONE guifg=NONE guibg=NONE
+autocmd FileType todo highlight CursorlineNR cterm=NONE ctermfg=NONE ctermbg=NONE gui=NONE guifg=NONE guibg=NONE
 " Add a timestamp to completed items
 "let g:VimTodoListsDatesEnabled = 1
 
