@@ -166,6 +166,11 @@ let vim_markdown_preview_temp_file=1
 "set completeopt+=noinsert
 "set completeopt+=noselect
 
+" Let clangd fully control code completion
+let g:ycm_clangd_uses_ycmd_caching = 0
+" Use installed clangd, not YCM-bundled clangd which doesn't get updates.
+let g:ycm_clangd_binary_path = exepath("clangd")
+
 " Don't autocomplete TODO files.
 let g:ycm_filetype_blacklist = { 'todo': 1 }
 
@@ -211,6 +216,11 @@ autocmd FileType todo highlight Cursorline cterm=NONE ctermfg=NONE ctermbg=NONE 
 autocmd FileType todo highlight CursorlineNR cterm=NONE ctermfg=NONE ctermbg=NONE gui=NONE guifg=NONE guibg=NONE
 " Add a timestamp to completed items
 "let g:VimTodoListsDatesEnabled = 1
+
+"" VimAck settings
+if executable('ag')
+  let g:ackprg = 'ag --vimgrep'
+endif
 
 " Change colors so dark red and red aren't right next to each other
 let g:rbpt_colorpairs = [

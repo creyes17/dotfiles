@@ -52,3 +52,6 @@
 [submodule "third_party/aserebryakov/vim-todo-lists"]
 	path = third_party/aserebryakov/vim-todo-lists
 	url = https://github.com/aserebryakov/vim-todo-lists.git
+[submodule "third_party/mileszs/ack.vim"]
+	path = third_party/mileszs/ack.vim
+	url = https://github.com/mileszs/ack.vim.git

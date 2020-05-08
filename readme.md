@@ -33,3 +33,13 @@ Known issues with install.sh:
 
 * Lein profiles installs with my name and email. You should update profiles.clj with your own name and email.
 * Relies on a number of script dependencies. Run with `install.sh -h` to see the usage statement and all of the dependencies
+
+Issues installing YouCompleteMe
+
+* "Failed to build watchdog module."
+    * Not sure how to fix. Here's the [full installation guide](https://github.com/ycm-core/YouCompleteMe/wiki/Full-Installation-Guide).
+    * Got clangd installled via [these instructions](https://clangd.llvm.org/installation.html).
+        * Also updated vimrc with recommended changes for YCM
+    * Tried installing clangd using `brew install llvm` (that's "Lima Lima Victor Mike")
+    * I guess the problem was somehow that the watchdog submodule of the ycmd submodule was being un-initialized?
+        * Following the steps in the full installation guide worked, and then I tried install.py again and that worked too.
