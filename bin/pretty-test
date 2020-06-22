@@ -1,0 +1,67 @@
+#!/usr/bin/env zsh
+
+#=== FUNCTION ================================================================
+# NAME: pretty-test
+# DESCRIPTION: Runs nosetests under the given directory, presumably because a
+#              watched file changed. For use with 'entr'
+# PARAMETERS: -t <test_target>          - The path (absolute or relative) of
+#                                         the file/directory to test 
+#             [-f <filename>]           - The abs path to a file that changed
+#             [-h]                      - Display the help text and exit
+# ENVIRONMENT VARIABLES: None.
+# DEPENDENCIES: date, getopts, nosetests
+# SIDE EFFECTS: None.
+# EXIT CODES: 1     - Invalid arguments
+#=============================================================================
+e_invalid_input=1;
+usage=;
+read -d '' usage <<USAGE
+Runs nosetests for the given file/directory, presumably because a watched
+file was changed. For use with 'entr'.
+
+usage: $0 [-h] -[m <mainline>]
+    -h               Display this help message and exit. Optional.
+    -f <filename>    The absolute path to a file that changed. Optional.
+    -t <test_target> Run in verbose mode. Optional.
+
+Relevant Environment Variables
+    NONE
+
+Dependencies
+            basename
+    date
+    getopts
+    nosetests
+
+Side Effects
+    None
+
+Exit Codes
+    $e_invalid_input                               Invalid argument(s)
+USAGE
+
+verbose=false;
+filename=;
+test_target=;
+coverage="--cover-no-print";
+while getopts "chf:t:v" opt;
+do
+    case $opt in
+        (c) coverage="" ;;
+        (h) echo $usage;
+            return 0 ;;
+        (f) filename="$OPTARG"  ;;
+        (t) test_target="$OPTARG"  ;;
+        (v) verbose=true  ;;
+        (*) echo "Invalid argument [$opt] (with value [${OPTARG:-no value supplied}])!" >&2;
+            echo $usage;
+            return $e_invalid_input ;;
+    esac
+done
+
+date;
+if [ -n "$filename" ]; then
+    echo "CHANGED: $(basename $filename)";
+fi
+nosetests $coverage --nologcapture $test_target;
+date;
