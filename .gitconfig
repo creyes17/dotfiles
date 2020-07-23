@@ -6,3 +6,5 @@
 	name = Christopher R. Reyes
 	email = ChrisReyes@alum.mit.edu
 [credential]
+[pull]
+	ff = only
