@@ -271,7 +271,7 @@ USAGE
                 if [ -n "$file" ]; then
                     ls -la $stash_file;
                 else
-                    tree $CHEAP_STASH_HOME;
+                    tree -a $CHEAP_STASH_HOME;
                 fi
                 ;;
             save)
