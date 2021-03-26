@@ -48,6 +48,7 @@ function () {
     export WINEPREFIX="$HOME/.wine";
 
     ### Virtualenv wrapper setup
+    eval "$(pyenv init -)";  # First set up pyenv
     if command -v pyenv >/dev/null; then
         pyenv virtualenvwrapper;
     elif [ -f $(which virtualenvwrapper.sh) ]; then
