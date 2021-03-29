@@ -436,6 +436,7 @@ USAGE
     alias untar="tar -zxvf ";
     alias vimbp="vim $zshcustom/creyes.zsh";
     alias vimbrc="vim $zshcustom/creyes.zsh";
+    alias vimchanged="vim -O \$(git status -s | sed -Ene '/^[[:space:]]*M[[:space:]]/ s/[[:space:]]*M[[:space:]]+([^[:space:]]+)[[:space:]]*$/\1/gp')"
     alias vimvrc="vim $HOME/.vimrc";
     alias whatismyip="dig +short myip.opendns.com @resolver1.opendns.com";
 }
