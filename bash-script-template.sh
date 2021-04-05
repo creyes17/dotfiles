@@ -31,7 +31,7 @@ usage() {
 USAGE
 }
 
-readonly tmp_filename=$(mktemp -t "$(basename $0)-$$-user-properties-bak.XXXXXXXX") || exit $e_no_tmp_file;
+readonly tmp_filename=$(mktemp -t "$(basename "$0")-$$-user-properties-bak.XXXXXXXX") || exit $e_no_tmp_file;
 
 #=== FUNCTION ================================================================
 # NAME: cleanup
@@ -43,7 +43,7 @@ readonly tmp_filename=$(mktemp -t "$(basename $0)-$$-user-properties-bak.XXXXXXX
 # EXIT CODES: None.
 #=============================================================================
 cleanup() {
-	rm $tmp_filename;
+	rm "$tmp_filename";
 	return 0;
 }
 trap cleanup EXIT;
@@ -85,10 +85,10 @@ main() {
 		return $e_invalid_input;
 	fi
 
-	echo "It's a good thing you gave me [$required] because that was required." > $tmp_filename;
-	[[ -n "$optional" ]] && echo "Thanks for also giving me [$optional]! That was nice of you." >> $tmp_filename;
+	echo "It's a good thing you gave me [$required] because that was required." > "$tmp_filename";
+	[[ -n "$optional" ]] && echo "Thanks for also giving me [$optional]! That was nice of you." >> "$tmp_filename";
 
-	cat $tmp_filename;
+	cat "$tmp_filename";
 
 	return 0;
 }
