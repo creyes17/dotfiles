@@ -58,3 +58,6 @@
 [submodule "third_party/udalov/kotlin-vim"]
 	path = third_party/udalov/kotlin-vim
 	url = https://github.com/udalov/kotlin-vim
+[submodule "JuliaEditorSupport/julia-vim"]
+	path = third_party/JuliaEditorSupport/julia-vim
+	url = https://github.com/JuliaEditorSupport/julia-vim.git
