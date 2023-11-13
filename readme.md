@@ -4,7 +4,7 @@ To install ohmyzsh, go to http://ohmyz.sh/ and follow the instructions.
 
 To set up the global gitignore file, run the following command from the root directory of this repo
 
-    git config --global core.excludesfile ./.gitignore_global
+    git config --global core.excludesfile ./cross-platform/.gitignore_global
 
 Relies on the following other git repositories (included as submodules)
 	
