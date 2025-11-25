@@ -61,3 +61,9 @@
 [submodule "JuliaEditorSupport/julia-vim"]
 	path = third_party/JuliaEditorSupport/julia-vim
 	url = https://github.com/JuliaEditorSupport/julia-vim.git
+[submodule "powerman/vim-plugin-AnsiEsc"]
+	path = third_party/powerman/vim-plugin-AnsiEsc
+	url = https://github.com/powerman/vim-plugin-AnsiEsc.git
+[submodule "third_party/powerman/vim-plugin-AnsiEsc"]
+	path = third_party/powerman/vim-plugin-AnsiEsc
+	url = https://github.com/powerman/vim-plugin-AnsiEsc.git

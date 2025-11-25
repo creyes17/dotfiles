@@ -247,3 +247,5 @@ let g:rbpt_colorpairs = [
 
 "" Other Colors
 hi Visual  term=reverse ctermbg=7 guibg=LightGrey guifg=Black ctermfg=0
+
+autocmd FileType text AnsiEsc

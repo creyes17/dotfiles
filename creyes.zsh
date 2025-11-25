@@ -26,17 +26,16 @@ function () {
 
     ### Paths and Other Important Variables
 
-    export PERLPATH="/usr/local/Cellar/perl/5.24.0_1";
-    export ANDROID_HOME="$HOME/Library/Android/sdk"; #TODO: This is for Mac, but need this to also work for Ubuntu
-    export GOPATH="$HOME/golang";
+    #export PERLPATH="/usr/local/Cellar/perl/5.24.0_1";
+    #export ANDROID_HOME="$HOME/Library/Android/sdk"; #TODO: This is for Mac, but need this to also work for Ubuntu
+    #export GOPATH="$HOME/golang";
     export VIMHOME="$HOME/.vim";
-    export NVM_DIR="$HOME/.nvm";
+    export PATH="$VIMHOME/bin:$PATH";
 
     export CHEAP_STASH_HOME="$HOME/tmp/cheap-stash";
     export DOTFILES_HOME="$HOME/github/creyes17/dotfiles";
 
-    export PATH="$HOME/bin:/Applications/LilyPond.app/Contents/Resources/bin:$ANDROID_HOME/platform-tools:$ANDROID_HOME/tools:$GOPATH/bin:$VIMHOME/bin:$PERLPATH/bin:$PATH";
-    export PATH="$NVM_DIR/versions/node/v7.10.0/bin/npm:$PATH";
+    #export PATH="$HOME/bin:/Applications/LilyPond.app/Contents/Resources/bin:$ANDROID_HOME/platform-tools:$ANDROID_HOME/tools:$GOPATH/bin:$VIMHOME/bin:$PERLPATH/bin:$PATH";
     export PATH="/usr/local/bin:/usr/local/sbin:$PATH";
 
     # Use pyenv distributions of python before homebrew if installed
@@ -46,16 +45,6 @@ function () {
 
     export WINEARCH="win64";
     export WINEPREFIX="$HOME/.wine";
-
-    ### Virtualenv wrapper setup
-    eval "$(pyenv init -)";  # First set up pyenv
-    if command -v pyenv >/dev/null; then
-        pyenv virtualenvwrapper;
-    elif [ -f $(which virtualenvwrapper.sh) ]; then
-        source $(which virtualenvwrapper.sh);
-    else
-        echo 'Note: virtualenvwrapper not installed. Install via pip';
-    fi
 
     ### Useful Functions
 
@@ -179,52 +168,6 @@ USAGE
     # Writes an error to STDERR if not currently in a git repo. (Writes nothing to STDOUT in that case)
     function get_git_branch {
         git rev-parse --abbrev-ref HEAD;
-    }
-
-    #=== FUNCTION ================================================================
-    # NAME: gmm
-    # DESCRIPTION: Git Merge Master. Pulls the latest from master and merges into the current git branch
-    # PARAMETERS: None.
-    # ENVIRONMENT VARIABLES: None.
-    # DEPENDENCIES: git
-    # SIDE EFFECTS: Pulls the latest from master. May result in merge conflicts
-    # EXIT CODES: 1 if could not checkout a different branch
-    #=============================================================================
-    gmm() {
-        local old_branch=$(get_git_branch);
-        git checkout - || return 1;
-        local old_previous_branch=$(get_git_branch);
-        git checkout master;
-        git pull;
-        git checkout "$old_branch";
-        git merge master;
-        git checkout "$old_previous_branch";
-        git checkout "$old_branch";
-    }
-
-    # Sets up default python version
-    use_python () {
-        local version=$1;
-        local venv_home="$HOME/.venv";
-        local venv_dir;
-
-        if [ "$version" = "2" ]; then
-            venv_dir="$venv_home/py2";
-        else
-            if [ "$version" = "3" ]; then
-                venv_dir="$venv_home/py3";
-            else
-                if [ -d "$venv_home/$version" ]; then
-                    venv_dir="$venv_home/$version";
-                else
-                    echo "The only supported python versions are 2 and 3 at this time." >&2;
-                    echo 'Set up more with `virtualenv --python=[executable]` in the dotfiles/venv directory and update this function' >&2;
-                    return 1;
-                fi
-            fi
-        fi
-
-        source $venv_dir/bin/activate;
     }
 
     #=== FUNCTION ================================================================
@@ -422,9 +365,8 @@ USAGE
 
     alias .bp=". $zshcustom/creyes.zsh";
     alias .brc=". $zshcustom/creyes.zsh";
-    alias .nvm=". $NVM_DIR/nvm.sh; nvm use --delete-prefix v7.6.0"
     alias cddot="cd $HOME/github/creyes17/dotfiles";
-    alias ctags="$(brew --prefix)/bin/ctags";  # Note: This fails if brew is not installed
+    #alias ctags="$(brew --prefix)/bin/ctags";  # Note: This fails if brew is not installed
     alias f="fg";
     alias gd="git diff -w";
     alias gg="git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %C(yellow):%an%Creset %Cgreen(%cr)%Creset' --abbrev-commit --date=relative";
