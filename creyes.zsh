@@ -364,7 +364,7 @@ USAGE
     local zshcustom="$HOME/.oh-my-zsh/custom";
 
     alias .bp=". $zshcustom/creyes.zsh";
-    alias .brc=". $zshcustom/creyes.zsh";
+    alias .brc=". $zshcustom/local.zsh";
     alias cddot="cd $HOME/github/creyes17/dotfiles";
     #alias ctags="$(brew --prefix)/bin/ctags";  # Note: This fails if brew is not installed
     alias f="fg";
@@ -377,7 +377,7 @@ USAGE
     alias j="jobs";
     alias untar="tar -zxvf ";
     alias vimbp="vim $zshcustom/creyes.zsh";
-    alias vimbrc="vim $zshcustom/creyes.zsh";
+    alias vimbrc="vim $zshcustom/local.zsh";
     alias vimchanged="vim -O \$(git status -s | sed -Ene '/^[[:space:]]*M[[:space:]]/ s/[[:space:]]*M[[:space:]]+([^[:space:]]+)[[:space:]]*$/\1/gp')"
     alias vimvrc="vim $HOME/.vimrc";
     alias whatismyip="dig +short myip.opendns.com @resolver1.opendns.com";
