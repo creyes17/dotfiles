@@ -25,6 +25,8 @@ function () {
     export GPG_TTY=$(tty);
 
     ### Paths and Other Important Variables
+    
+    export PATH="$HOME/bin:$PATH";
 
     #export PERLPATH="/usr/local/Cellar/perl/5.24.0_1";
     #export ANDROID_HOME="$HOME/Library/Android/sdk"; #TODO: This is for Mac, but need this to also work for Ubuntu
@@ -186,20 +188,24 @@ USAGE
     #             5 - encountered unknown error
     #=============================================================================
     cstash() {
+        local usage;
+        usage="Usage: cstash {apply|clear|delete|diff|edit|help|list|pop|remove|save|view} [file]";
+
         if [ $# -gt 2 ]; then
             echo "Invalid number of arguments" >&2;
             echo $usage >&2;
             return 1;
         fi
 
-        local cmd=$1;
-        local file=$2;
-
-        local usage="Usage: cstash {list|save|apply|pop|remove|delete|view|edit|clear} [file]";
+        local cmd;
+        cmd=$1;
+        local file;
+        file=$2;
 
         local stash_dir;
         local stash_file;
-        local stash_file_exists=false;
+        local stash_file_exists;
+        stash_file_exists=false;
 
         if [ -n "$file" ]; then
             stash_dir="${CHEAP_STASH_HOME}$(pwd)/$(dirname $file)";
@@ -211,23 +217,6 @@ USAGE
         fi
 
         case "$cmd" in
-            list)
-                if [ -n "$file" ]; then
-                    ls -la $stash_file;
-                else
-                    tree -a $CHEAP_STASH_HOME;
-                fi
-                ;;
-            save)
-                if [ -e "$file" ]; then
-                    mkdir -p $stash_dir;
-                    cp $file $stash_dir;
-                else
-                    echo "File [$file] not found!" >&2;
-                    echo $usage >&2;
-                    return 3;
-                fi
-                ;;
             apply)
                 if $stash_file_exists; then
                     cp $stash_file $file;
@@ -237,10 +226,65 @@ USAGE
                     return 4;
                 fi
                 ;;
+            clear)
+                # Note: -q is a zsh argument. It looks for the first instance of a
+                # question mark and saves the user response to a variable with that name.
+                local response;
+                read -q "response?Are you sure you want to remove all files from stash? [y/n]   "
+                echo;
+                if [ "$response" = "y" ]; then
+                    rm -r $CHEAP_STASH_HOME;
+                    mkdir -p $CHEAP_STASH_HOME;
+                else
+                    echo "Okay, leaving stash alone";
+                fi
+                ;;
+            delete|remove)
+                if $stash_file_exists; then
+                    rm $stash_file;
+                else
+                    echo "File [$file] has already been removed from stash" >&2;
+                    return 4;
+                fi
+                ;;
+            diff)
+                if [ -e "$file" ]; then
+                    if $stash_file_exists; then
+                        vimdiff $stash_file $file;
+                    else
+                        echo "File [$file] not found in stash" >&2;
+                        echo $usage >&2;
+                        return 4;
+                    fi
+                else
+                    echo "File [$file] not found!" >&2;
+                    echo $usage >&2;
+                    return 3;
+                fi
+            edit)
+                if $stash_file_exists; then
+                    vim $stash_file;
+                else
+                    echo "File [$file] not found in stash" >&2;
+                    echo $usage >&2;
+                    return 4;
+                fi
+                ;;
+            help)
+                echo $usage;
+                ;;
+            list)
+                if [ -n "$file" ]; then
+                    ls -la $stash_file;
+                else
+                    tree -a $CHEAP_STASH_HOME;
+                fi
+                ;;
             pop)
                 if $stash_file_exists; then
+                    local error_code;
                     mv $stash_file $file;
-                    local error_code=$?;
+                    error_code=$?;
                     if [ $error_code -ne 0 ]; then
                         echo "Unable to copy stashed file [$stash_file] to file [$file] and remove from stash" >&2;
                         echo "Encountered error code: $error_code" >&2;
@@ -252,12 +296,15 @@ USAGE
                     return 4;
                 fi
                 ;;
-            remove|delete)
-                if $stash_file_exists; then
-                    rm $stash_file;
+            # remove - synonym for "delete" above
+            save)
+                if [ -e "$file" ]; then
+                    mkdir -p $stash_dir;
+                    cp $file $stash_dir;
                 else
-                    echo "File [$file] has already been removed from stash" >&2;
-                    return 4;
+                    echo "File [$file] not found!" >&2;
+                    echo $usage >&2;
+                    return 3;
                 fi
                 ;;
             view)
@@ -267,27 +314,6 @@ USAGE
                     echo "File [$file] not found in stash" >&2;
                     echo $usage >&2;
                     return 4;
-                fi
-                ;;
-            edit)
-                if $stash_file_exists; then
-                    vim $stash_file;
-                else
-                    echo "File [$file] not found in stash" >&2;
-                    echo $usage >&2;
-                    return 4;
-                fi
-                ;;
-            clear)
-                # Note: -q is a zsh argument. It looks for the first instance of a
-                # question mark and saves the user response to a variable with that name.
-                read -q "response?Are you sure you want to remove all files from stash? [y/n]   "
-                echo;
-                if [ "$response" = "y" ]; then
-                    rm -r $CHEAP_STASH_HOME;
-                    mkdir -p $CHEAP_STASH_HOME;
-                else
-                    echo "Okay, leaving stash alone";
                 fi
                 ;;
             *)
