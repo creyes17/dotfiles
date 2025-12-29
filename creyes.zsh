@@ -261,6 +261,7 @@ USAGE
                     echo $usage >&2;
                     return 3;
                 fi
+                ;;
             edit)
                 if $stash_file_exists; then
                     vim $stash_file;
