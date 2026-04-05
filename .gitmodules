@@ -67,3 +67,6 @@
 [submodule "third_party/powerman/vim-plugin-AnsiEsc"]
 	path = third_party/powerman/vim-plugin-AnsiEsc
 	url = https://github.com/powerman/vim-plugin-AnsiEsc.git
+[submodule "third_party/dhruvasagar/vim-table-mode"]
+	path = third_party/dhruvasagar/vim-table-mode
+	url = git@github.com:dhruvasagar/vim-table-mode.git
